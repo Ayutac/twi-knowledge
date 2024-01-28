@@ -18,6 +18,20 @@ public record Book(String name, Integer volumeOrd, Volume volume, String wikiLin
 
     @Override
     public int compareTo(final Book other) {
+        if (volume != null) {
+            if (other.volume == null) {
+                return -1;
+            }
+            final int volCmp = volume.compareTo(other.volume);
+            if (volCmp != 0) {
+                return volCmp;
+            }
+        }
+        else {
+            if (other.volume != null) {
+                return 1;
+            }
+        }
         return name.compareTo(other.name);
     }
 }
