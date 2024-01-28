@@ -3,18 +3,18 @@ package org.abos.twi.knowledge.core;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public record Chapter(String name, int volumeNo, Integer bookNo, LocalDate release, int words, Book book, Volume volume, String link, String wikiLink) implements Comparable<Chapter> {
+public record Chapter(String name, int volumeOrd, Integer bookOrd, LocalDate release, int words, Book book, Volume volume, String link, String wikiLink) implements Comparable<Chapter> {
 
-    public Chapter(final String name, final int volumeNo, final Integer bookNo, final LocalDate release, final int words, final Book book, final Volume volume, final String link, final String wikiLink) {
+    public Chapter(final String name, final int volumeOrd, final Integer bookOrd, final LocalDate release, final int words, final Book book, final Volume volume, final String link, final String wikiLink) {
         this.name = Objects.requireNonNull(name);
-        if (volumeNo <= 0) {
+        if (volumeOrd <= 0) {
             throw new IllegalArgumentException("Numbering within the volume must be positive!");
         }
-        this.volumeNo = volumeNo;
-        if (bookNo != null && bookNo <= 0) {
+        this.volumeOrd = volumeOrd;
+        if (bookOrd != null && bookOrd <= 0) {
             throw new IllegalArgumentException("Numbering within the book must be positive!");
         }
-        this.bookNo = bookNo;
+        this.bookOrd = bookOrd;
         this.release = Objects.requireNonNull(release);
         if (words <= 0) {
             throw new IllegalArgumentException("Words must be positive!");
@@ -44,6 +44,6 @@ public record Chapter(String name, int volumeNo, Integer bookNo, LocalDate relea
         if (cmpVol != 0) {
             return cmpVol;
         }
-        return volumeNo - other.volumeNo;
+        return volumeOrd - other.volumeOrd;
     }
 }

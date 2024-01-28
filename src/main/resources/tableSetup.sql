@@ -10,26 +10,28 @@ CREATE TABLE volume (
   PRIMARY KEY(id)
 );
 CREATE TABLE book (
-  id        SERIAL,
-  name      LONGNAME  UNIQUE NOT NULL,
-  volume_id INT       NOT NULL          REFERENCES volume(id),
-  wiki_link TEXT      UNIQUE NOT NULL,
+  id          SERIAL,
+  name        LONGNAME  UNIQUE NOT NULL,
+  -- chapter will know which volume a book belongs to (?)
+  --volume_id   INT                         REFERENCES volume(id),
+  volume_ord  INT, -- the ordinal number within the volume
+  wiki_link   TEXT      UNIQUE NOT NULL,
   PRIMARY KEY(id)
 );
 CREATE TABLE chapter (
-  id        SERIAL,
-  name      LONGNAME  UNIQUE NOT NULL,
-  volume_no INT       UNIQUE NOT NULL, -- the ordinal number within the volume
-  book_no   INT       UNIQUE, -- the ordinal number within the book
-  release   INT       NOT NULL, -- days since epoch
-  words     INT       NOT NULL,
-  lettered  BOOLEAN   DEFAULT FALSE,
-  interlude BOOLEAN   DEFAULT FALSE,
-  in_parts  BOOLEAN   DEFAULT FALSE,
-  book_id   INT                       REFERENCES book(id),
-  volume_id INT       NOT NULL        REFERENCES volume(id),
-  link      TEXT      NOT NULL,
-  wiki_link TEXT      NOT NULL,
+  id          SERIAL,
+  name        LONGNAME  UNIQUE NOT NULL,
+  volume_ord  INT, -- the ordinal number within the volume
+  book_ord    INT, -- the ordinal number within the book
+  release     INT       NOT NULL, -- days since epoch
+  words       INT       NOT NULL,
+  lettered    BOOLEAN   DEFAULT FALSE,
+  interlude   BOOLEAN   DEFAULT FALSE,
+  in_parts    BOOLEAN   DEFAULT FALSE,
+  book_id     INT                       REFERENCES book(id),
+  volume_id   INT       NOT NULL        REFERENCES volume(id),
+  link        TEXT      NOT NULL,
+  wiki_link   TEXT      NOT NULL,
   PRIMARY KEY(id)
 );
 CREATE TABLE class (
