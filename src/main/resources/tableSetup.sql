@@ -1,29 +1,24 @@
 BEGIN;
-CREATE TYPE SHORTNAME AS RANGE (subtype = VARCHAR(31));
-CREATE TYPE LONGNAME AS RANGE (subtype = VARCHAR(63));
-CREATE TYPE LINK AS RANGE (subtype = TEXT);
-COMMIT;
-BEGIN;
 CREATE TABLE volume (
   id        SERIAL,
-  name      SHORTNAME UNIQUE NOT NULL,
-  wiki_link LINK      UNIQUE NOT NULL,
+  name      TEXT      UNIQUE NOT NULL,
+  wiki_link TEXT      UNIQUE NOT NULL,
   PRIMARY KEY(id)
 );
 CREATE TABLE book (
   id            SERIAL,
-  name          LONGNAME  UNIQUE NOT NULL,
+  name          TEXT      UNIQUE NOT NULL,
   -- chapter will know which volume a book belongs to (?)
   --volume_id     INT                         REFERENCES volume(id),
   volume_ord    INT, -- the ordinal number within the volume
-  wiki_link     LINK      UNIQUE NOT NULL,
-  sell_link     LINK      UNIQUE NOT NULL,
-  audible_link  LINK      UNIQUE,
+  wiki_link     TEXT      UNIQUE NOT NULL,
+  sell_link     TEXT      UNIQUE NOT NULL,
+  audible_link  TEXT      UNIQUE,
   PRIMARY KEY(id)
 );
 CREATE TABLE chapter (
   id          SERIAL,
-  name        LONGNAME  UNIQUE NOT NULL,
+  name        TEXT      UNIQUE NOT NULL,
   volume_ord  INT, -- the ordinal number within the volume
   book_ord    INT, -- the ordinal number within the book
   release     INT       NOT NULL, -- days since epoch
@@ -33,13 +28,13 @@ CREATE TABLE chapter (
   in_parts    BOOLEAN   DEFAULT FALSE,
   book_id     INT                       REFERENCES book(id),
   volume_id   INT       NOT NULL        REFERENCES volume(id),
-  link        LINK      NOT NULL,
-  wiki_link   LINK      NOT NULL,
+  link        TEXT      NOT NULL,
+  wiki_link   TEXT      NOT NULL,
   PRIMARY KEY(id)
 );
 CREATE TABLE class (
   id        SERIAL,
-  name      LONGNAME  UNIQUE NOT NULL,
+  name      TEXT      UNIQUE NOT NULL,
   since     INT                         REFERENCES chapter(id),
   PRIMARY KEY(id)
 );
@@ -50,7 +45,7 @@ CREATE TABLE class_upgrade (
 );
 CREATE TABLE skill (
   id        SERIAL,
-  name      LONGNAME  UNIQUE NOT NULL,
+  name      TEXT      UNIQUE NOT NULL,
   since     INT                         REFERENCES chapter(id),
   PRIMARY KEY(id)
 );
@@ -66,15 +61,15 @@ CREATE TABLE class_skill (
 );
 CREATE TABLE race (
   id                SERIAL,
-  name              SHORTNAME UNIQUE NOT NULL,
+  name              TEXT      UNIQUE NOT NULL,
   first_chapter_id  INT       REFERENCES chapter(id),
-  wiki_link         LINK,
+  wiki_link         TEXT,
   PRIMARY KEY(id)
 );
 CREATE TABLE character (
   id        SERIAL,
-  name_id   SHORTNAME UNIQUE NOT NULL,
-  wiki_link LINK,
+  name_id   TEXT      UNIQUE NOT NULL,
+  wiki_link TEXT,
   PRIMARY KEY(id)
 );
 CREATE TABLE appearances (
@@ -83,19 +78,19 @@ CREATE TABLE appearances (
   PRIMARY KEY(char_id, chapter_id)
 );
 CREATE TABLE first_name (
-  name      LONGNAME  NOT NULL,
+  name      TEXT      NOT NULL,
   char_id   INT       NOT NULL  REFERENCES character(id),
   since     INT                 REFERENCES chapter(id),
   PRIMARY KEY (name, char_id, since)
 );
 CREATE TABLE middle_name (
-  name      LONGNAME  NOT NULL,
+  name      TEXT      NOT NULL,
   char_id   INT       NOT NULL  REFERENCES character(id),
   since     INT                 REFERENCES chapter(id),
   PRIMARY KEY (name, char_id, since)
 );
 CREATE TABLE last_name (
-  name      LONGNAME  NOT NULL,
+  name      TEXT      NOT NULL,
   char_id   INT       NOT NULL  REFERENCES character(id),
   since     INT                 REFERENCES chapter(id),
   PRIMARY KEY (name, char_id, since)
