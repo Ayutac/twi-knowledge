@@ -1,12 +1,13 @@
 BEGIN;
 CREATE TYPE SHORTNAME AS RANGE (subtype = VARCHAR(31));
 CREATE TYPE LONGNAME AS RANGE (subtype = VARCHAR(63));
+CREATE TYPE LINK AS RANGE (subtype = TEXT);
 COMMIT;
 BEGIN;
 CREATE TABLE volume (
   id        SERIAL,
   name      SHORTNAME UNIQUE NOT NULL,
-  wiki_link TEXT      UNIQUE NOT NULL,
+  wiki_link LINK      UNIQUE NOT NULL,
   PRIMARY KEY(id)
 );
 CREATE TABLE book (
@@ -15,7 +16,7 @@ CREATE TABLE book (
   -- chapter will know which volume a book belongs to (?)
   --volume_id   INT                         REFERENCES volume(id),
   volume_ord  INT, -- the ordinal number within the volume
-  wiki_link   TEXT      UNIQUE NOT NULL,
+  wiki_link   LINK      UNIQUE NOT NULL,
   PRIMARY KEY(id)
 );
 CREATE TABLE chapter (
@@ -30,8 +31,8 @@ CREATE TABLE chapter (
   in_parts    BOOLEAN   DEFAULT FALSE,
   book_id     INT                       REFERENCES book(id),
   volume_id   INT       NOT NULL        REFERENCES volume(id),
-  link        TEXT      NOT NULL,
-  wiki_link   TEXT      NOT NULL,
+  link        LINK      NOT NULL,
+  wiki_link   LINK      NOT NULL,
   PRIMARY KEY(id)
 );
 CREATE TABLE class (
@@ -65,18 +66,18 @@ CREATE TABLE race (
   id                SERIAL,
   name              SHORTNAME UNIQUE NOT NULL,
   first_chapter_id  INT       REFERENCES chapter(id),
-  wiki_link         TEXT,
+  wiki_link         LINK,
   PRIMARY KEY(id)
 );
 CREATE TABLE character (
   id        SERIAL,
   name_id   SHORTNAME UNIQUE NOT NULL,
-  wiki_link TEXT,
+  wiki_link LINK,
   PRIMARY KEY(id)
 );
 CREATE TABLE appearances (
   char_id     INT NOT NULL  REFERENCES character(id),
-  chapter_id  INT NOT NULL  REFERENCES chapter_id(id),
+  chapter_id  INT NOT NULL  REFERENCES chapter(id),
   PRIMARY KEY(char_id, chapter_id)
 );
 CREATE TABLE first_name (
