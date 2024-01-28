@@ -6,18 +6,22 @@ BEGIN;
 CREATE TABLE volume (
   id        SERIAL,
   name      SHORTNAME UNIQUE NOT NULL,
+  wiki_link TEXT      UNIQUE NOT NULL,
   PRIMARY KEY(id)
 );
 CREATE TABLE book (
   id        SERIAL,
   name      LONGNAME  UNIQUE NOT NULL,
   volume_id INT       NOT NULL          REFERENCES volume(id),
+  wiki_link TEXT      UNIQUE NOT NULL,
   PRIMARY KEY(id)
 );
 CREATE TABLE chapter (
   id        SERIAL,
   name      LONGNAME  UNIQUE NOT NULL,
-  release   BIGINT    NOT NULL, -- millis since epoch
+  volume_no INT       UNIQUE NOT NULL, -- the ordinal number within the volume
+  book_no   INT       UNIQUE, -- the ordinal number within the book
+  release   INT       NOT NULL, -- days since epoch
   words     INT       NOT NULL,
   lettered  BOOLEAN   DEFAULT FALSE,
   interlude BOOLEAN   DEFAULT FALSE,
