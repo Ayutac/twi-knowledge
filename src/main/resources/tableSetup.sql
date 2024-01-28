@@ -11,12 +11,14 @@ CREATE TABLE volume (
   PRIMARY KEY(id)
 );
 CREATE TABLE book (
-  id          SERIAL,
-  name        LONGNAME  UNIQUE NOT NULL,
+  id            SERIAL,
+  name          LONGNAME  UNIQUE NOT NULL,
   -- chapter will know which volume a book belongs to (?)
-  --volume_id   INT                         REFERENCES volume(id),
-  volume_ord  INT, -- the ordinal number within the volume
-  wiki_link   LINK      UNIQUE NOT NULL,
+  --volume_id     INT                         REFERENCES volume(id),
+  volume_ord    INT, -- the ordinal number within the volume
+  wiki_link     LINK      UNIQUE NOT NULL,
+  sell_link     LINK      UNIQUE NOT NULL,
+  audible_link  LINK      UNIQUE,
   PRIMARY KEY(id)
 );
 CREATE TABLE chapter (

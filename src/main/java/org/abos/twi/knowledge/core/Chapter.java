@@ -11,6 +11,9 @@ public record Chapter(String name, int volumeOrd, Integer bookOrd, LocalDate rel
             throw new IllegalArgumentException("Numbering within the volume must be positive!");
         }
         this.volumeOrd = volumeOrd;
+        if (book == null ^ bookOrd == null) {
+            throw new IllegalArgumentException("Book implies book order and vice versa!");
+        }
         if (bookOrd != null && bookOrd <= 0) {
             throw new IllegalArgumentException("Numbering within the book must be positive!");
         }
