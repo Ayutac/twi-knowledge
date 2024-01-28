@@ -1,6 +1,7 @@
 package org.abos.twi.knowledge.db;
 
 import org.abos.common.LogUtil;
+import org.abos.twi.knowledge.core.Volume;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.postgresql.PGProperty;
@@ -13,9 +14,12 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
 
 public final class DbHelper {
@@ -122,6 +126,35 @@ public final class DbHelper {
         executeScript(TABLE_TEAR_DOWN_FILE_NAME);
         final Duration time = Duration.between(start, Instant.now());
         LOGGER.info(LogUtil.LOG_TIME_MSG, "Tearing down tables", time.toMinutes(), time.toSecondsPart());
+    }
+
+    public PreparedStatement prepareAddVolumeStatement() throws SQLException {
+        return getConnection().prepareStatement("INSERT INTO volume (name, wiki_link) VALUES (?,?);");
+    }
+
+    public void addVolume(final Volume volume, final PreparedStatement pStmt) throws SQLException {
+        pStmt.setString(1, volume.name());
+        pStmt.setString(2, volume.wikiLink());
+        pStmt.execute();
+    }
+
+    public void addVolumes(final List<Volume> volumes) throws SQLException {
+        try (final PreparedStatement pStmt = prepareAddVolumeStatement()) {
+            for (Volume volume : volumes) {
+                addVolume(volume, pStmt);
+            }
+        }
+    }
+
+    public List<Volume> fetchVolumes() throws SQLException {
+        List<Volume> result = new LinkedList<>();
+        try (final PreparedStatement pStmt = getConnection().prepareStatement("SELECT name, wiki_link FROM volume ORDER BY id");
+             final ResultSet rs = pStmt.executeQuery()) {
+            while (rs.next()) {
+                result.add(new Volume(rs.getString(1), rs.getString(2)));
+            }
+        }
+        return result;
     }
 
 }
