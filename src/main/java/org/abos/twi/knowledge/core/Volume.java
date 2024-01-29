@@ -22,6 +22,6 @@ public record Volume(String name, String wikiLink) implements Named, Comparable<
 
     @Override
     public String getName() {
-        return null;
+        return name;
     }
 }
