@@ -6,14 +6,16 @@ CREATE TABLE volume (
   PRIMARY KEY(id)
 );
 CREATE TABLE book (
-  id            SERIAL,
-  name          TEXT      UNIQUE NOT NULL,
+  id                SERIAL,
+  name              TEXT      UNIQUE NOT NULL,
   -- chapter will know which volume a book belongs to (?)
-  --volume_id     INT                         REFERENCES volume(id),
-  volume_ord    INT, -- the ordinal number within the volume
-  wiki_link     TEXT      UNIQUE NOT NULL,
-  sell_link     TEXT      UNIQUE NOT NULL,
-  audible_link  TEXT      UNIQUE,
+  --volume_id         INT                         REFERENCES volume(id),
+  volume_ord        INT, -- the ordinal number within the volume
+  wiki_link         TEXT      UNIQUE NOT NULL,
+  publication_link  TEXT,
+  publication_date  INT, -- days since epoch
+  audible_link      TEXT,
+  audible_date      INT, -- days since epoch
   PRIMARY KEY(id)
 );
 CREATE TABLE chapter (

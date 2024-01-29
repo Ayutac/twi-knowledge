@@ -1,10 +1,11 @@
 package org.abos.twi.knowledge.core;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
-public record Book(String name, Integer volumeOrd, Volume volume, String wikiLink, String sellLink, String audibleLink) implements Comparable<Book> {
+public record Book(String name, Integer volumeOrd, Volume volume, String wikiLink, String publicationLink, LocalDate publicationDate, String audibleLink, LocalDate audibleDate) implements Comparable<Book> {
 
-    public Book(final String name, final Integer volumeOrd, final Volume volume, final String wikiLink, final String sellLink, final String audibleLink) {
+    public Book(final String name, final Integer volumeOrd, final Volume volume, final String wikiLink, final String publicationLink, final LocalDate publicationDate, final String audibleLink, final LocalDate audibleDate) {
         this.name = Objects.requireNonNull(name);
         if (volume == null ^ volumeOrd == null) {
             throw new IllegalArgumentException("Volume implies volume order and vice versa!");
@@ -12,8 +13,10 @@ public record Book(String name, Integer volumeOrd, Volume volume, String wikiLin
         this.volumeOrd = volumeOrd;
         this.volume = volume;
         this.wikiLink = Objects.requireNonNull(wikiLink);
-        this.sellLink = Objects.requireNonNull(sellLink);
+        this.publicationLink = publicationLink;
+        this.publicationDate = publicationDate;
         this.audibleLink = audibleLink;
+        this.audibleDate = audibleDate;
     }
 
     @Override
