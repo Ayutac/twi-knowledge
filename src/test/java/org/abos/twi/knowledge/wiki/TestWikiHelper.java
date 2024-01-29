@@ -13,4 +13,9 @@ public final class TestWikiHelper {
         Assertions.assertEquals(Facts.VOLUME_COUNT, WikiHelper.fetchVolumes().size());
     }
 
+    @Test
+    public void testFetchBooks() throws IOException {
+        Assertions.assertEquals(Facts.BOOK_COUNT, WikiHelper.fetchBooks(WikiHelper.fetchVolumes()).size());
+    }
+
 }

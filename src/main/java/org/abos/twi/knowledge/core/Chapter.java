@@ -1,9 +1,11 @@
 package org.abos.twi.knowledge.core;
 
+import org.abos.common.Named;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
-public record Chapter(String name, int volumeOrd, Integer bookOrd, LocalDate release, int words, Book book, Volume volume, String link, String wikiLink) implements Comparable<Chapter> {
+public record Chapter(String name, int volumeOrd, Integer bookOrd, LocalDate release, int words, Book book, Volume volume, String link, String wikiLink) implements Named, Comparable<Chapter> {
 
     public Chapter(final String name, final int volumeOrd, final Integer bookOrd, final LocalDate release, final int words, final Book book, final Volume volume, final String link, final String wikiLink) {
         this.name = Objects.requireNonNull(name);
@@ -48,5 +50,10 @@ public record Chapter(String name, int volumeOrd, Integer bookOrd, LocalDate rel
             return cmpVol;
         }
         return volumeOrd - other.volumeOrd;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

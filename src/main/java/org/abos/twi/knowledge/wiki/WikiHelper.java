@@ -4,7 +4,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.abos.common.CollectionUtil;
+import org.abos.twi.knowledge.core.Book;
 import org.abos.twi.knowledge.core.Volume;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,10 +29,24 @@ public final class WikiHelper {
 
     private static final String CHAPTER_LIST = "Chapter List";
 
+    private static final String VOLUME = "Volume";
+
+    private static final String BOOK = "Book";
+
+    private static final Logger LOGGER = LogManager.getLogger(WikiHelper.class);
+
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private WikiHelper() {
         /* No instantiation. */
+    }
+
+    private static String sanitizePageName(final String name) {
+        if (name == null) {
+            return null;
+        }
+        return name.replace(' ', '_')
+                .replace("&", "%26");
     }
 
     private static String getQueryResponse(final String query) throws IOException {
@@ -47,22 +65,18 @@ public final class WikiHelper {
         return response;
     }
 
-    private static String sanitizePageName(final String name) {
-        if (name == null) {
-            return null;
-        }
-        return name.replace(' ', '_')
-                .replace("&", "%26");
+    public static String fetchPage(final String name) throws IOException {
+        return getQueryResponse("action=parse&prop=wikitext&page=" + sanitizePageName(name));
     }
 
     public static List<String> fetchCategory(final String name, boolean pages, boolean subCategories) throws IOException {
+        final List<String> result = new LinkedList<>();
         if (!pages && !subCategories) {
-            return List.of();
+            return result;
         }
         final String response = getQueryResponse("action=query&format=json&list=categorymembers&cmlimit=100&cmtitle=Category:" + sanitizePageName(name));
         final ObjectNode responseNode = MAPPER.readValue(response, ObjectNode.class);
         final ArrayNode content = (ArrayNode)responseNode.get("query").get("categorymembers");
-        final List<String> result = new LinkedList<>();
         String title;
         for (JsonNode node : content) {
             if (node instanceof ObjectNode entry) {
@@ -83,6 +97,50 @@ public final class WikiHelper {
             result.add(new Volume(title, WIKI_URL + sanitizePageName(title)));
         }
         Collections.sort(result);
+        return result;
+    }
+
+    public static Book fetchBook(final List<Volume> volumes, final String title) throws IOException {
+        final String content = fetchPage(title);
+        Integer volOrd = null;
+        Volume volume = null;
+        if (title.startsWith(VOLUME)) {
+            volOrd = 1;
+            volume = CollectionUtil.getByName(volumes, title);
+        }
+        else if (title.startsWith(BOOK)) {
+            // get the order out of the chapter list table
+            final int chapterListIndex = content.indexOf("{{" + CHAPTER_LIST);
+            if (chapterListIndex != -1) {
+                final String tableLine = content.substring(chapterListIndex + CHAPTER_LIST.length()+2, chapterListIndex + content.substring(chapterListIndex).indexOf("}}"));
+                final int colIndex = tableLine.lastIndexOf('|');
+                if (colIndex != 0) {
+                    final String volOrdStr = tableLine.substring(colIndex+1).trim();
+                    try {
+                        volOrd = Integer.parseInt(volOrdStr);
+                    }
+                    catch (NumberFormatException ex) {
+                        LOGGER.warn("Unknown volume number {}!", volOrdStr);
+                    }
+                }
+            }
+            // get the volume out of the first paragraph
+            // TODO
+        }
+        String name = title.replace(VOLUME, BOOK).replace(" (Archived)", "");
+
+        return null;
+    }
+
+    public static List<Book> fetchBooks(final List<Volume> volumes) throws IOException {
+        final List<String> bookTitles = fetchCategory("EBooks", true, false);
+        bookTitles.remove(CHAPTER_LIST);
+        bookTitles.remove("Ebook");
+        final List<Book> result = new LinkedList<>();
+        for (String title : bookTitles) {
+            result.add(fetchBook(volumes, title));
+        }
+        //Collections.sort(result);
         return result;
     }
 

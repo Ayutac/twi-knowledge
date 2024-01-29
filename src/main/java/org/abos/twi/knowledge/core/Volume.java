@@ -1,8 +1,10 @@
 package org.abos.twi.knowledge.core;
 
+import org.abos.common.Named;
+
 import java.util.Objects;
 
-public record Volume(String name, String wikiLink) implements Comparable<Volume> {
+public record Volume(String name, String wikiLink) implements Named, Comparable<Volume> {
 
     public Volume(final String name, final String wikiLink) {
         this.name = Objects.requireNonNull(name);
@@ -16,5 +18,10 @@ public record Volume(String name, String wikiLink) implements Comparable<Volume>
             return cmpLength;
         }
         return name.compareTo(other.name);
+    }
+
+    @Override
+    public String getName() {
+        return null;
     }
 }
