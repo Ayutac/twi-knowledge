@@ -15,9 +15,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 public final class WikiHelper {
 
@@ -35,6 +40,8 @@ public final class WikiHelper {
 
     private static final Logger LOGGER = LogManager.getLogger(WikiHelper.class);
 
+    private static final DateTimeFormatter WIKI_DATE_FORMATTER = DateTimeFormatter.ofPattern("MMMM d, uuuu", Locale.US);
+
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private WikiHelper() {
@@ -47,6 +54,38 @@ public final class WikiHelper {
         }
         return name.replace(' ', '_')
                 .replace("&", "%26");
+    }
+
+    /**
+     * Extracts the value of the given key from a template.
+     * @param content should start with the template start, or immediately thereafter
+     * @param key the key to fetch the value from
+     * @return {@code null} if the key couldn't be found
+     */
+    private static String extractTemplateValue(final String content, final String key) {
+        int keyIndex = content.indexOf(key);
+        if (keyIndex != -1) {
+            keyIndex += key.length();
+            while (keyIndex < content.length() && content.charAt(keyIndex) != '=') {
+                keyIndex++;
+            }
+            keyIndex++;
+            // in case there is no '=' or nothing after it
+            if (keyIndex >= content.length()) {
+                return null;
+            }
+            final String postKeyString = content.substring(keyIndex);
+            int endIndex = postKeyString.indexOf("\\n");
+            final int bracketIndex = postKeyString.indexOf("}}");
+            if (bracketIndex >= 0 && bracketIndex < endIndex) {
+                endIndex = bracketIndex;
+            }
+            if (endIndex == -1) {
+                endIndex = postKeyString.length();
+            }
+            return postKeyString.substring(0, endIndex).trim();
+        }
+        return null;
     }
 
     private static String getQueryResponse(final String query) throws IOException {
@@ -104,11 +143,12 @@ public final class WikiHelper {
         final String content = fetchPage(title);
         Integer volOrd = null;
         Volume volume = null;
-        if (title.startsWith(VOLUME)) {
-            volOrd = 1;
-            volume = CollectionUtil.getByName(volumes, title);
-        }
-        else if (title.startsWith(BOOK)) {
+        String publicationLink = null;
+        LocalDate publicationDate = null;
+        String audibleLink = null;
+        LocalDate audibleDate = null;
+        String name = title.replace(VOLUME, BOOK).replace(" (Archived)", "");
+        if (name.startsWith(BOOK)) {
             // get the order out of the chapter list table
             final int chapterListIndex = content.indexOf("{{" + CHAPTER_LIST);
             if (chapterListIndex != -1) {
@@ -124,12 +164,63 @@ public final class WikiHelper {
                     }
                 }
             }
-            // get the volume out of the first paragraph
-            // TODO
+            // get the publication data
+            final int publicationsIndex = content.indexOf("{{BookPublications");
+            if (publicationsIndex != -1) {
+                final String publications = content.substring(publicationsIndex, publicationsIndex + content.substring(publicationsIndex).indexOf("}}"));
+                final String bookName = extractTemplateValue(publications, "bookName");
+                if (bookName != null) {
+                    name += ": " + bookName;
+                }
+                String dateStr = extractTemplateValue(publications, "bookPublishDate");
+                if (dateStr != null && !dateStr.isEmpty()) {
+                    try {
+                        publicationDate = WIKI_DATE_FORMATTER.parse(dateStr, LocalDate::from);
+                    } catch (DateTimeParseException ex) {
+                        LOGGER.warn("Unknown date " + dateStr);
+                    }
+                }
+                publicationLink = extractTemplateValue(publications, "bookAmazonLink");
+                dateStr = extractTemplateValue(publications, "audioBookPublishDate");
+                if (dateStr == null || dateStr.isEmpty()) {
+                    audibleDate = publicationDate;
+                }
+                else {
+                    try {
+                        audibleDate = WIKI_DATE_FORMATTER.parse(dateStr, LocalDate::from);
+                    }
+                    catch (DateTimeParseException ex) {
+                        LOGGER.warn("Unknown date " + dateStr);
+                    }
+                }
+                audibleLink = extractTemplateValue(publications, "audioBookLink");
+            }
         }
-        String name = title.replace(VOLUME, BOOK).replace(" (Archived)", "");
-
-        return null;
+        // gravesong and comic
+        else if (title.startsWith("Gravesong")) {
+            publicationDate = LocalDate.of(2022, Month.DECEMBER, 1);
+            publicationLink = "https://yonder.onelink.me/6vpb/gravesong";
+        }
+        else if (title.contains("The Last Tide")) {
+            publicationDate = LocalDate.of(2020, Month.JANUARY, 26);
+            publicationLink = "https://www.cloudscapecomics.com/product/the-last-tide-soft-cover/";
+        }
+        // get the volume
+        if (title.startsWith(VOLUME)) {
+            volume = CollectionUtil.getByName(volumes, title);
+        }
+        // ... out of the intro
+        else {
+            final int introIndex = content.indexOf("{{BookIntro");
+            if (introIndex != -1) {
+                final String bookIntro = content.substring(introIndex, introIndex + content.substring(introIndex).indexOf("}}"));
+                final String volumeStr = extractTemplateValue(bookIntro, "volumeNumber");
+                if (volumeStr != null) {
+                    volume = CollectionUtil.getByName(volumes, VOLUME + " " + volumeStr);
+                }
+            }
+        }
+        return new Book(name, volOrd, volume, WIKI_URL + sanitizePageName(title), publicationLink, publicationDate, audibleLink, audibleDate);
     }
 
     public static List<Book> fetchBooks(final List<Volume> volumes) throws IOException {
@@ -140,7 +231,7 @@ public final class WikiHelper {
         for (String title : bookTitles) {
             result.add(fetchBook(volumes, title));
         }
-        //Collections.sort(result);
+        Collections.sort(result);
         return result;
     }
 
