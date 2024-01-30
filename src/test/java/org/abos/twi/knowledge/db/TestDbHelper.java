@@ -63,7 +63,8 @@ public final class TestDbHelper {
      */
     @Test
     public void testAddBooks() throws IOException, SQLException {
-        dbHelper.addBooks(wikiHelper.fetchBooks(wikiHelper.fetchVolumes()));
+        wikiHelper.fetchVolumes();
+        dbHelper.addBooks(wikiHelper.fetchBooks());
     }
 
 }

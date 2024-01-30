@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.List;
 
 public final class TestWikiHelper {
 
@@ -30,14 +29,15 @@ public final class TestWikiHelper {
 
     @Test
     public void testFetchBooks() throws IOException {
-        Assertions.assertEquals(Facts.BOOK_COUNT, wikiHelper.fetchBooks(wikiHelper.fetchVolumes()).size());
+        wikiHelper.fetchVolumes();
+        Assertions.assertEquals(Facts.BOOK_COUNT, wikiHelper.fetchBooks().size());
     }
 
     @Test
     public void testFetchChapters() throws IOException {
-        final int size = wikiHelper.fetchChapters(List.of(), List.of()).size();
-        System.out.println(size);
-        Assertions.assertTrue(size >= Facts.CHAPTER_COUNT_LOWER_BOUND);
+        wikiHelper.fetchVolumes();
+        wikiHelper.fetchBooks();
+        Assertions.assertTrue(wikiHelper.fetchChapters().size() >= Facts.CHAPTER_COUNT_LOWER_BOUND);
     }
 
 }
