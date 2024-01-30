@@ -6,4 +6,6 @@ public interface Facts {
 
     int BOOK_COUNT = 16; // latest book + Gravesong + Comic
 
+    int CHAPTER_COUNT_LOWER_BOUND = 500; // we don't want to update the code for every chapter
+
 }

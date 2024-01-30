@@ -19,6 +19,8 @@ public final class TestDbHelper {
 
     private DbHelper dbHelper;
 
+    private WikiHelper wikiHelper;
+
     @BeforeAll
     public static void setupDbConfig() {
         System.setProperty(DbHelper.PROPERTY_URL, "localhost:5432/test");
@@ -37,10 +39,12 @@ public final class TestDbHelper {
             /* Ignore. */
         }
         dbHelper.setupTables();
+        wikiHelper = new WikiHelper();
     }
 
     @AfterEach
     public void tearDownDb() throws SQLException, IOException {
+        wikiHelper = null;
         dbHelper.tearDownTables();
         dbHelper = null;
     }
@@ -50,7 +54,7 @@ public final class TestDbHelper {
      */
     @Test
     public void testAddVolumes() throws IOException, SQLException {
-        dbHelper.addVolumes(WikiHelper.fetchVolumes());
+        dbHelper.addVolumes(wikiHelper.fetchVolumes());
         Assertions.assertEquals(Facts.VOLUME_COUNT, dbHelper.fetchVolumes().size());
     }
 
@@ -59,7 +63,7 @@ public final class TestDbHelper {
      */
     @Test
     public void testAddBooks() throws IOException, SQLException {
-        dbHelper.addBooks(WikiHelper.fetchBooks(WikiHelper.fetchVolumes()));
+        dbHelper.addBooks(wikiHelper.fetchBooks(wikiHelper.fetchVolumes()));
     }
 
 }
