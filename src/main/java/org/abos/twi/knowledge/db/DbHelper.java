@@ -1,6 +1,7 @@
 package org.abos.twi.knowledge.db;
 
 import org.abos.common.LogUtil;
+import org.abos.twi.knowledge.core.Book;
 import org.abos.twi.knowledge.core.Volume;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.sql.Connection;
+import java.sql.JDBCType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -155,6 +157,66 @@ public final class DbHelper {
             }
         }
         return result;
+    }
+
+    public PreparedStatement prepareAddBookStatement() throws SQLException {
+        return getConnection().prepareStatement("INSERT INTO book (name, volume_ord, wiki_link, publication_link, publication_date, audible_link, audible_date) VALUES (?,?,?,?,?,?,?);");
+    }
+
+    public void addBook(final Book book, final PreparedStatement pStmt) throws SQLException {
+        pStmt.setString(1, book.name());
+        if (book.volumeOrd() == null) {
+            pStmt.setNull(2, JDBCType.INTEGER.getVendorTypeNumber());
+        }
+        else {
+            pStmt.setInt(2, book.volumeOrd());
+        }
+        pStmt.setString(3, book.wikiLink());
+        if (book.publicationLink() == null) {
+            pStmt.setNull(4, JDBCType.LONGVARCHAR.getVendorTypeNumber());
+        }
+        else {
+            pStmt.setString(4, book.publicationLink());
+        }
+        if (book.publicationDate() == null) {
+            pStmt.setNull(5, JDBCType.BIGINT.getVendorTypeNumber());
+        }
+        else {
+            pStmt.setLong(5, book.publicationDate().toEpochDay());
+        }
+        if (book.audibleLink() == null) {
+            pStmt.setNull(6, JDBCType.LONGVARCHAR.getVendorTypeNumber());
+        }
+        else {
+            pStmt.setString(6, book.audibleLink());
+        }
+        if (book.audibleDate() == null) {
+            pStmt.setNull(7, JDBCType.BIGINT.getVendorTypeNumber());
+        }
+        else {
+            pStmt.setLong(7, book.audibleDate().toEpochDay());
+        }
+        pStmt.execute();
+    }
+
+    public void addBooks(final List<Book> books) throws SQLException {
+        try (final PreparedStatement pStmt = prepareAddBookStatement()) {
+            for (Book book : books) {
+                addBook(book, pStmt);
+            }
+        }
+    }
+
+    public List<Volume> fetchBooks() throws SQLException {
+        throw new UnsupportedOperationException("Not implemented yet!");
+//        List<Volume> result = new LinkedList<>();
+//        try (final PreparedStatement pStmt = getConnection().prepareStatement("SELECT name, wiki_link FROM volume ORDER BY id");
+//             final ResultSet rs = pStmt.executeQuery()) {
+//            while (rs.next()) {
+//                result.add(new Volume(rs.getString(1), rs.getString(2)));
+//            }
+//        }
+//        return result;
     }
 
 }

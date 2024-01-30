@@ -54,4 +54,12 @@ public final class TestDbHelper {
         Assertions.assertEquals(Facts.VOLUME_COUNT, dbHelper.fetchVolumes().size());
     }
 
+    /**
+     * Test for {@link DbHelper#addVolumes(List)}
+     */
+    @Test
+    public void testAddBooks() throws IOException, SQLException {
+        dbHelper.addBooks(WikiHelper.fetchBooks(WikiHelper.fetchVolumes()));
+    }
+
 }

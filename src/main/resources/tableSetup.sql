@@ -13,9 +13,9 @@ CREATE TABLE book (
   volume_ord        INT, -- the ordinal number within the volume
   wiki_link         TEXT      UNIQUE NOT NULL,
   publication_link  TEXT,
-  publication_date  INT, -- days since epoch
+  publication_date  BIGINT, -- days since epoch
   audible_link      TEXT,
-  audible_date      INT, -- days since epoch
+  audible_date      BIGINT, -- days since epoch
   PRIMARY KEY(id)
 );
 CREATE TABLE chapter (
@@ -23,7 +23,7 @@ CREATE TABLE chapter (
   name        TEXT      UNIQUE NOT NULL,
   volume_ord  INT, -- the ordinal number within the volume
   book_ord    INT, -- the ordinal number within the book
-  release     INT       NOT NULL, -- days since epoch
+  release     BIGINT    NOT NULL, -- days since epoch
   words       INT       NOT NULL,
   lettered    BOOLEAN   DEFAULT FALSE,
   interlude   BOOLEAN   DEFAULT FALSE,
