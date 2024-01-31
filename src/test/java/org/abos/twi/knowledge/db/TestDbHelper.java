@@ -59,7 +59,7 @@ public final class TestDbHelper {
     }
 
     /**
-     * Test for {@link DbHelper#addVolumes(List)}
+     * Test for {@link DbHelper#addBooks(List)}
      */
     @Test
     public void testAddBooks() throws IOException, SQLException {

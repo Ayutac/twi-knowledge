@@ -22,17 +22,26 @@ public final class TestWikiHelper {
         wikiHelper = null;
     }
 
+    /**
+     * Tests {@link WikiHelper#fetchVolumes()}
+     */
     @Test
     public void testFetchVolumes() throws IOException {
         Assertions.assertEquals(Facts.VOLUME_COUNT, wikiHelper.fetchVolumes().size());
     }
 
+    /**
+     * Tests {@link WikiHelper#fetchBooks()}
+     */
     @Test
     public void testFetchBooks() throws IOException {
         wikiHelper.fetchVolumes();
         Assertions.assertEquals(Facts.BOOK_COUNT, wikiHelper.fetchBooks().size());
     }
 
+    /**
+     * Tests {@link WikiHelper#fetchChapters()}
+     */
     @Test
     public void testFetchChapters() throws IOException {
         wikiHelper.fetchVolumes();

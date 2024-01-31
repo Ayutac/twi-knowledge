@@ -134,6 +134,12 @@ public final class WikiHelper {
         return null;
     }
 
+    /**
+     * Executes the given query against the Wiki.
+     * @param query the query to execute against the Wiki
+     * @return the main body of the query response
+     * @throws IOException If an I/O error occurs.
+     */
     private static String getQueryResponse(final String query) throws IOException {
         final URL url = new URL(API_URL + query);
         final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -363,6 +369,13 @@ public final class WikiHelper {
         public static final Ordering EMPTY = new Ordering(null, null);
     }
 
+    /**
+     * Calculates the ordering of the given chapter within its volume and book.
+     * @param chapterTitle the chapter page name
+     * @param volume the volume the chapter belongs to
+     * @return the ordering within the volume and book, not {@code null} but might contain it
+     * @throws IOException If an I/O error occurs.
+     */
     private Ordering calcOrdering(final String chapterTitle, final Volume volume) throws IOException {
         if (volume == null) {
             return Ordering.EMPTY;
@@ -402,6 +415,15 @@ public final class WikiHelper {
         return new Ordering(volOrd, bookOrd);
     }
 
+    /**
+     * Fetches the chapter page and parses it into a {@link Chapter}.
+     * @param title the chapter page name
+     * @return the {@link Chapter} behind the chapter page, not {@code null}
+     * @throws IllegalArgumentException If some illegal argument exception occurs, e.g. if the word count cannot be parsed.
+     * @throws IllegalStateException If some information is missing from the response.
+     * @throws DateTimeParseException If the release date couldn't be parsed.
+     * @throws IOException If an I/O error occurs.
+     */
     public Chapter fetchChapter(final String title) throws IllegalArgumentException, IllegalStateException, DateTimeParseException, IOException {
         final String content = fetchPage(title);
         final int infoboxIndex = content.indexOf("{{Infobox_episode");
