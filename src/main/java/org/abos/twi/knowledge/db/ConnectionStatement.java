@@ -16,15 +16,15 @@ public record ConnectionStatement(Connection connection, PreparedStatement prepa
         if (preparedStatement != null) {
             try {
                 preparedStatement.close();
-            } catch (SQLException e) {
-                LOGGER.warn("Prepared statement couldn't be closed!");
+            } catch (SQLException ex) {
+                LOGGER.warn("Prepared statement couldn't be closed!", ex);
             }
         }
         if (connection != null) {
             try {
                 connection.close();
-            } catch (SQLException e) {
-                LOGGER.warn("Connection couldn't be closed!");
+            } catch (SQLException ex) {
+                LOGGER.warn("Connection couldn't be closed!", ex);
             }
         }
     }
