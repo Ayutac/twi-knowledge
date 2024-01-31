@@ -160,7 +160,6 @@ public final class WikiHelper {
     private static String simplifyChapterName(final String name) {
         return name.toUpperCase()
                 .replaceAll("\\s+", "")
-                .replace("\\U2013", "–")
                 .replace('-','–')
                 .replace('‒','–')
                 .replace('—','–')
@@ -178,12 +177,12 @@ public final class WikiHelper {
         final String simplifiedChapterName = simplifyChapterName(chapterName);
         final int lineIndex = moduleRef.indexOf(simplifiedChapterName);
         if (lineIndex == -1) {
-            throw new IllegalStateException("Unknown sanitized ref " +  simplifiedChapterName + " from " + chapterName);
+            throw new IllegalStateException("Unknown sanitized ref " + simplifiedChapterName + " from " + chapterName);
         }
-        final String line = moduleRef.substring(lineIndex, lineIndex + moduleRef.substring(lineIndex).indexOf("\\n"));
-        int linkIndex = line.indexOf("[\\&quot;link\\&quot;]");
+        final String line = moduleRef.substring(lineIndex, lineIndex + moduleRef.substring(lineIndex).indexOf("\n"));
+        int linkIndex = line.indexOf("[\"link\"]");
         if (linkIndex == -1) {
-            throw new IllegalStateException("Missing [\"link\"] for  " +  simplifiedChapterName + " from " + chapterName);
+            throw new IllegalStateException("Missing [\"link\"] for " + simplifiedChapterName + " from " + chapterName);
         }
         while (linkIndex < line.length() && line.charAt(linkIndex) != '=') {
             linkIndex++;
@@ -197,14 +196,16 @@ public final class WikiHelper {
             throw new IllegalStateException("Missing closing '}' after [\"link\"] for " +  simplifiedChapterName + " from " + chapterName);
         }
         final String quotedLink = line.substring(linkIndex, bracketIndex).trim();
-        if (quotedLink.startsWith("\\&quot;") && quotedLink.endsWith("\\&quot;")) {
-            return quotedLink.substring(7, quotedLink.length()-7);
+        if (quotedLink.startsWith("\"") && quotedLink.endsWith("\"")) {
+            return quotedLink.substring(2, quotedLink.length()-2);
         }
         return quotedLink;
     }
 
     public static String fetchPage(final String name) throws IOException {
-        return getQueryResponse("action=parse&prop=wikitext&page=" + sanitizePageName(name));
+        final String response = getQueryResponse("action=parse&prop=wikitext&format=json&page=" + sanitizePageName(name));
+        final ObjectNode responseNode = MAPPER.readValue(response, ObjectNode.class);
+        return responseNode.get("parse").get("wikitext").get("*").textValue();
     }
 
     public static List<String> fetchCategory(final String name, boolean pages, boolean subCategories) throws IOException {
@@ -388,9 +389,8 @@ public final class WikiHelper {
         Integer volOrd = null;
         Integer bookOrd = null;
         if (chapterListIndex != -1) {
-            String table = volContent.substring(chapterListIndex + CHAPTER_LIST.length()+4, chapterListIndex + volContent.substring(chapterListIndex).lastIndexOf("}}")).replace("\\u00a0", " ").replace("\\u2013", "–");
-            // in content, "\n" is actually used literally, so this regex is correct
-            final String[] tableLines = table.split("\\\\n");
+            String table = volContent.substring(chapterListIndex + CHAPTER_LIST.length()+3, chapterListIndex + volContent.substring(chapterListIndex).lastIndexOf("}}"));
+            final String[] tableLines = table.split("\n");
             int volOrdIndex = 0;
             int bookOrdIndex = 0;
             int bookNumber = 1;
