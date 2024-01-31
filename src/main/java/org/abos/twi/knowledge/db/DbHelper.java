@@ -135,8 +135,8 @@ public final class DbHelper {
     }
 
     public void addVolume(final Volume volume, final PreparedStatement pStmt) throws SQLException {
-        pStmt.setString(1, volume.name());
-        pStmt.setString(2, volume.wikiLink());
+        setString(pStmt, 1, volume.name());
+        setString(pStmt, 2, volume.wikiLink());
         pStmt.execute();
     }
 
@@ -151,7 +151,7 @@ public final class DbHelper {
     public List<Volume> fetchVolumes() throws SQLException {
         List<Volume> result = new LinkedList<>();
         try (final PreparedStatement pStmt = getConnection().prepareStatement("SELECT name, wiki_link FROM volume ORDER BY id");
-             final ResultSet rs = pStmt.executeQuery()) {
+            final ResultSet rs = pStmt.executeQuery()) {
             while (rs.next()) {
                 result.add(new Volume(rs.getString(1), rs.getString(2)));
             }
@@ -176,7 +176,7 @@ public final class DbHelper {
             pStmt.setNull(4, JDBCType.LONGVARCHAR.getVendorTypeNumber());
         }
         else {
-            pStmt.setString(4, book.publicationLink());
+            setString(pStmt, 4, book.publicationLink());
         }
         if (book.publicationDate() == null) {
             pStmt.setNull(5, JDBCType.BIGINT.getVendorTypeNumber());
@@ -188,7 +188,7 @@ public final class DbHelper {
             pStmt.setNull(6, JDBCType.LONGVARCHAR.getVendorTypeNumber());
         }
         else {
-            pStmt.setString(6, book.audibleLink());
+            setString(pStmt, 6, book.audibleLink());
         }
         if (book.audibleDate() == null) {
             pStmt.setNull(7, JDBCType.BIGINT.getVendorTypeNumber());
