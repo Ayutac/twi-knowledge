@@ -150,10 +150,6 @@ public final class DbHelper {
         LOGGER.info(LogUtil.LOG_TIME_MSG, "Tearing down tables", time.toMinutes(), time.toSecondsPart());
     }
 
-    public ConnectionStatement prepareAddVolumeStatement() throws SQLException {
-        return prepareStatement("INSERT INTO volume (name, wiki_link) VALUES (?,?);");
-    }
-
     public void addVolume(final Volume volume, final PreparedStatement pStmt) throws SQLException {
         setString(pStmt, 1, volume.name());
         setString(pStmt, 2, volume.wikiLink());
@@ -161,7 +157,7 @@ public final class DbHelper {
     }
 
     public void addVolumes(final List<Volume> volumes) throws SQLException {
-        try (final ConnectionStatement cs = prepareAddVolumeStatement()) {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO volume (name, wiki_link) VALUES (?,?);")) {
             for (Volume volume : volumes) {
                 addVolume(volume, cs.preparedStatement());
             }
