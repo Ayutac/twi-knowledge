@@ -80,4 +80,13 @@ public final class TestDbHelper {
         Assertions.assertTrue(Facts.CHAPTER_COUNT_LOWER_BOUND <= dbHelper.fetchChapters().size());
     }
 
+    /**
+     * Test for {@link DbHelper#addChapters(List)}.
+     */
+    @Test
+    public void testAddCharacters() throws IOException, SQLException {
+        dbHelper.addCharacters(wikiHelper.fetchCharacters());
+        Assertions.assertTrue(Facts.CHARACTER_COUNT_LOWER_BOUND <= dbHelper.fetchCharacters().size());
+    }
+
 }

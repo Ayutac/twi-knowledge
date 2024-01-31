@@ -3,6 +3,7 @@ package org.abos.twi.knowledge.db;
 import org.abos.common.LogUtil;
 import org.abos.twi.knowledge.core.Book;
 import org.abos.twi.knowledge.core.Chapter;
+import org.abos.twi.knowledge.core.Character;
 import org.abos.twi.knowledge.core.Rsk;
 import org.abos.twi.knowledge.core.Volume;
 import org.apache.commons.collections4.BidiMap;
@@ -49,6 +50,8 @@ public final class DbHelper {
     private static final String SELECT_BOOK = "SELECT name, volume_ord, wiki_link, publication_link, publication_date, audible_link, audible_date, volume_id FROM book_with_volume";
 
     private static final String SELECT_CHAPTER = "SELECT name, volume_ord, book_ord, release, words, book_id, volume_id, link, wiki_link FROM chapter";
+
+    private static final String SELECT_CHARACTER = "SELECT wiki_link FROM character";
 
     private static final String SELECT_RSK = "SELECT name FROM rsk";
 
@@ -372,6 +375,31 @@ public final class DbHelper {
     
     public List<Chapter> fetchChapters() throws SQLException {
         return internalFetchAll(this::internalFetchChapter, SELECT_CHAPTER);
+    }
+
+    public void addCharacter(final Character character, final PreparedStatement pStmt) throws SQLException {
+        setString(pStmt, 1, character.wikiLink());
+        pStmt.execute();
+    }
+
+    public void addCharacters(List<Character> characters) throws SQLException {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO character (wiki_link) VALUES (?);")) {
+            for (Character character : characters) {
+                addCharacter(character, cs.preparedStatement());
+            }
+        }
+    }
+
+    private Character internalFetchCharacter(final ResultSet rs) throws SQLException {
+        return new Character(rs.getString(1));
+    }
+
+    private Character fetchCharacter(final int characterId) throws SQLException {
+        return internalFetchById(this::internalFetchCharacter, SELECT_CHARACTER, characterId);
+    }
+
+    public List<Character> fetchCharacters() throws SQLException {
+        return internalFetchAll(this::internalFetchCharacter, SELECT_CHARACTER);
     }
 
     private Rsk internalFetchRsk(final ResultSet rs) throws SQLException {

@@ -46,7 +46,15 @@ public final class TestWikiHelper {
     public void testFetchChapters() throws IOException {
         wikiHelper.fetchVolumes();
         wikiHelper.fetchBooks();
-        Assertions.assertTrue(wikiHelper.fetchChapters().size() >= Facts.CHAPTER_COUNT_LOWER_BOUND);
+        Assertions.assertTrue(Facts.CHAPTER_COUNT_LOWER_BOUND <= wikiHelper.fetchChapters().size());
+    }
+
+    /**
+     * Tests {@link WikiHelper#fetchCharacters()}
+     */
+    @Test
+    public void testFetchCharacters() throws IOException {
+        Assertions.assertTrue(Facts.CHARACTER_COUNT_LOWER_BOUND <= wikiHelper.fetchCharacters().size());
     }
 
 }

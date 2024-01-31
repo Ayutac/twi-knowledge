@@ -8,6 +8,7 @@ import org.abos.common.CollectionUtil;
 import org.abos.common.LogUtil;
 import org.abos.twi.knowledge.core.Book;
 import org.abos.twi.knowledge.core.Chapter;
+import org.abos.twi.knowledge.core.Character;
 import org.abos.twi.knowledge.core.Volume;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,6 +25,7 @@ import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -533,8 +535,34 @@ public final class WikiHelper {
         }
         final Duration time = Duration.between(start, Instant.now());
         LOGGER.info(LogUtil.LOG_TIME_MSG, "Fetching chapters from Wiki", time.toMinutes(), time.toSecondsPart());
-        //Collections.sort(result);
+        Collections.sort(result);
         return result;
+    }
+
+    public Character fetchCharacter(final String name) {
+        return new Character(WIKI_URL + sanitizePageName(name));
+    }
+
+    public List<Character> fetchCharacters() throws IOException {
+        LOGGER.info("Fetching characters from Wiki...");
+        final Instant start = Instant.now();
+        final List<String> characterNames = fetchCategory("Characters", true, false);
+        characterNames.remove("Cargo Character Test");
+        characterNames.remove("Template:Character Preload");
+        final List <Character> result = new LinkedList<>();
+        for (String name: characterNames) {
+            try {
+                result.add(fetchCharacter(name));
+            }
+            catch (RuntimeException ex) {
+                LOGGER.error(ERROR_FETCH + name, ex);
+            }
+        }
+        final Duration time = Duration.between(start, Instant.now());
+        LOGGER.info(LogUtil.LOG_TIME_MSG, "Fetching characters from Wiki", time.toMinutes(), time.toSecondsPart());
+        Collections.sort(result, Comparator.comparing(character -> character.wikiLink()));
+        return result;
+
     }
 
 }
