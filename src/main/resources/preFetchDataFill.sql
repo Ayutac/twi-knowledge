@@ -14,5 +14,5 @@ INSERT INTO rsk (name) VALUES
   ('Step Child'),
   ('Sibling'),
   ('Family'),
-  ('Tribe');
+  ('Tribe Member');
 COMMIT;
