@@ -84,6 +84,11 @@ public final class DbHelper {
         return new PgConnection(specs, suInfo, specs[0].getLocalSocketAddress());
     }
 
+    private ConnectionStatement prepareStatement(final String sql) throws SQLException {
+        final Connection connection = getConnection();
+        return new ConnectionStatement(connection, connection.prepareStatement(sql));
+    }
+
     /**
      * Replaces {@code "} and {@code '} in the specified string to prevent SQL injection.
      * @param input the string to be sanitized
@@ -139,8 +144,8 @@ public final class DbHelper {
         LOGGER.info(LogUtil.LOG_TIME_MSG, "Tearing down tables", time.toMinutes(), time.toSecondsPart());
     }
 
-    public PreparedStatement prepareAddVolumeStatement() throws SQLException {
-        return getConnection().prepareStatement("INSERT INTO volume (name, wiki_link) VALUES (?,?);");
+    public ConnectionStatement prepareAddVolumeStatement() throws SQLException {
+        return prepareStatement("INSERT INTO volume (name, wiki_link) VALUES (?,?);");
     }
 
     public void addVolume(final Volume volume, final PreparedStatement pStmt) throws SQLException {
@@ -150,17 +155,17 @@ public final class DbHelper {
     }
 
     public void addVolumes(final List<Volume> volumes) throws SQLException {
-        try (final PreparedStatement pStmt = prepareAddVolumeStatement()) {
+        try (final ConnectionStatement cs = prepareAddVolumeStatement()) {
             for (Volume volume : volumes) {
-                addVolume(volume, pStmt);
+                addVolume(volume, cs.preparedStatement());
             }
         }
     }
 
     private Integer fetchVolumeId(final String volumeName) throws SQLException {
-        try (final PreparedStatement pStmt = getConnection().prepareStatement("SELECT id FROM volume WHERE name=?")) {
-            setString(pStmt, 1, Objects.requireNonNull(volumeName));
-            try (final ResultSet rs = pStmt.executeQuery()) {
+        try (final ConnectionStatement cs = prepareStatement("SELECT id FROM volume WHERE name=?")) {
+            setString(cs.preparedStatement(), 1, Objects.requireNonNull(volumeName));
+            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
                 if (rs.next()) {
                     return rs.getInt(1);
                 }
@@ -170,9 +175,9 @@ public final class DbHelper {
     }
 
     private Volume fetchVolume(final int volumeId) throws SQLException {
-        try (final PreparedStatement pStmt = getConnection().prepareStatement("SELECT name, wiki_link FROM volume WHERE id=?")) {
-            pStmt.setInt(1, volumeId);
-            try (final ResultSet rs = pStmt.executeQuery()) {
+        try (final ConnectionStatement cs = prepareStatement("SELECT name, wiki_link FROM volume WHERE id=?")) {
+            cs.preparedStatement().setInt(1, volumeId);
+            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
                 if (rs.next()) {
                     return new Volume(rs.getString(1), rs.getString(2));
                 }
@@ -183,8 +188,8 @@ public final class DbHelper {
 
     public List<Volume> fetchVolumes() throws SQLException {
         List<Volume> result = new LinkedList<>();
-        try (final PreparedStatement pStmt = getConnection().prepareStatement("SELECT name, wiki_link FROM volume ORDER BY id");
-             final ResultSet rs = pStmt.executeQuery()) {
+        try (final ConnectionStatement cs = prepareStatement("SELECT name, wiki_link FROM volume ORDER BY id");
+             final ResultSet rs = cs.preparedStatement().executeQuery()) {
             while (rs.next()) {
                 result.add(new Volume(rs.getString(1), rs.getString(2)));
             }
@@ -192,8 +197,10 @@ public final class DbHelper {
         return result;
     }
 
-    public PreparedStatement prepareAddBookStatement() throws SQLException {
-        return getConnection().prepareStatement("INSERT INTO book (name, volume_ord, wiki_link, publication_link, publication_date, audible_link, audible_date) VALUES (?,?,?,?,?,?,?);");
+    public ConnectionStatement prepareAddBookStatement() throws SQLException {
+        final Connection connection = getConnection();
+        return new ConnectionStatement(connection, connection.prepareStatement(
+                "INSERT INTO book (name, volume_ord, wiki_link, publication_link, publication_date, audible_link, audible_date) VALUES (?,?,?,?,?,?,?);"));
     }
 
     public void addBook(final Book book, final PreparedStatement pStmt) throws SQLException {
@@ -233,17 +240,17 @@ public final class DbHelper {
     }
 
     public void addBooks(final List<Book> books) throws SQLException {
-        try (final PreparedStatement pStmt = prepareAddBookStatement()) {
+        try (final ConnectionStatement cs = prepareAddBookStatement()) {
             for (Book book : books) {
-                addBook(book, pStmt);
+                addBook(book, cs.preparedStatement());
             }
         }
     }
 
     private Integer fetchBookId(final String bookName) throws SQLException {
-        try (final PreparedStatement pStmt = getConnection().prepareStatement("SELECT id FROM book WHERE name=?")) {
-            setString(pStmt, 1, Objects.requireNonNull(bookName));
-            try (final ResultSet rs = pStmt.executeQuery()) {
+        try (final ConnectionStatement cs = prepareStatement("SELECT id FROM book WHERE name=?")) {
+            setString(cs.preparedStatement(), 1, Objects.requireNonNull(bookName));
+            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
                 if (rs.next()) {
                     return rs.getInt(1);
                 }
@@ -254,8 +261,8 @@ public final class DbHelper {
 
     public List<Book> fetchBooks() throws SQLException {
         List<Book> result = new LinkedList<>();
-        try (final PreparedStatement pStmt = getConnection().prepareStatement("SELECT name, volume_ord, wiki_link, publication_link, publication_date, audible_link, audible_date, volume_id FROM book_with_volume ORDER BY id");
-             final ResultSet rs = pStmt.executeQuery()) {
+        try (final ConnectionStatement cs = prepareStatement("SELECT name, volume_ord, wiki_link, publication_link, publication_date, audible_link, audible_date, volume_id FROM book_with_volume ORDER BY id");
+             final ResultSet rs = cs.preparedStatement().executeQuery()) {
             while (rs.next()) {
                 final int volumeId = rs.getInt(8);
                 if (volumeId != 0 && !volumeIdMap.containsValue(volumeId)) {
@@ -269,8 +276,8 @@ public final class DbHelper {
         return result;
     }
 
-    private PreparedStatement prepareAddChapterStatement() throws SQLException {
-        return getConnection().prepareStatement("INSERT INTO chapter (name, volume_ord, book_ord, release, words, lettered, interlude, in_parts, book_id, volume_id, link, wiki_link) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);");
+    private ConnectionStatement prepareAddChapterStatement() throws SQLException {
+        return prepareStatement("INSERT INTO chapter (name, volume_ord, book_ord, release, words, lettered, interlude, in_parts, book_id, volume_id, link, wiki_link) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);");
     }
 
     public void addChapter(final Chapter chapter, PreparedStatement pStmt) throws SQLException {
@@ -318,9 +325,9 @@ public final class DbHelper {
     }
 
     public void addChapters(final List<Chapter> chapters) throws SQLException {
-        try (final PreparedStatement pStmt = prepareAddChapterStatement()) {
+        try (final ConnectionStatement cs = prepareAddChapterStatement()) {
             for (Chapter chapter : chapters) {
-                addChapter(chapter, pStmt);
+                addChapter(chapter, cs.preparedStatement());
             }
         }
     }
