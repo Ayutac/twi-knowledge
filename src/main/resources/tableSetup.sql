@@ -22,7 +22,7 @@ CREATE TABLE chapter (
   volume_ord  INT, -- the ordinal number within the volume
   book_ord    INT, -- the ordinal number within the book
   release     BIGINT    NOT NULL, -- days since epoch
-  words       INT       NOT NULL, -- word count of the chapter
+  words       INT       NOT NULL        CONSTRAINT positive_word_count CHECK(words > 0), -- word count of the chapter
   lettered    BOOLEAN   DEFAULT FALSE,
   interlude   BOOLEAN   DEFAULT FALSE,
   in_parts    BOOLEAN   DEFAULT FALSE,
@@ -54,6 +54,7 @@ CREATE TABLE class (
 CREATE TABLE class_upgrade (
   base_id     INT   NOT NULL REFERENCES class(id),
   upgrade_id  INT   NOT NULL REFERENCES class(id),
+  CONSTRAINT different_ids CHECK (base_id != upgrade_id),
   PRIMARY KEY(base_id, upgrade_id)
 );
 CREATE TABLE skill (
@@ -65,6 +66,7 @@ CREATE TABLE skill (
 CREATE TABLE skill_upgrade (
   base_id     INT   NOT NULL REFERENCES skill(id),
   upgrade_id  INT   NOT NULL REFERENCES skill(id),
+  CONSTRAINT different_ids CHECK (base_id != upgrade_id),
   PRIMARY KEY(base_id, upgrade_id)
 );
 CREATE TABLE class_skill (
@@ -79,9 +81,13 @@ CREATE TABLE race (
   wiki_link         TEXT,
   PRIMARY KEY(id)
 );
+CREATE TABLE rsk ( -- short for: RelationShip Kind
+  id    SERIAL,
+  name  TEXT    UNIQUE NOT NULL,
+  PRIMARY KEY(id)
+);
 CREATE TABLE character (
   id        SERIAL,
-  name_id   TEXT      UNIQUE NOT NULL,
   wiki_link TEXT,
   PRIMARY KEY(id)
 );

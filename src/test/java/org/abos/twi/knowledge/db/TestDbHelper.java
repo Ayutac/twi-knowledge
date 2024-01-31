@@ -39,6 +39,7 @@ public final class TestDbHelper {
             /* Ignore. */
         }
         dbHelper.setupTables();
+        dbHelper.preFetchDataFill();
         wikiHelper = new WikiHelper();
     }
 

@@ -3,6 +3,7 @@ package org.abos.twi.knowledge.db;
 import org.abos.common.LogUtil;
 import org.abos.twi.knowledge.core.Book;
 import org.abos.twi.knowledge.core.Chapter;
+import org.abos.twi.knowledge.core.Rsk;
 import org.abos.twi.knowledge.core.Volume;
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
@@ -33,6 +34,8 @@ public final class DbHelper {
 
     public static final String TABLE_SETUP_FILE_NAME = "tableSetup.sql";
 
+    public static final String PRE_FETCH_DATA_FILL_FILE_NAME = "preFetchDataFill.sql";
+
     public static final String TABLE_TEAR_DOWN_FILE_NAME = "tableTearDown.sql";
 
     public static final String PROPERTY_URL = "postgresql_url";
@@ -41,11 +44,13 @@ public final class DbHelper {
 
     public static final String PROPERTY_SU_PW = "postgresql_su_pw";
 
-    private static final String SELECT_VOLUME = "SELECT name, wiki_link FROM volume ";
+    private static final String SELECT_VOLUME = "SELECT name, wiki_link FROM volume";
 
     private static final String SELECT_BOOK = "SELECT name, volume_ord, wiki_link, publication_link, publication_date, audible_link, audible_date, volume_id FROM book_with_volume";
 
     private static final String SELECT_CHAPTER = "SELECT name, volume_ord, book_ord, release, words, book_id, volume_id, link, wiki_link FROM chapter";
+
+    private static final String SELECT_RSK = "SELECT name FROM rsk";
 
     private static final Logger LOGGER = LogManager.getLogger(DbHelper.class);
 
@@ -142,12 +147,43 @@ public final class DbHelper {
         LOGGER.info(LogUtil.LOG_TIME_MSG, "Setting up tables", time.toMinutes(), time.toSecondsPart());
     }
 
+    public void preFetchDataFill() throws IOException, SQLException {
+        LOGGER.info("Pre-fetch data filling...");
+        final Instant start = Instant.now();
+        executeScript(PRE_FETCH_DATA_FILL_FILE_NAME);
+        final Duration time = Duration.between(start, Instant.now());
+        LOGGER.info(LogUtil.LOG_TIME_MSG, "Pre-fetch data filling", time.toMinutes(), time.toSecondsPart());
+    }
+
     public void tearDownTables() throws IOException, SQLException {
         LOGGER.info("Tearing down tables...");
         final Instant start = Instant.now();
         executeScript(TABLE_TEAR_DOWN_FILE_NAME);
         final Duration time = Duration.between(start, Instant.now());
         LOGGER.info(LogUtil.LOG_TIME_MSG, "Tearing down tables", time.toMinutes(), time.toSecondsPart());
+    }
+
+    private <T> T internalFetchById(final ResultSetFunction<T> fetcher, final String selectSql, final int id) throws SQLException {
+        try (final ConnectionStatement cs = prepareStatement(selectSql + " WHERE id=?")) {
+            cs.preparedStatement().setInt(1, id);
+            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
+                if (rs.next()) {
+                    return fetcher.apply(rs);
+                }
+                return null;
+            }
+        }
+    }
+
+    private <T> List<T> internalFetchAll(final ResultSetFunction<T> fetcher, final String selectSql) throws SQLException {
+        List<T> result = new LinkedList<>();
+        try (final ConnectionStatement cs = prepareStatement(selectSql + " ORDER BY id");
+             final ResultSet rs = cs.preparedStatement().executeQuery()) {
+            while (rs.next()) {
+                result.add(fetcher.apply(rs));
+            }
+        }
+        return result;
     }
 
     public void addVolume(final Volume volume, final PreparedStatement pStmt) throws SQLException {
@@ -176,27 +212,16 @@ public final class DbHelper {
         }
     }
 
+    private Volume internalFetchVolume(final ResultSet rs) throws SQLException {
+        return new Volume(rs.getString(1), rs.getString(2));
+    }
+
     private Volume fetchVolume(final int volumeId) throws SQLException {
-        try (final ConnectionStatement cs = prepareStatement(SELECT_VOLUME + "WHERE id=?")) {
-            cs.preparedStatement().setInt(1, volumeId);
-            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
-                if (rs.next()) {
-                    return new Volume(rs.getString(1), rs.getString(2));
-                }
-                return null;
-            }
-        }
+        return internalFetchById(this::internalFetchVolume, SELECT_VOLUME, volumeId);
     }
 
     public List<Volume> fetchVolumes() throws SQLException {
-        List<Volume> result = new LinkedList<>();
-        try (final ConnectionStatement cs = prepareStatement(SELECT_VOLUME + "ORDER BY id");
-             final ResultSet rs = cs.preparedStatement().executeQuery()) {
-            while (rs.next()) {
-                result.add(new Volume(rs.getString(1), rs.getString(2)));
-            }
-        }
-        return result;
+        return internalFetchAll(this::internalFetchVolume, SELECT_VOLUME);
     }
 
     public void addBook(final Book book, final PreparedStatement pStmt) throws SQLException {
@@ -266,26 +291,11 @@ public final class DbHelper {
     }
 
     private Book fetchBook(final int bookId) throws SQLException {
-        try (final ConnectionStatement cs = prepareStatement(SELECT_BOOK + " WHERE id=?")) {
-            cs.preparedStatement().setInt(1, bookId);
-            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
-                if (rs.next()) {
-                    return internalFetchBook(rs);
-                }
-            }
-        }
-        return null;
+        return internalFetchById(this::internalFetchBook, SELECT_BOOK, bookId);
     }
 
     public List<Book> fetchBooks() throws SQLException {
-        List<Book> result = new LinkedList<>();
-        try (final ConnectionStatement cs = prepareStatement(SELECT_BOOK + " ORDER BY id");
-             final ResultSet rs = cs.preparedStatement().executeQuery()) {
-            while (rs.next()) {
-                result.add(internalFetchBook(rs));
-            }
-        }
-        return result;
+        return internalFetchAll(this::internalFetchBook, SELECT_BOOK);
     }
 
     public void addChapter(final Chapter chapter, PreparedStatement pStmt) throws SQLException {
@@ -357,26 +367,23 @@ public final class DbHelper {
     }
 
     private Chapter fetchChapter(final int chapterId) throws SQLException {
-        try (final ConnectionStatement cs = prepareStatement(SELECT_CHAPTER + " WHERE id=?")) {
-            cs.preparedStatement().setInt(1, chapterId);
-            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
-                if (rs.next()) {
-                    return internalFetchChapter(rs);
-                }
-            }
-        }
-        return null;
+        return internalFetchById(this::internalFetchChapter, SELECT_CHAPTER, chapterId);
     }
     
     public List<Chapter> fetchChapters() throws SQLException {
-        List<Chapter> result = new LinkedList<>();
-        try (final ConnectionStatement cs = prepareStatement(SELECT_CHAPTER + " ORDER BY id");
-             final ResultSet rs = cs.preparedStatement().executeQuery()) {
-            while (rs.next()) {
-                result.add(internalFetchChapter(rs));
-            }
-        }
-        return result;
+        return internalFetchAll(this::internalFetchChapter, SELECT_CHAPTER);
+    }
+
+    private Rsk internalFetchRsk(final ResultSet rs) throws SQLException {
+        return new Rsk(rs.getString(1));
+    }
+
+    private Rsk fetchRsk(final int rskId) throws SQLException {
+        return internalFetchById(this::internalFetchRsk, SELECT_RSK, rskId);
+    }
+
+    public List<Rsk> fetchRsks() throws SQLException {
+        return internalFetchAll(this::internalFetchRsk, SELECT_RSK);
     }
 
 }

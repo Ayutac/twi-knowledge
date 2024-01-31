@@ -6,6 +6,7 @@ DROP TABLE middle_name;
 DROP TABLE first_name;
 DROP TABLE appearances;
 DROP TABLE character;
+DROP TABLE rsk;
 DROP TABLE race;
 DROP TABLE class_skill;
 DROP TABLE skill_upgrade;
