@@ -67,4 +67,15 @@ public final class TestDbHelper {
         dbHelper.addBooks(wikiHelper.fetchBooks());
     }
 
+    /**
+     * Test for {@link DbHelper#addChapters(List)}
+     */
+    @Test
+    public void testAddChapters() throws IOException, SQLException {
+        dbHelper.addVolumes(wikiHelper.fetchVolumes());
+        dbHelper.addBooks(wikiHelper.fetchBooks());
+        dbHelper.addChapters(wikiHelper.fetchChapters());
+        Assertions.assertEquals(Facts.BOOK_COUNT, dbHelper.fetchBooks().size());
+    }
+
 }

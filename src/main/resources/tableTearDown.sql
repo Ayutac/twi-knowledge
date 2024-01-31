@@ -12,6 +12,7 @@ DROP TABLE skill_upgrade;
 DROP TABLE skill;
 DROP TABLE class_upgrade;
 DROP TABLE class;
+DROP VIEW book_with_volume;
 DROP TABLE chapter;
 DROP TABLE book;
 DROP TABLE volume;

@@ -2,7 +2,10 @@ package org.abos.twi.knowledge.db;
 
 import org.abos.common.LogUtil;
 import org.abos.twi.knowledge.core.Book;
+import org.abos.twi.knowledge.core.Chapter;
 import org.abos.twi.knowledge.core.Volume;
+import org.apache.commons.collections4.BidiMap;
+import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.postgresql.PGProperty;
@@ -20,8 +23,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 
 public final class DbHelper {
@@ -43,6 +48,10 @@ public final class DbHelper {
     private final HostSpec[] specs = new HostSpec[1];
 
     private final Properties suInfo = new Properties();
+
+    private final BidiMap<Volume, Integer> volumeIdMap = new DualHashBidiMap<>();
+
+    private final BidiMap<Book, Integer> bookIdMap = new DualHashBidiMap<>();
 
     public DbHelper() throws IllegalStateException {
         final String url = System.getProperty(PROPERTY_URL);
@@ -148,10 +157,34 @@ public final class DbHelper {
         }
     }
 
+    private Integer fetchVolumeId(final String volumeName) throws SQLException {
+        try (final PreparedStatement pStmt = getConnection().prepareStatement("SELECT id FROM volume WHERE name=?")) {
+            setString(pStmt, 1, Objects.requireNonNull(volumeName));
+            try (final ResultSet rs = pStmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+                return null;
+            }
+        }
+    }
+
+    private Volume fetchVolume(final int volumeId) throws SQLException {
+        try (final PreparedStatement pStmt = getConnection().prepareStatement("SELECT name, wiki_link FROM volume WHERE id=?")) {
+            pStmt.setInt(1, volumeId);
+            try (final ResultSet rs = pStmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Volume(rs.getString(1), rs.getString(2));
+                }
+                return null;
+            }
+        }
+    }
+
     public List<Volume> fetchVolumes() throws SQLException {
         List<Volume> result = new LinkedList<>();
         try (final PreparedStatement pStmt = getConnection().prepareStatement("SELECT name, wiki_link FROM volume ORDER BY id");
-            final ResultSet rs = pStmt.executeQuery()) {
+             final ResultSet rs = pStmt.executeQuery()) {
             while (rs.next()) {
                 result.add(new Volume(rs.getString(1), rs.getString(2)));
             }
@@ -207,16 +240,96 @@ public final class DbHelper {
         }
     }
 
-    public List<Volume> fetchBooks() throws SQLException {
-        throw new UnsupportedOperationException("Not implemented yet!");
-//        List<Volume> result = new LinkedList<>();
-//        try (final PreparedStatement pStmt = getConnection().prepareStatement("SELECT name, wiki_link FROM volume ORDER BY id");
-//             final ResultSet rs = pStmt.executeQuery()) {
-//            while (rs.next()) {
-//                result.add(new Volume(rs.getString(1), rs.getString(2)));
-//            }
-//        }
-//        return result;
+    private Integer fetchBookId(final String bookName) throws SQLException {
+        try (final PreparedStatement pStmt = getConnection().prepareStatement("SELECT id FROM book WHERE name=?")) {
+            setString(pStmt, 1, Objects.requireNonNull(bookName));
+            try (final ResultSet rs = pStmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+                return null;
+            }
+        }
+    }
+
+    public List<Book> fetchBooks() throws SQLException {
+        List<Book> result = new LinkedList<>();
+        try (final PreparedStatement pStmt = getConnection().prepareStatement("SELECT name, volume_ord, wiki_link, publication_link, publication_date, audible_link, audible_date, volume_id FROM book_with_volume ORDER BY id");
+             final ResultSet rs = pStmt.executeQuery()) {
+            while (rs.next()) {
+                final int volumeId = rs.getInt(8);
+                if (volumeId != 0 && !volumeIdMap.containsValue(volumeId)) {
+                    volumeIdMap.put(fetchVolume(volumeId), volumeId);
+                }
+                final Volume volume = volumeIdMap.getKey(volumeId);
+                final int volumeOrd = rs.getInt(2);
+                result.add(new Book(rs.getString(1), volumeOrd == 0 ? null : volumeOrd, volume, rs.getString(3), rs.getString(4), LocalDate.ofEpochDay(rs.getLong(5)), rs.getString(6), LocalDate.ofEpochDay(rs.getLong(7))));
+            }
+        }
+        return result;
+    }
+
+    private PreparedStatement prepareAddChapterStatement() throws SQLException {
+        return getConnection().prepareStatement("INSERT INTO chapter (name, volume_ord, book_ord, release, words, lettered, interlude, in_parts, book_id, volume_id, link, wiki_link) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);");
+    }
+
+    public void addChapter(final Chapter chapter, PreparedStatement pStmt) throws SQLException {
+        setString(pStmt, 1, chapter.name());
+        if (chapter.volumeOrd() == null) {
+            pStmt.setNull(2, JDBCType.INTEGER.getVendorTypeNumber());
+        }
+        else {
+            pStmt.setInt(2, chapter.volumeOrd());
+        }
+        if (chapter.bookOrd() == null) {
+            pStmt.setNull(3, JDBCType.INTEGER.getVendorTypeNumber());
+        }
+        else {
+            pStmt.setInt(3, chapter.bookOrd());
+        }
+        pStmt.setLong(4, chapter.release().toEpochDay());
+        pStmt.setInt(5, chapter.words());
+        pStmt.setBoolean(6, chapter.lettered());
+        pStmt.setBoolean(7, chapter.interlude());
+        pStmt.setBoolean(8, chapter.inParts());
+        if (chapter.book() != null && !bookIdMap.containsKey(chapter.book())) {
+            bookIdMap.put(chapter.book(), fetchBookId(chapter.book().name()));
+        }
+        final Integer bookId = bookIdMap.get(chapter.book());
+        if (bookId == null) {
+            pStmt.setNull(9, JDBCType.INTEGER.getVendorTypeNumber());
+        }
+        else {
+            pStmt.setInt(9, bookId);
+        }
+        if (chapter.volume() != null && !volumeIdMap.containsKey(chapter.volume())) {
+            volumeIdMap.put(chapter.volume(), fetchVolumeId(chapter.volume().name()));
+        }
+        final Integer volumeId = volumeIdMap.get(chapter.volume());
+        if (volumeId == null) {
+            pStmt.setNull(10, JDBCType.INTEGER.getVendorTypeNumber());
+        }
+        else {
+            pStmt.setInt(10, volumeId);
+        }
+        pStmt.setString(11, chapter.link());
+        pStmt.setString(12, chapter.wikiLink());
+        pStmt.execute();
+    }
+
+    public void addChapters(final List<Chapter> chapters) throws SQLException {
+        try (final PreparedStatement pStmt = prepareAddChapterStatement()) {
+            for (Chapter chapter : chapters) {
+                addChapter(chapter, pStmt);
+            }
+        }
+    }
+    
+    public List<Chapter> fetchChapters() throws SQLException {
+        try (final PreparedStatement pStmt = getConnection().prepareStatement("")) {
+
+        }
+        return null;
     }
 
 }

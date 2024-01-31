@@ -456,10 +456,10 @@ public final class WikiHelper {
         // get link
         final String linkRaw = extractTemplateValue(infobox, "link");
         final String link;
-        if (linkRaw.startsWith("[")) {
+        if (linkRaw != null && linkRaw.startsWith("[")) {
             link = linkRaw.substring(1, linkRaw.indexOf(' '));
         }
-        else if (linkRaw.startsWith("{{chl")) {
+        else if (linkRaw != null && linkRaw.startsWith("{{chl")) {
             final String linkRef = linkRaw.substring(linkRaw.indexOf('|')+1, linkRaw.indexOf("}}")).trim();
             link = resolveRef(linkRef);
         }
@@ -478,7 +478,7 @@ public final class WikiHelper {
         Book book = null;
         if (volume != null && volume.name().equals("Volume 1 (Archived)")) {
             for (Book checkBook : cachedBooks) {
-                if (checkBook.name().startsWith(Book.BOOK1)) {
+                if (checkBook.getTitleFreeName().equals(Book.BOOK1)) {
                     book = checkBook;
                     break;
                 }
@@ -486,7 +486,7 @@ public final class WikiHelper {
         }
         else if (volume != null && volume.name().equals("Volume 2")) {
             for (Book checkBook : cachedBooks) {
-                if (checkBook.name().startsWith(Book.BOOK2)) {
+                if (checkBook.getTitleFreeName().equals(Book.BOOK2)) {
                     book = checkBook;
                     break;
                 }
@@ -521,6 +521,7 @@ public final class WikiHelper {
         chapterTitles.remove("Erin Meets Minecraft (Non-Canon Short Story)");
         chapterTitles.remove("Chapter 9.27.5 LS");
         chapterTitles.remove("The Depthless Doctor");
+        chapterTitles.addAll(fetchCategory("Volume 1 (Archived)", true, false));
         final List <Chapter> result = new LinkedList<>();
         for (String title: chapterTitles) {
             try {

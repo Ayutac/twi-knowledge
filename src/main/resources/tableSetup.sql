@@ -8,8 +8,6 @@ CREATE TABLE volume (
 CREATE TABLE book (
   id                SERIAL,
   name              TEXT      UNIQUE NOT NULL,
-  -- chapter will know which volume a book belongs to (?)
-  --volume_id         INT                         REFERENCES volume(id),
   volume_ord        INT, -- the ordinal number within the volume
   wiki_link         TEXT      UNIQUE NOT NULL,
   publication_link  TEXT,
@@ -24,16 +22,29 @@ CREATE TABLE chapter (
   volume_ord  INT, -- the ordinal number within the volume
   book_ord    INT, -- the ordinal number within the book
   release     BIGINT    NOT NULL, -- days since epoch
-  words       INT       NOT NULL,
+  words       INT       NOT NULL, -- word count of the chapter
   lettered    BOOLEAN   DEFAULT FALSE,
   interlude   BOOLEAN   DEFAULT FALSE,
   in_parts    BOOLEAN   DEFAULT FALSE,
   book_id     INT                       REFERENCES book(id),
-  volume_id   INT       NOT NULL        REFERENCES volume(id),
+  volume_id   INT                       REFERENCES volume(id),
   link        TEXT      NOT NULL,
   wiki_link   TEXT      NOT NULL,
   PRIMARY KEY(id)
 );
+CREATE VIEW book_with_volume AS
+SELECT DISTINCT
+  book.id,
+  book.name,
+  book.volume_ord,
+  book.wiki_link,
+  book.publication_link,
+  book.publication_date,
+  book.audible_link,
+  book.audible_date,
+  chapter.volume_id
+FROM book
+LEFT JOIN chapter ON book.id = chapter.book_id;
 CREATE TABLE class (
   id        SERIAL,
   name      TEXT      UNIQUE NOT NULL,
