@@ -259,18 +259,34 @@ public final class DbHelper {
         }
     }
 
+    private Book internalFetchBook(final ResultSet rs) throws SQLException {
+        final int volumeId = rs.getInt(8);
+        if (volumeId != 0 && !volumeIdMap.containsValue(volumeId)) {
+            volumeIdMap.put(fetchVolume(volumeId), volumeId);
+        }
+        final Volume volume = volumeIdMap.getKey(volumeId);
+        final int volumeOrd = rs.getInt(2);
+        return new Book(rs.getString(1), volumeOrd == 0 ? null : volumeOrd, volume, rs.getString(3), rs.getString(4), LocalDate.ofEpochDay(rs.getLong(5)), rs.getString(6), LocalDate.ofEpochDay(rs.getLong(7)));
+    }
+
+    public Book fetchBook(final int bookId) throws SQLException {
+        try (final ConnectionStatement cs = prepareStatement("SELECT name, volume_ord, wiki_link, publication_link, publication_date, audible_link, audible_date, volume_id FROM book_with_volume WHERE id=?")) {
+            cs.preparedStatement().setInt(1, bookId);
+            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
+                if (rs.next()) {
+                    return internalFetchBook(rs);
+                }
+            }
+        }
+        return null;
+    }
+
     public List<Book> fetchBooks() throws SQLException {
         List<Book> result = new LinkedList<>();
         try (final ConnectionStatement cs = prepareStatement("SELECT name, volume_ord, wiki_link, publication_link, publication_date, audible_link, audible_date, volume_id FROM book_with_volume ORDER BY id");
              final ResultSet rs = cs.preparedStatement().executeQuery()) {
             while (rs.next()) {
-                final int volumeId = rs.getInt(8);
-                if (volumeId != 0 && !volumeIdMap.containsValue(volumeId)) {
-                    volumeIdMap.put(fetchVolume(volumeId), volumeId);
-                }
-                final Volume volume = volumeIdMap.getKey(volumeId);
-                final int volumeOrd = rs.getInt(2);
-                result.add(new Book(rs.getString(1), volumeOrd == 0 ? null : volumeOrd, volume, rs.getString(3), rs.getString(4), LocalDate.ofEpochDay(rs.getLong(5)), rs.getString(6), LocalDate.ofEpochDay(rs.getLong(7))));
+                result.add(internalFetchBook(rs));
             }
         }
         return result;
@@ -333,10 +349,26 @@ public final class DbHelper {
     }
     
     public List<Chapter> fetchChapters() throws SQLException {
-        try (final PreparedStatement pStmt = getConnection().prepareStatement("")) {
-
+        List<Chapter> result = new LinkedList<>();
+        try (final ConnectionStatement cs = prepareStatement("SELECT name, volume_ord, book_ord, release, words, book_id, volume_id, link, wiki_link FROM chapter ORDER BY id");
+             final ResultSet rs = cs.preparedStatement().executeQuery()) {
+            while (rs.next()) {
+                final int volumeOrd = rs.getInt(2);
+                final int bookOrd = rs.getInt(3);
+                final int bookId = rs.getInt(6);
+                final int volumeId = rs.getInt(7);
+                if (bookId != 0 && !bookIdMap.containsValue(bookId)) {
+                    bookIdMap.put(fetchBook(bookId), bookId);
+                }
+                final Book book = bookIdMap.getKey(bookId);
+                if (volumeId != 0 && !volumeIdMap.containsValue(volumeId)) {
+                    volumeIdMap.put(fetchVolume(volumeId), volumeId);
+                }
+                final Volume volume = volumeIdMap.getKey(volumeId);
+                result.add(new Chapter(rs.getString(1), volumeOrd == 0 ? null : volumeOrd, bookOrd == 0 ? null : bookOrd, LocalDate.ofEpochDay(rs.getLong(4)), rs.getInt(5), book, volume, rs.getString(8), rs.getString(9)));
+            }
         }
-        return null;
+        return result;
     }
 
 }

@@ -68,14 +68,15 @@ public final class TestDbHelper {
     }
 
     /**
-     * Test for {@link DbHelper#addChapters(List)}
+     * Test for {@link DbHelper#addChapters(List)}, {@link DbHelper#fetchBooks()} and {@link DbHelper#fetchChapters()}.
      */
     @Test
-    public void testAddChapters() throws IOException, SQLException {
+    public void testAddChaptersAndFetch() throws IOException, SQLException {
         dbHelper.addVolumes(wikiHelper.fetchVolumes());
         dbHelper.addBooks(wikiHelper.fetchBooks());
         dbHelper.addChapters(wikiHelper.fetchChapters());
         Assertions.assertEquals(Facts.BOOK_COUNT, dbHelper.fetchBooks().size());
+        Assertions.assertTrue(Facts.CHAPTER_COUNT_LOWER_BOUND <= dbHelper.fetchChapters().size());
     }
 
 }
