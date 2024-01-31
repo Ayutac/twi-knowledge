@@ -265,7 +265,7 @@ public final class DbHelper {
         return new Book(rs.getString(1), volumeOrd == 0 ? null : volumeOrd, volume, rs.getString(3), rs.getString(4), LocalDate.ofEpochDay(rs.getLong(5)), rs.getString(6), LocalDate.ofEpochDay(rs.getLong(7)));
     }
 
-    public Book fetchBook(final int bookId) throws SQLException {
+    private Book fetchBook(final int bookId) throws SQLException {
         try (final ConnectionStatement cs = prepareStatement(SELECT_BOOK + " WHERE id=?")) {
             cs.preparedStatement().setInt(1, bookId);
             try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
@@ -356,7 +356,7 @@ public final class DbHelper {
         return new Chapter(rs.getString(1), volumeOrd == 0 ? null : volumeOrd, bookOrd == 0 ? null : bookOrd, LocalDate.ofEpochDay(rs.getLong(4)), rs.getInt(5), book, volume, rs.getString(8), rs.getString(9));
     }
 
-    public Chapter fetchChapter(final int chapterId) throws SQLException {
+    private Chapter fetchChapter(final int chapterId) throws SQLException {
         try (final ConnectionStatement cs = prepareStatement(SELECT_CHAPTER + " WHERE id=?")) {
             cs.preparedStatement().setInt(1, chapterId);
             try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
