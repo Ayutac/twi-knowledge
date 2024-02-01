@@ -1,13 +1,15 @@
 BEGIN;
+DROP PROCEDURE insert_appearance;
+BEGIN;
 DROP TABLE char_age;
 DROP TABLE char_race;
 DROP TABLE last_name;
 DROP TABLE middle_name;
 DROP TABLE first_name;
-DROP TABLE appearances;
+DROP TABLE appearance;
 DROP TABLE character;
 DROP TABLE rsk;
-DROP TABLE race;
+DROP TABLE species;
 DROP TABLE settlement;
 DROP TABLE nation;
 DROP TABLE landmark;

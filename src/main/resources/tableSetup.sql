@@ -139,10 +139,11 @@ CREATE TABLE settlement (
   wiki_link TEXT,
   PRIMARY KEY(id)
 );
-CREATE TABLE race (
+CREATE TABLE species (
   id                SERIAL,
   name              TEXT      UNIQUE NOT NULL,
   since             INT                         REFERENCES chapter(id),
+  can_level         BOOLEAN   NOT NULL,
   wiki_link         TEXT,
   PRIMARY KEY(id)
 );
@@ -156,7 +157,7 @@ CREATE TABLE character (
   wiki_link TEXT,
   PRIMARY KEY(id)
 );
-CREATE TABLE appearances (
+CREATE TABLE appearance (
   char_id     INT NOT NULL  REFERENCES character(id),
   chapter_id  INT NOT NULL  REFERENCES chapter(id),
   PRIMARY KEY(char_id, chapter_id)
@@ -181,7 +182,7 @@ CREATE TABLE last_name (
 );
 CREATE TABLE char_race (
   char_id   INT       NOT NULL  REFERENCES character(id),
-  race_id   INT       NOT NULL  REFERENCES race(id),
+  race_id   INT       NOT NULL  REFERENCES species(id),
   since     INT                 REFERENCES chapter(id),
   PRIMARY KEY (char_id, race_id, since)
 );
@@ -191,4 +192,16 @@ CREATE TABLE char_age (
   since     INT                 REFERENCES chapter(id),
   PRIMARY KEY (age, char_id, since)
 );
+COMMIT;
+BEGIN;
+CREATE PROCEDURE insert_appearance(ps TEXT, cs TEXT)
+LANGUAGE SQL
+AS $$
+WITH c AS (
+  SELECT id FROM chapter WHERE name=cs
+), p AS (
+  SELECT id FROM character WHERE wiki_link LIKE ps
+)
+INSERT INTO appearance VALUES ((SELECT id FROM p), (SELECT id FROM c))
+$$;
 COMMIT;

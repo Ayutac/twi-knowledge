@@ -1,6 +1,7 @@
 package org.abos.twi.knowledge.db;
 
 import org.abos.common.LogUtil;
+import org.abos.twi.knowledge.core.Species;
 import org.abos.twi.knowledge.core.publication.Book;
 import org.abos.twi.knowledge.core.publication.Chapter;
 import org.abos.twi.knowledge.core.Character;
@@ -16,6 +17,7 @@ import org.abos.twi.knowledge.core.location.SettlementType;
 import org.abos.twi.knowledge.core.Skill;
 import org.abos.twi.knowledge.core.publication.Volume;
 import org.abos.twi.knowledge.core.location.World;
+import org.abos.twi.knowledge.wiki.WikiHelper;
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.logging.log4j.LogManager;
@@ -40,6 +42,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.Scanner;
 
 public final class DbHelper {
 
@@ -74,6 +77,8 @@ public final class DbHelper {
     private static final String SELECT_NATION = "SELECT name, type, since, landmass_ocean_id, wiki_link FROM nation";
 
     private static final String SELECT_SETTLEMENT = "SELECT name, type, since, nation_id, wiki_link FROM settlement";
+
+    private static final String SELECT_SPECIES = "SELECT name, since, wiki_link FROM species";
 
     private static final String SELECT_CHARACTER = "SELECT wiki_link FROM character";
 
@@ -502,6 +507,19 @@ public final class DbHelper {
         return internalFetchAll(this::internalFetchSettlement, SELECT_SETTLEMENT);
     }
 
+    private Species internalFetchSpecies(final ResultSet rs) throws SQLException {
+        final Chapter chapter = internalFetchReference(chapterIdMap, this::fetchChapter, rs.getInt(2));
+        return new Species(rs.getString(1), chapter, rs.getBoolean(3), rs.getString(4));
+    }
+
+    private Species fetchSpecies(final int speciesId) throws SQLException {
+        return internalFetchById(this::internalFetchSpecies, SELECT_SPECIES, speciesId);
+    }
+
+    public List<Species> fetchSpecies() throws SQLException {
+        return internalFetchAll(this::internalFetchSpecies, SELECT_SPECIES);
+    }
+
     public void addCharacter(final Character character, final PreparedStatement pStmt) throws SQLException {
         setString(pStmt, 1, character.wikiLink());
         pStmt.execute();
@@ -537,6 +555,26 @@ public final class DbHelper {
 
     public List<Rsk> fetchRsks() throws SQLException {
         return internalFetchAll(this::internalFetchRsk, SELECT_RSK);
+    }
+
+    public void initialize(final List<Volume> volumes, final List<Book> books, final List<Chapter> chapters, final List<Character> characters) throws SQLException, IOException {
+        setupTables();
+        preFetchDataFill();
+        addVolumes(volumes);
+        addBooks(books);
+        addChapters(chapters);
+        addCharacters(characters);
+    }
+
+    public static void main(String[] args) throws IOException, SQLException {
+        final WikiHelper wikiHelper = new WikiHelper();
+        final DbHelper dbHelper = new DbHelper();
+        try {dbHelper.tearDownTables();}
+        catch (SQLException ex) {/* Ignore. */}
+        dbHelper.initialize(wikiHelper.fetchVolumes(), wikiHelper.fetchBooks(), wikiHelper.fetchChapters(), wikiHelper.fetchCharacters());
+        System.out.print("DB is up and running. Press Enter to end tear it down. ");
+        new Scanner(System.in).nextLine();
+        dbHelper.tearDownTables();
     }
 
 }
