@@ -99,27 +99,54 @@ CREATE TABLE class_skill (
 CREATE TABLE world (
   id        SERIAL,
   name      TEXT      UNIQUE NOT NULL,
-  since     INT                         REFERENCES chapter(id),
   wiki_link TEXT,
   PRIMARY KEY(id)
+);
+CREATE TABLE appearance_world (
+  world_id    INT NOT NULL  REFERENCES world(id),
+  chapter_id  INT NOT NULL  REFERENCES chapter(id),
+  PRIMARY KEY(world_id, chapter_id)
+);
+CREATE TABLE mention_world (
+  world_id    INT NOT NULL  REFERENCES world(id),
+  chapter_id  INT NOT NULL  REFERENCES chapter(id),
+  PRIMARY KEY(world_id, chapter_id)
 );
 CREATE TABLE landmass_ocean (
   id        SERIAL,
   name      TEXT                UNIQUE NOT NULL,
   type      landmass_ocean_type NOT NULL,
-  since     INT                                   REFERENCES chapter(id),
   world_id  INT                                   REFERENCES world(id),
   wiki_link TEXT,
   PRIMARY KEY(id)
+);
+CREATE TABLE appearance_landmass_ocean (
+  landmass_ocean_id INT NOT NULL  REFERENCES landmass_ocean(id),
+  chapter_id        INT NOT NULL  REFERENCES chapter(id),
+  PRIMARY KEY(landmass_ocean_id, chapter_id)
+);
+CREATE TABLE mention_landmass_ocean (
+  landmass_ocean_id INT NOT NULL  REFERENCES landmass_ocean(id),
+  chapter_id        INT NOT NULL  REFERENCES chapter(id),
+  PRIMARY KEY(landmass_ocean_id, chapter_id)
 );
 CREATE TABLE landmark (
   id                SERIAL,
   name              TEXT    UNIQUE NOT NULL,
   is_natural        BOOLEAN NOT NULL,
-  since             INT                       REFERENCES chapter(id),
   landmass_ocean_id INT                       REFERENCES landmass_ocean(id),
   wiki_link TEXT,
   PRIMARY KEY(id)
+);
+CREATE TABLE appearance_landmark (
+  landmark_id INT NOT NULL  REFERENCES landmark(id),
+  chapter_id  INT NOT NULL  REFERENCES chapter(id),
+  PRIMARY KEY(landmark_id, chapter_id)
+);
+CREATE TABLE mention_landmark (
+  landmark_id INT NOT NULL  REFERENCES landmark(id),
+  chapter_id  INT NOT NULL  REFERENCES chapter(id),
+  PRIMARY KEY(landmark_id, chapter_id)
 );
 CREATE TABLE nation (
   id                SERIAL,
@@ -130,22 +157,50 @@ CREATE TABLE nation (
   wiki_link TEXT,
   PRIMARY KEY(id)
 );
+CREATE TABLE appearance_nation (
+  nation_id   INT NOT NULL  REFERENCES nation(id),
+  chapter_id  INT NOT NULL  REFERENCES chapter(id),
+  PRIMARY KEY(nation_id, chapter_id)
+);
+CREATE TABLE mention_nation (
+  nation_id   INT NOT NULL  REFERENCES nation(id),
+  chapter_id  INT NOT NULL  REFERENCES chapter(id),
+  PRIMARY KEY(nation_id, chapter_id)
+);
 CREATE TABLE settlement (
   id        SERIAL,
   name      TEXT            UNIQUE NOT NULL,
   type      settlement_type NOT NULL,
-  since     INT                               REFERENCES chapter(id),
   nation_id INT                               REFERENCES nation(id),
   wiki_link TEXT,
   PRIMARY KEY(id)
 );
+CREATE TABLE appearance_settlement (
+  settlement_id     INT NOT NULL  REFERENCES settlement(id),
+  chapter_id        INT NOT NULL  REFERENCES chapter(id),
+  PRIMARY KEY(settlement_id, chapter_id)
+);
+CREATE TABLE mention_settlement (
+  settlement_id     INT NOT NULL  REFERENCES settlement(id),
+  chapter_id        INT NOT NULL  REFERENCES chapter(id),
+  PRIMARY KEY(settlement_id, chapter_id)
+);
 CREATE TABLE species (
   id                SERIAL,
   name              TEXT      UNIQUE NOT NULL,
-  since             INT                         REFERENCES chapter(id),
   can_level         BOOLEAN   NOT NULL,
   wiki_link         TEXT,
   PRIMARY KEY(id)
+);
+CREATE TABLE appearance_species (
+  species_id    INT NOT NULL  REFERENCES species(id),
+  chapter_id    INT NOT NULL  REFERENCES chapter(id),
+  PRIMARY KEY(species_id, chapter_id)
+);
+CREATE TABLE mention_species (
+  species_id    INT NOT NULL  REFERENCES species(id),
+  chapter_id    INT NOT NULL  REFERENCES chapter(id),
+  PRIMARY KEY(species_id, chapter_id)
 );
 CREATE TABLE rsk ( -- short for: RelationShip Kind
   id    SERIAL,

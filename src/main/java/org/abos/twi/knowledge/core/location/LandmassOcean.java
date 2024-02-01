@@ -5,12 +5,11 @@ import org.abos.twi.knowledge.core.publication.Chapter;
 
 import java.util.Objects;
 
-public record LandmassOcean(String name, LandmassOceanType type, Chapter since, World world, String wikiLink) implements Named {
+public record LandmassOcean(String name, LandmassOceanType type, World world, String wikiLink) implements Named {
 
-    public LandmassOcean(final String name, final LandmassOceanType type, final Chapter since, final World world, final String wikiLink) {
+    public LandmassOcean(final String name, final LandmassOceanType type, final World world, final String wikiLink) {
         this.name = Objects.requireNonNull(name);
         this.type = Objects.requireNonNull(type);
-        this.since = since;
         this.world = world;
         this.wikiLink = wikiLink;
     }

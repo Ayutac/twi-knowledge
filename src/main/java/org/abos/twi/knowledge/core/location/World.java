@@ -5,11 +5,10 @@ import org.abos.twi.knowledge.core.publication.Chapter;
 
 import java.util.Objects;
 
-public record World(String name, Chapter since, String wikiLink) implements Named, Comparable<World> {
+public record World(String name, String wikiLink) implements Named, Comparable<World> {
 
-    public World(final String name, final Chapter since, final String wikiLink) {
+    public World(final String name, final String wikiLink) {
         this.name = Objects.requireNonNull(name);
-        this.since = since;
         this.wikiLink = wikiLink;
     }
 

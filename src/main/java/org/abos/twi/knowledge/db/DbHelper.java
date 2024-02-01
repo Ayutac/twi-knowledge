@@ -71,17 +71,17 @@ public final class DbHelper {
 
     private static final String SELECT_SKILL = "SELECT name, since, wiki_link FROM skill";
 
-    private static final String SELECT_WORLD = "SELECT name, since, wiki_link FROM world";
+    private static final String SELECT_WORLD = "SELECT name, wiki_link FROM world";
 
-    private static final String SELECT_LANDMASS_OCEAN = "SELECT name, type, since, world_id, wiki_link FROM landmass_ocean";
+    private static final String SELECT_LANDMASS_OCEAN = "SELECT name, type, world_id, wiki_link FROM landmass_ocean";
 
-    private static final String SELECT_LANDMARK = "SELECT name, is_natural, since, landmass_ocean_id, wiki_link FROM landmark";
+    private static final String SELECT_LANDMARK = "SELECT name, is_natural, landmass_ocean_id, wiki_link FROM landmark";
 
-    private static final String SELECT_NATION = "SELECT name, type, since, landmass_ocean_id, wiki_link FROM nation";
+    private static final String SELECT_NATION = "SELECT name, type, landmass_ocean_id, wiki_link FROM nation";
 
-    private static final String SELECT_SETTLEMENT = "SELECT name, type, since, nation_id, wiki_link FROM settlement";
+    private static final String SELECT_SETTLEMENT = "SELECT name, type, nation_id, wiki_link FROM settlement";
 
-    private static final String SELECT_SPECIES = "SELECT name, since, wiki_link FROM species";
+    private static final String SELECT_SPECIES = "SELECT name, wiki_link FROM species";
 
     private static final String SELECT_CHARACTER = "SELECT wiki_link FROM character";
 
@@ -457,11 +457,9 @@ public final class DbHelper {
     }
 
     public void addWorld(final World world) throws SQLException {
-        try (final ConnectionStatement cs = prepareStatement("INSERT INTO world (name, since, wiki_link) VALUES (?,?,?);")) {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO world (name, wiki_link) VALUES (?,?);")) {
             setString(cs.preparedStatement(), 1, world.name());
-            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, world.since());
-            setInt(cs.preparedStatement(), 2, chapterId);
-            setString(cs.preparedStatement(), 3, world.wikiLink());
+            setString(cs.preparedStatement(), 2, world.wikiLink());
             cs.preparedStatement().execute();
         }
     }
@@ -471,8 +469,7 @@ public final class DbHelper {
     }
 
     private World internalFetchWorld(final ResultSet rs) throws SQLException {
-        final Chapter chapter = internalFetchReference(chapterIdMap, this::fetchChapter, rs.getInt(2));
-        return new World(rs.getString(1), chapter, rs.getString(3));
+        return new World(rs.getString(1), rs.getString(2));
     }
 
     private World fetchWorld(final int worldId) throws SQLException {
@@ -484,14 +481,12 @@ public final class DbHelper {
     }
 
     public void addLandmassOcean(final LandmassOcean landmassOcean) throws SQLException {
-        try (final ConnectionStatement cs = prepareStatement("INSERT INTO landmass_ocean (name, type, since, world_id, wiki_link) VALUES (?,?::landmass_ocean_type,?,?,?);")) {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO landmass_ocean (name, type, world_id, wiki_link) VALUES (?,?::landmass_ocean_type,?,?);")) {
             setString(cs.preparedStatement(), 1, landmassOcean.name());
             setString(cs.preparedStatement(), 2, StringUtil.toCapitalized(landmassOcean.type().name().replace("_"," ")));
-            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, landmassOcean.since());
-            setInt(cs.preparedStatement(), 3, chapterId);
             final Integer worldId = internalFetchId(worldIdMap, this::fetchWorldId, landmassOcean.world());
-            setInt(cs.preparedStatement(), 4, worldId);
-            setString(cs.preparedStatement(), 5, landmassOcean.wikiLink());
+            setInt(cs.preparedStatement(), 3, worldId);
+            setString(cs.preparedStatement(), 4, landmassOcean.wikiLink());
             cs.preparedStatement().execute();
         }
     }
@@ -501,9 +496,8 @@ public final class DbHelper {
     }
 
     private LandmassOcean internalFetchLandmassOcean(final ResultSet rs) throws SQLException {
-        final Chapter chapter = internalFetchReference(chapterIdMap, this::fetchChapter, rs.getInt(3));
-        final World world = internalFetchReference(worldIdMap, this::fetchWorld, rs.getInt(4));
-        return new LandmassOcean(rs.getString(1), Enum.valueOf(LandmassOceanType.class, rs.getString(2).toUpperCase()), chapter, world, rs.getString(5));
+        final World world = internalFetchReference(worldIdMap, this::fetchWorld, rs.getInt(3));
+        return new LandmassOcean(rs.getString(1), Enum.valueOf(LandmassOceanType.class, rs.getString(2).toUpperCase()), world, rs.getString(4));
     }
 
     private LandmassOcean fetchLandmassOcean(final int landmassOceanId) throws SQLException {
@@ -515,14 +509,12 @@ public final class DbHelper {
     }
 
     public void addLandmark(final Landmark landmark) throws SQLException {
-        try (final ConnectionStatement cs = prepareStatement("INSERT INTO landmark (name, is_natural, since, landmass_ocean_id, wiki_link) VALUES (?,?,?,?,?);")) {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO landmark (name, is_natural, landmass_ocean_id, wiki_link) VALUES (?,?,?,?);")) {
             setString(cs.preparedStatement(), 1, landmark.name());
             setBoolean(cs.preparedStatement(), 2, landmark.natural());
-            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, landmark.since());
-            setInt(cs.preparedStatement(), 3, chapterId);
             final Integer landmassOceanId = internalFetchId(landmassOceanIdMap, this::fetchLandmassOceanId, landmark.landmassOcean());
-            setInt(cs.preparedStatement(), 4, landmassOceanId);
-            setString(cs.preparedStatement(), 5, landmark.wikiLink());
+            setInt(cs.preparedStatement(), 3, landmassOceanId);
+            setString(cs.preparedStatement(), 4, landmark.wikiLink());
             cs.preparedStatement().execute();
         }
     }
@@ -532,9 +524,8 @@ public final class DbHelper {
     }
 
     private Landmark internalFetchLandmark(final ResultSet rs) throws SQLException {
-        final Chapter chapter = internalFetchReference(chapterIdMap, this::fetchChapter, rs.getInt(3));
-        final LandmassOcean landmassOcean = internalFetchReference(landmassOceanIdMap, this::fetchLandmassOcean, rs.getInt(4));
-        return new Landmark(rs.getString(1), rs.getBoolean(2), chapter, landmassOcean, rs.getString(5));
+        final LandmassOcean landmassOcean = internalFetchReference(landmassOceanIdMap, this::fetchLandmassOcean, rs.getInt(3));
+        return new Landmark(rs.getString(1), rs.getBoolean(2), landmassOcean, rs.getString(4));
     }
 
     private Landmark fetchLandmark(final int landmarkId) throws SQLException {
@@ -546,9 +537,8 @@ public final class DbHelper {
     }
 
     private Nation internalFetchNation(final ResultSet rs) throws SQLException {
-        final Chapter chapter = internalFetchReference(chapterIdMap, this::fetchChapter, rs.getInt(3));
-        final LandmassOcean landmassOcean = internalFetchReference(landmassOceanIdMap, this::fetchLandmassOcean, rs.getInt(4));
-        return new Nation(rs.getString(1), Enum.valueOf(NationType.class, rs.getString(2).toUpperCase().replace(' ', '_')), chapter, landmassOcean, rs.getString(5));
+        final LandmassOcean landmassOcean = internalFetchReference(landmassOceanIdMap, this::fetchLandmassOcean, rs.getInt(3));
+        return new Nation(rs.getString(1), Enum.valueOf(NationType.class, rs.getString(2).toUpperCase().replace(' ', '_')), landmassOcean, rs.getString(4));
     }
 
     private Nation fetchNation(final int nationId) throws SQLException {
@@ -560,9 +550,8 @@ public final class DbHelper {
     }
 
     private Settlement internalFetchSettlement(final ResultSet rs) throws SQLException {
-        final Chapter chapter = internalFetchReference(chapterIdMap, this::fetchChapter, rs.getInt(3));
-        final Nation nation = internalFetchReference(nationIdMap, this::fetchNation, rs.getInt(4));
-        return new Settlement(rs.getString(1), Enum.valueOf(SettlementType.class, rs.getString(2).toUpperCase()), chapter, nation, rs.getString(5));
+        final Nation nation = internalFetchReference(nationIdMap, this::fetchNation, rs.getInt(3));
+        return new Settlement(rs.getString(1), Enum.valueOf(SettlementType.class, rs.getString(2).toUpperCase()), nation, rs.getString(4));
     }
 
     private Settlement fetchSettlement(final int settlementId) throws SQLException {
@@ -574,8 +563,7 @@ public final class DbHelper {
     }
 
     private Species internalFetchSpecies(final ResultSet rs) throws SQLException {
-        final Chapter chapter = internalFetchReference(chapterIdMap, this::fetchChapter, rs.getInt(2));
-        return new Species(rs.getString(1), chapter, rs.getBoolean(3), rs.getString(4));
+        return new Species(rs.getString(1), rs.getBoolean(2), rs.getString(3));
     }
 
     private Species fetchSpecies(final int speciesId) throws SQLException {

@@ -5,12 +5,11 @@ import org.abos.twi.knowledge.core.publication.Chapter;
 
 import java.util.Objects;
 
-public record Settlement(String name, SettlementType settlementType, Chapter since, Nation nation, String wikiLink) implements Named {
+public record Settlement(String name, SettlementType settlementType, Nation nation, String wikiLink) implements Named {
 
-    public Settlement(final String name, final SettlementType settlementType, final Chapter since, final Nation nation, final String wikiLink) {
+    public Settlement(final String name, final SettlementType settlementType, final Nation nation, final String wikiLink) {
         this.name = Objects.requireNonNull(name);
         this.settlementType = Objects.requireNonNull(settlementType);
-        this.since = since;
         this.nation = nation;
         this.wikiLink = wikiLink;
     }

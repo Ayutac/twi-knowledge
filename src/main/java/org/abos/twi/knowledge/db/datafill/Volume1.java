@@ -87,13 +87,13 @@ public final class Volume1 {
 
     private static void ch00(final DbHelper dbHelper) throws SQLException {
         final Chapter ch = dbHelper.fetchChapter("Chapter 1.00");
-        final World innworld = new World("Innworld", ch, WikiHelper.WIKI_URL + "Innworld");
+        final World innworld = new World("Innworld", WikiHelper.WIKI_URL + "Innworld");
         dbHelper.addWorld(innworld);
-        final LandmassOcean izril = new LandmassOcean("Izril", LandmassOceanType.CONTINENT, ch, innworld, WikiHelper.WIKI_URL + "Izril");
+        final LandmassOcean izril = new LandmassOcean("Izril", LandmassOceanType.CONTINENT, innworld, WikiHelper.WIKI_URL + "Izril");
         dbHelper.addLandmassOcean(izril);
-        dbHelper.addLandmark(new Landmark("Floodplains", true, ch, izril, WikiHelper.WIKI_URL + "Floodplains"));
-        dbHelper.addLandmark(new Landmark("High Passes", true, ch, izril, WikiHelper.WIKI_URL + "High_Passes"));
-        dbHelper.addLandmark(new Landmark("Wandering Inn", true, ch, izril, WikiHelper.WIKI_URL + "First_Wandering_Inn"));
+        dbHelper.addLandmark(new Landmark("Floodplains", true, izril, WikiHelper.WIKI_URL + "Floodplains"));
+        dbHelper.addLandmark(new Landmark("High Passes", true, izril, WikiHelper.WIKI_URL + "High_Passes"));
+        dbHelper.addLandmark(new Landmark("Wandering Inn", true, izril, WikiHelper.WIKI_URL + "First_Wandering_Inn"));
 
     }
 
