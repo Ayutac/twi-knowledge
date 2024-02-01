@@ -1,10 +1,11 @@
 BEGIN;
-DROP TABLE char_age;
-DROP TABLE char_race;
+DROP TABLE character_age;
+DROP TABLE character_species;
 DROP TABLE last_name;
 DROP TABLE middle_name;
 DROP TABLE first_name;
-DROP TABLE appearance;
+DROP TABLE mention_character;
+DROP TABLE appearance_character;
 DROP TABLE character;
 DROP TABLE rsk;
 DROP TABLE mention_species;

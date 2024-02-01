@@ -212,39 +212,44 @@ CREATE TABLE character (
   wiki_link TEXT,
   PRIMARY KEY(id)
 );
-CREATE TABLE appearance (
-  char_id     INT NOT NULL  REFERENCES character(id),
-  chapter_id  INT NOT NULL  REFERENCES chapter(id),
-  PRIMARY KEY(char_id, chapter_id)
+CREATE TABLE appearance_character (
+  character_id  INT NOT NULL  REFERENCES character(id),
+  chapter_id    INT NOT NULL  REFERENCES chapter(id),
+  PRIMARY KEY(character_id, chapter_id)
+);
+CREATE TABLE mention_character (
+  character_id  INT NOT NULL  REFERENCES character(id),
+  chapter_id    INT NOT NULL  REFERENCES chapter(id),
+  PRIMARY KEY(character_id, chapter_id)
 );
 CREATE TABLE first_name (
-  name      TEXT      NOT NULL,
-  char_id   INT       NOT NULL  REFERENCES character(id),
-  since     INT                 REFERENCES chapter(id),
-  PRIMARY KEY (name, char_id, since)
+  name          TEXT      NOT NULL,
+  character_id  INT       NOT NULL  REFERENCES character(id),
+  since         INT                 REFERENCES chapter(id),
+  PRIMARY KEY (name, character_id, since)
 );
 CREATE TABLE middle_name (
-  name      TEXT      NOT NULL,
-  char_id   INT       NOT NULL  REFERENCES character(id),
-  since     INT                 REFERENCES chapter(id),
-  PRIMARY KEY (name, char_id, since)
+  name          TEXT      NOT NULL,
+  character_id  INT       NOT NULL  REFERENCES character(id),
+  since         INT                 REFERENCES chapter(id),
+  PRIMARY KEY (name, character_id, since)
 );
 CREATE TABLE last_name (
-  name      TEXT      NOT NULL,
-  char_id   INT       NOT NULL  REFERENCES character(id),
-  since     INT                 REFERENCES chapter(id),
-  PRIMARY KEY (name, char_id, since)
+  name          TEXT      NOT NULL,
+  character_id  INT       NOT NULL  REFERENCES character(id),
+  since         INT                 REFERENCES chapter(id),
+  PRIMARY KEY (name, character_id, since)
 );
-CREATE TABLE char_race (
-  char_id   INT       NOT NULL  REFERENCES character(id),
-  race_id   INT       NOT NULL  REFERENCES species(id),
-  since     INT                 REFERENCES chapter(id),
-  PRIMARY KEY (char_id, race_id, since)
+CREATE TABLE character_race (
+  character_id  INT       NOT NULL  REFERENCES character(id),
+  species_id    INT       NOT NULL  REFERENCES species(id),
+  since         INT                 REFERENCES chapter(id),
+  PRIMARY KEY (character_id, species_id, since)
 );
-CREATE TABLE char_age (
-  age       SMALLINT  NOT NULL,
-  char_id   INT       NOT NULL  REFERENCES character(id),
-  since     INT                 REFERENCES chapter(id),
-  PRIMARY KEY (age, char_id, since)
+CREATE TABLE character_age (
+  age           INT  NOT NULL,
+  character_id  INT  NOT NULL  REFERENCES character(id),
+  since         INT            REFERENCES chapter(id),
+  PRIMARY KEY (age, character_id, since)
 );
 COMMIT;
