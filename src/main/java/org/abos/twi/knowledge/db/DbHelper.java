@@ -4,7 +4,9 @@ import org.abos.common.LogUtil;
 import org.abos.twi.knowledge.core.Book;
 import org.abos.twi.knowledge.core.Chapter;
 import org.abos.twi.knowledge.core.Character;
+import org.abos.twi.knowledge.core.Class;
 import org.abos.twi.knowledge.core.Rsk;
+import org.abos.twi.knowledge.core.Skill;
 import org.abos.twi.knowledge.core.Volume;
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
@@ -51,6 +53,10 @@ public final class DbHelper {
 
     private static final String SELECT_CHAPTER = "SELECT name, volume_ord, book_ord, release, words, book_id, volume_id, link, wiki_link FROM chapter";
 
+    private static final String SELECT_CLASS = "SELECT name, chapter_id, wiki_link FROM class";
+
+    private static final String SELECT_SKILL = "SELECT name, chapter_id, wiki_link FROM skill";
+
     private static final String SELECT_CHARACTER = "SELECT wiki_link FROM character";
 
     private static final String SELECT_RSK = "SELECT name FROM rsk";
@@ -66,6 +72,8 @@ public final class DbHelper {
     private final BidiMap<Volume, Integer> volumeIdMap = new DualHashBidiMap<>();
 
     private final BidiMap<Book, Integer> bookIdMap = new DualHashBidiMap<>();
+
+    private final BidiMap<Chapter, Integer> chapterIdMap = new DualHashBidiMap<>();
 
     public DbHelper() throws IllegalStateException {
         final String url = System.getProperty(PROPERTY_URL);
@@ -286,7 +294,10 @@ public final class DbHelper {
     private Book internalFetchBook(final ResultSet rs) throws SQLException {
         final int volumeId = rs.getInt(8);
         if (volumeId != 0 && !volumeIdMap.containsValue(volumeId)) {
-            volumeIdMap.put(fetchVolume(volumeId), volumeId);
+            final Volume fetched = fetchVolume(volumeId);
+            if (fetched != null) {
+                volumeIdMap.put(fetched, volumeId);
+            }
         }
         final Volume volume = volumeIdMap.getKey(volumeId);
         final int volumeOrd = rs.getInt(2);
@@ -359,11 +370,17 @@ public final class DbHelper {
         final int bookId = rs.getInt(6);
         final int volumeId = rs.getInt(7);
         if (bookId != 0 && !bookIdMap.containsValue(bookId)) {
-            bookIdMap.put(fetchBook(bookId), bookId);
+            final Book fetched = fetchBook(bookId);
+            if (fetched != null) {
+                bookIdMap.put(fetched, bookId);
+            }
         }
         final Book book = bookIdMap.getKey(bookId);
         if (volumeId != 0 && !volumeIdMap.containsValue(volumeId)) {
-            volumeIdMap.put(fetchVolume(volumeId), volumeId);
+            final Volume fetched = fetchVolume(volumeId);
+            if (fetched != null) {
+                volumeIdMap.put(fetched, volumeId);
+            }
         }
         final Volume volume = volumeIdMap.getKey(volumeId);
         return new Chapter(rs.getString(1), volumeOrd == 0 ? null : volumeOrd, bookOrd == 0 ? null : bookOrd, LocalDate.ofEpochDay(rs.getLong(4)), rs.getInt(5), book, volume, rs.getString(8), rs.getString(9));
@@ -375,6 +392,46 @@ public final class DbHelper {
     
     public List<Chapter> fetchChapters() throws SQLException {
         return internalFetchAll(this::internalFetchChapter, SELECT_CHAPTER);
+    }
+
+    private Class internalFetchClass(final ResultSet rs) throws SQLException {
+        final int chapterId = rs.getInt(2);
+        if (chapterId != 0 && !chapterIdMap.containsValue(chapterId)) {
+            final Chapter fetched = fetchChapter(chapterId);
+            if (fetched != null) {
+                chapterIdMap.put(fetched, chapterId);
+            }
+        }
+        final Chapter chapter = chapterIdMap.getKey(chapterId);
+        return new Class(rs.getString(1), chapter, rs.getString(3));
+    }
+
+    private Class fetchClass(final int classId) throws SQLException {
+        return internalFetchById(this::internalFetchClass, SELECT_CLASS, classId);
+    }
+
+    public List<Class> fetchClasses() throws SQLException {
+        return internalFetchAll(this::internalFetchClass, SELECT_CLASS);
+    }
+
+    private Skill internalFetchSkill(final ResultSet rs) throws SQLException {
+        final int chapterId = rs.getInt(2);
+        if (chapterId != 0 && !chapterIdMap.containsValue(chapterId)) {
+            final Chapter fetched = fetchChapter(chapterId);
+            if (fetched != null) {
+                chapterIdMap.put(fetched, chapterId);
+            }
+        }
+        final Chapter chapter = chapterIdMap.getKey(chapterId);
+        return new Skill(rs.getString(1), chapter, rs.getString(3));
+    }
+
+    private Skill fetchSkill(final int classId) throws SQLException {
+        return internalFetchById(this::internalFetchSkill, SELECT_SKILL, classId);
+    }
+
+    public List<Skill> fetchSkills() throws SQLException {
+        return internalFetchAll(this::internalFetchSkill, SELECT_SKILL);
     }
 
     public void addCharacter(final Character character, final PreparedStatement pStmt) throws SQLException {
