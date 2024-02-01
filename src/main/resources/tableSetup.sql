@@ -49,6 +49,7 @@ CREATE TABLE class (
   id        SERIAL,
   name      TEXT      UNIQUE NOT NULL,
   since     INT                         REFERENCES chapter(id),
+  wiki_link TEXT,
   PRIMARY KEY(id)
 );
 CREATE TABLE class_upgrade (
@@ -61,6 +62,7 @@ CREATE TABLE skill (
   id        SERIAL,
   name      TEXT      UNIQUE NOT NULL,
   since     INT                         REFERENCES chapter(id),
+  wiki_link TEXT,
   PRIMARY KEY(id)
 );
 CREATE TABLE skill_upgrade (
