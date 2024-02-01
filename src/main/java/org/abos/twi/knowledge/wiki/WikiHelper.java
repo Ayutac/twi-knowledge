@@ -35,7 +35,7 @@ import java.util.TreeMap;
 
 public final class WikiHelper {
 
-    private static final String WIKI_URL = "https://wiki.wanderinginn.com/";
+    public static final String WIKI_URL = "https://wiki.wanderinginn.com/";
 
     private static final String API_URL = WIKI_URL + "api.php?";
 

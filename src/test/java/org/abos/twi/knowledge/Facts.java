@@ -8,6 +8,8 @@ public interface Facts {
 
     int CHAPTER_COUNT_LOWER_BOUND = 600; // we don't want to update the code after each new chapter
 
+    int CHAPTER_COUNT_VOLUME_1 = 66;
+
     int CHARACTER_COUNT_LOWER_BOUND = 1200; // same
 
 }
