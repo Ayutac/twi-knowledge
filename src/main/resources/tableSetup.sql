@@ -1,4 +1,24 @@
 BEGIN;
+CREATE TYPE landmass_ocean_type AS ENUM (
+  'Continent',
+  'Archipelago',
+  'Isle',
+  'Ocean'
+);
+CREATE TYPE nation_type AS ENUM (
+  'Empire',
+  'Kingdom',
+  'Territory',
+  'Walled city',
+  'City state'
+);
+CREATE TYPE settlement_type AS ENUM (
+  'City',
+  'Town',
+  'Village'
+);
+COMMIT;
+BEGIN;
 CREATE TABLE volume (
   id        SERIAL,
   name      TEXT      UNIQUE NOT NULL,
@@ -75,6 +95,49 @@ CREATE TABLE class_skill (
   class_id  INT   NOT NULL REFERENCES class(id),
   skill_id  INT   NOT NULL REFERENCES skill(id),
   PRIMARY KEY(class_id, skill_id)
+);
+CREATE TABLE world (
+  id        SERIAL,
+  name      TEXT      UNIQUE NOT NULL,
+  since     INT                         REFERENCES chapter(id),
+  wiki_link TEXT,
+  PRIMARY KEY(id)
+);
+CREATE TABLE landmass_ocean (
+  id        SERIAL,
+  name      TEXT                UNIQUE NOT NULL,
+  type      landmass_ocean_type NOT NULL,
+  since     INT                                   REFERENCES chapter(id),
+  world_id  INT                                   REFERENCES world(id),
+  wiki_link TEXT,
+  PRIMARY KEY(id)
+);
+CREATE TABLE landmark (
+  id                SERIAL,
+  name              TEXT    UNIQUE NOT NULL,
+  is_natural        BOOLEAN NOT NULL,
+  since             INT                       REFERENCES chapter(id),
+  landmass_ocean_id INT                       REFERENCES landmass_ocean(id),
+  wiki_link TEXT,
+  PRIMARY KEY(id)
+);
+CREATE TABLE nation (
+  id                SERIAL,
+  name              TEXT        UNIQUE NOT NULL,
+  type              nation_type NOT NULL,
+  since             INT                           REFERENCES chapter(id),
+  landmass_ocean_id INT                           REFERENCES landmass_ocean(id),
+  wiki_link TEXT,
+  PRIMARY KEY(id)
+);
+CREATE TABLE settlement (
+  id        SERIAL,
+  name      TEXT            UNIQUE NOT NULL,
+  type      settlement_type NOT NULL,
+  since     INT                               REFERENCES chapter(id),
+  nation_id INT                               REFERENCES nation(id),
+  wiki_link TEXT,
+  PRIMARY KEY(id)
 );
 CREATE TABLE race (
   id                SERIAL,
