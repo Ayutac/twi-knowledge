@@ -1,6 +1,7 @@
 package org.abos.twi.knowledge.core;
 
 import org.abos.common.Named;
+import org.abos.twi.knowledge.core.publication.Chapter;
 
 import java.util.Objects;
 

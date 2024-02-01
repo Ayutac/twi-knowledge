@@ -1,4 +1,4 @@
-package org.abos.twi.knowledge.core;
+package org.abos.twi.knowledge.core.location;
 
 public enum LandmassOceanType {
 

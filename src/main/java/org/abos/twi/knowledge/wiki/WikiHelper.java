@@ -6,10 +6,10 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.abos.common.CollectionUtil;
 import org.abos.common.LogUtil;
-import org.abos.twi.knowledge.core.Book;
-import org.abos.twi.knowledge.core.Chapter;
+import org.abos.twi.knowledge.core.publication.Book;
+import org.abos.twi.knowledge.core.publication.Chapter;
 import org.abos.twi.knowledge.core.Character;
-import org.abos.twi.knowledge.core.Volume;
+import org.abos.twi.knowledge.core.publication.Volume;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

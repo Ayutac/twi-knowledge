@@ -1,4 +1,4 @@
-package org.abos.twi.knowledge.core;
+package org.abos.twi.knowledge.core.publication;
 
 import org.abos.common.Named;
 
