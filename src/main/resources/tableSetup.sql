@@ -142,7 +142,7 @@ CREATE TABLE settlement (
 CREATE TABLE race (
   id                SERIAL,
   name              TEXT      UNIQUE NOT NULL,
-  first_chapter_id  INT       REFERENCES chapter(id),
+  since             INT                         REFERENCES chapter(id),
   wiki_link         TEXT,
   PRIMARY KEY(id)
 );
