@@ -1,6 +1,8 @@
 package org.abos.twi.knowledge.db;
 
 import org.abos.common.LogUtil;
+import org.abos.common.Named;
+import org.abos.common.StringUtil;
 import org.abos.twi.knowledge.core.Species;
 import org.abos.twi.knowledge.core.publication.Book;
 import org.abos.twi.knowledge.core.publication.Chapter;
@@ -17,6 +19,8 @@ import org.abos.twi.knowledge.core.location.SettlementType;
 import org.abos.twi.knowledge.core.Skill;
 import org.abos.twi.knowledge.core.publication.Volume;
 import org.abos.twi.knowledge.core.location.World;
+import org.abos.twi.knowledge.db.datafill.Volume1;
+import org.abos.twi.knowledge.db.datafill.Volume2;
 import org.abos.twi.knowledge.wiki.WikiHelper;
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
@@ -40,7 +44,6 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -155,13 +158,45 @@ public final class DbHelper {
 
     /**
      * Use this instead of {@link PreparedStatement#setString(int, String)} to avoid SQL injection.
-     * @param stmt the prepared statement to set the string into
+     * @param pStmt the prepared statement to set the string into
      * @param index the parameter index
      * @param s the string to set
      * @throws SQLException If an SQL error occurs.
      */
-    private static void setString(final PreparedStatement stmt, final int index, final String s) throws SQLException {
-        stmt.setString(index, sanitizeString(s));
+    private static void setString(final PreparedStatement pStmt, final int index, final String s) throws SQLException {
+        if (s == null) {
+            pStmt.setNull(index, JDBCType.LONGVARCHAR.getVendorTypeNumber());
+        }
+        else {
+            pStmt.setString(index, sanitizeString(s));
+        }
+    }
+
+    private static void setInt(final PreparedStatement pStmt, final int index, final Integer n) throws SQLException {
+        if (n == null) {
+            pStmt.setNull(index, JDBCType.INTEGER.getVendorTypeNumber());
+        }
+        else {
+            pStmt.setInt(index, n);
+        }
+    }
+
+    private static void setBoolean(final PreparedStatement pStmt, final int index, final Boolean b) throws SQLException {
+        if (b == null) {
+            pStmt.setNull(index, JDBCType.BOOLEAN.getVendorTypeNumber());
+        }
+        else {
+            pStmt.setBoolean(index, b);
+        }
+    }
+
+    private static void setLocalDate(final PreparedStatement pStmt, final int index, final LocalDate d) throws SQLException {
+        if (d == null) {
+            pStmt.setNull(index, JDBCType.BIGINT.getVendorTypeNumber());
+        }
+        else {
+            pStmt.setLong(index, d.toEpochDay());
+        }
     }
 
     private void innerExecuteScript(final Connection connection, final String sql) throws SQLException {
@@ -203,6 +238,16 @@ public final class DbHelper {
         LOGGER.info(LogUtil.LOG_TIME_MSG, "Tearing down tables", time.toMinutes(), time.toSecondsPart());
     }
 
+    private <T extends Named> Integer internalFetchId(BidiMap<T, Integer> cache, SQLFunction<String, Integer> fetcher, final T ref) throws SQLException {
+        if (ref != null && !cache.containsKey(ref)) {
+            final Integer fetched = fetcher.apply(ref.getName());
+            if (fetched != null) {
+                cache.put(ref, fetched);
+            }
+        }
+        return cache.get(ref);
+    }
+
     private <T> T internalFetchReference(BidiMap<T, Integer> cache, SQLFunction<Integer, T> fetcher, final Integer id) throws SQLException {
         if (id != 0 && !cache.containsValue(id)) {
             final T fetched = fetcher.apply(id);
@@ -213,9 +258,33 @@ public final class DbHelper {
         return cache.getKey(id);
     }
 
+    private Integer internalFetchIdByName(final String tableName, final String name) throws SQLException {
+        try (final ConnectionStatement cs = prepareStatement("SELECT id FROM " + sanitizeString(tableName) + " WHERE name=?")) {
+            setString(cs.preparedStatement(), 1, name);
+            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+                return null;
+            }
+        }
+    }
+
     private <T> T internalFetchById(final SQLFunction<ResultSet, T> fetcher, final String selectSql, final int id) throws SQLException {
         try (final ConnectionStatement cs = prepareStatement(selectSql + " WHERE id=?")) {
             cs.preparedStatement().setInt(1, id);
+            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
+                if (rs.next()) {
+                    return fetcher.apply(rs);
+                }
+                return null;
+            }
+        }
+    }
+
+    private <T> T internalFetchByName(final SQLFunction<ResultSet, T> fetcher, final String selectSql, final String name) throws SQLException {
+        try (final ConnectionStatement cs = prepareStatement(selectSql + " WHERE name=?")) {
+            cs.preparedStatement().setString(1, name);
             try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
                 if (rs.next()) {
                     return fetcher.apply(rs);
@@ -236,7 +305,7 @@ public final class DbHelper {
         return result;
     }
 
-    public void addVolume(final Volume volume, final PreparedStatement pStmt) throws SQLException {
+    private void addVolume(final Volume volume, final PreparedStatement pStmt) throws SQLException {
         setString(pStmt, 1, volume.name());
         setString(pStmt, 2, volume.wikiLink());
         pStmt.execute();
@@ -251,15 +320,7 @@ public final class DbHelper {
     }
 
     private Integer fetchVolumeId(final String volumeName) throws SQLException {
-        try (final ConnectionStatement cs = prepareStatement("SELECT id FROM volume WHERE name=?")) {
-            setString(cs.preparedStatement(), 1, Objects.requireNonNull(volumeName));
-            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1);
-                }
-                return null;
-            }
-        }
+        return internalFetchIdByName("volume", volumeName);
     }
 
     private Volume internalFetchVolume(final ResultSet rs) throws SQLException {
@@ -270,43 +331,22 @@ public final class DbHelper {
         return internalFetchById(this::internalFetchVolume, SELECT_VOLUME, volumeId);
     }
 
+    public Volume fetchVolume(final String volumeName) throws SQLException {
+        return internalFetchByName(this::internalFetchVolume, SELECT_VOLUME, volumeName);
+    }
+
     public List<Volume> fetchVolumes() throws SQLException {
         return internalFetchAll(this::internalFetchVolume, SELECT_VOLUME);
     }
 
-    public void addBook(final Book book, final PreparedStatement pStmt) throws SQLException {
-        pStmt.setString(1, book.name());
-        if (book.volumeOrd() == null) {
-            pStmt.setNull(2, JDBCType.INTEGER.getVendorTypeNumber());
-        }
-        else {
-            pStmt.setInt(2, book.volumeOrd());
-        }
-        pStmt.setString(3, book.wikiLink());
-        if (book.publicationLink() == null) {
-            pStmt.setNull(4, JDBCType.LONGVARCHAR.getVendorTypeNumber());
-        }
-        else {
-            setString(pStmt, 4, book.publicationLink());
-        }
-        if (book.publicationDate() == null) {
-            pStmt.setNull(5, JDBCType.BIGINT.getVendorTypeNumber());
-        }
-        else {
-            pStmt.setLong(5, book.publicationDate().toEpochDay());
-        }
-        if (book.audibleLink() == null) {
-            pStmt.setNull(6, JDBCType.LONGVARCHAR.getVendorTypeNumber());
-        }
-        else {
-            setString(pStmt, 6, book.audibleLink());
-        }
-        if (book.audibleDate() == null) {
-            pStmt.setNull(7, JDBCType.BIGINT.getVendorTypeNumber());
-        }
-        else {
-            pStmt.setLong(7, book.audibleDate().toEpochDay());
-        }
+    private void addBook(final Book book, final PreparedStatement pStmt) throws SQLException {
+        setString(pStmt, 1, book.name());
+        setInt(pStmt, 2, book.volumeOrd());
+        setString(pStmt, 3, book.wikiLink());
+        setString(pStmt, 4, book.publicationLink());
+        setLocalDate(pStmt, 5, book.publicationDate());
+        setString(pStmt, 6, book.audibleLink());
+        setLocalDate(pStmt, 7, book.audibleDate());
         pStmt.execute();
     }
 
@@ -319,15 +359,7 @@ public final class DbHelper {
     }
 
     private Integer fetchBookId(final String bookName) throws SQLException {
-        try (final ConnectionStatement cs = prepareStatement("SELECT id FROM book WHERE name=?")) {
-            setString(cs.preparedStatement(), 1, Objects.requireNonNull(bookName));
-            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1);
-                }
-                return null;
-            }
-        }
+        return internalFetchIdByName("book", bookName);
     }
 
     private Book internalFetchBook(final ResultSet rs) throws SQLException {
@@ -340,51 +372,29 @@ public final class DbHelper {
         return internalFetchById(this::internalFetchBook, SELECT_BOOK, bookId);
     }
 
+    public Book fetchBook(final String bookName) throws SQLException {
+        return internalFetchByName(this::internalFetchBook, SELECT_BOOK, bookName);
+    }
+
     public List<Book> fetchBooks() throws SQLException {
         return internalFetchAll(this::internalFetchBook, SELECT_BOOK);
     }
 
-    public void addChapter(final Chapter chapter, PreparedStatement pStmt) throws SQLException {
+    private void addChapter(final Chapter chapter, PreparedStatement pStmt) throws SQLException {
         setString(pStmt, 1, chapter.name());
-        if (chapter.volumeOrd() == null) {
-            pStmt.setNull(2, JDBCType.INTEGER.getVendorTypeNumber());
-        }
-        else {
-            pStmt.setInt(2, chapter.volumeOrd());
-        }
-        if (chapter.bookOrd() == null) {
-            pStmt.setNull(3, JDBCType.INTEGER.getVendorTypeNumber());
-        }
-        else {
-            pStmt.setInt(3, chapter.bookOrd());
-        }
-        pStmt.setLong(4, chapter.release().toEpochDay());
-        pStmt.setInt(5, chapter.words());
-        pStmt.setBoolean(6, chapter.lettered());
-        pStmt.setBoolean(7, chapter.interlude());
-        pStmt.setBoolean(8, chapter.inParts());
-        if (chapter.book() != null && !bookIdMap.containsKey(chapter.book())) {
-            bookIdMap.put(chapter.book(), fetchBookId(chapter.book().name()));
-        }
-        final Integer bookId = bookIdMap.get(chapter.book());
-        if (bookId == null) {
-            pStmt.setNull(9, JDBCType.INTEGER.getVendorTypeNumber());
-        }
-        else {
-            pStmt.setInt(9, bookId);
-        }
-        if (chapter.volume() != null && !volumeIdMap.containsKey(chapter.volume())) {
-            volumeIdMap.put(chapter.volume(), fetchVolumeId(chapter.volume().name()));
-        }
-        final Integer volumeId = volumeIdMap.get(chapter.volume());
-        if (volumeId == null) {
-            pStmt.setNull(10, JDBCType.INTEGER.getVendorTypeNumber());
-        }
-        else {
-            pStmt.setInt(10, volumeId);
-        }
-        pStmt.setString(11, chapter.link());
-        pStmt.setString(12, chapter.wikiLink());
+        setInt(pStmt, 2, chapter.volumeOrd());
+        setInt(pStmt, 3, chapter.bookOrd());
+        setLocalDate(pStmt, 4, chapter.release());
+        setInt(pStmt, 5, chapter.words());
+        setBoolean(pStmt, 6, chapter.lettered());
+        setBoolean(pStmt, 7, chapter.interlude());
+        setBoolean(pStmt, 8, chapter.inParts());
+        final Integer bookId = internalFetchId(bookIdMap, this::fetchBookId, chapter.book());
+        setInt(pStmt, 9, bookId);
+        final Integer volumeId = internalFetchId(volumeIdMap, this::fetchVolumeId, chapter.volume());
+        setInt(pStmt, 10, volumeId);
+        setString(pStmt, 11, chapter.link());
+        setString(pStmt, 12, chapter.wikiLink());
         pStmt.execute();
     }
 
@@ -394,6 +404,10 @@ public final class DbHelper {
                 addChapter(chapter, cs.preparedStatement());
             }
         }
+    }
+
+    private Integer fetchChapterId(final String chapterName) throws SQLException {
+        return internalFetchIdByName("chapter", chapterName);
     }
 
     private Chapter internalFetchChapter(final ResultSet rs) throws SQLException {
@@ -406,6 +420,10 @@ public final class DbHelper {
 
     private Chapter fetchChapter(final int chapterId) throws SQLException {
         return internalFetchById(this::internalFetchChapter, SELECT_CHAPTER, chapterId);
+    }
+
+    public Chapter fetchChapter(final String chapterName) throws SQLException {
+        return internalFetchByName(this::internalFetchChapter, SELECT_CHAPTER, chapterName);
     }
     
     public List<Chapter> fetchChapters() throws SQLException {
@@ -438,6 +456,20 @@ public final class DbHelper {
         return internalFetchAll(this::internalFetchSkill, SELECT_SKILL);
     }
 
+    public void addWorld(final World world) throws SQLException {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO world (name, since, wiki_link) VALUES (?,?,?);")) {
+            setString(cs.preparedStatement(), 1, world.name());
+            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, world.since());
+            setInt(cs.preparedStatement(), 2, chapterId);
+            setString(cs.preparedStatement(), 3, world.wikiLink());
+            cs.preparedStatement().execute();
+        }
+    }
+
+    private Integer fetchWorldId(final String worldName) throws SQLException {
+        return internalFetchIdByName("world", worldName);
+    }
+
     private World internalFetchWorld(final ResultSet rs) throws SQLException {
         final Chapter chapter = internalFetchReference(chapterIdMap, this::fetchChapter, rs.getInt(2));
         return new World(rs.getString(1), chapter, rs.getString(3));
@@ -449,6 +481,23 @@ public final class DbHelper {
 
     public List<World> fetchWorlds() throws SQLException {
         return internalFetchAll(this::internalFetchWorld, SELECT_WORLD);
+    }
+
+    public void addLandmassOcean(final LandmassOcean landmassOcean) throws SQLException {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO landmass_ocean (name, type, since, world_id, wiki_link) VALUES (?,?::landmass_ocean_type,?,?,?);")) {
+            setString(cs.preparedStatement(), 1, landmassOcean.name());
+            setString(cs.preparedStatement(), 2, StringUtil.toCapitalized(landmassOcean.type().name().replace("_"," ")));
+            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, landmassOcean.since());
+            setInt(cs.preparedStatement(), 3, chapterId);
+            final Integer worldId = internalFetchId(worldIdMap, this::fetchWorldId, landmassOcean.world());
+            setInt(cs.preparedStatement(), 4, worldId);
+            setString(cs.preparedStatement(), 5, landmassOcean.wikiLink());
+            cs.preparedStatement().execute();
+        }
+    }
+
+    private Integer fetchLandmassOceanId(final String landmassOceanName) throws SQLException {
+        return internalFetchIdByName("landmass_ocean", landmassOceanName);
     }
 
     private LandmassOcean internalFetchLandmassOcean(final ResultSet rs) throws SQLException {
@@ -463,6 +512,23 @@ public final class DbHelper {
 
     public List<LandmassOcean> fetchLandmassesOceans() throws SQLException {
         return internalFetchAll(this::internalFetchLandmassOcean, SELECT_LANDMASS_OCEAN);
+    }
+
+    public void addLandmark(final Landmark landmark) throws SQLException {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO landmark (name, is_natural, since, landmass_ocean_id, wiki_link) VALUES (?,?,?,?,?);")) {
+            setString(cs.preparedStatement(), 1, landmark.name());
+            setBoolean(cs.preparedStatement(), 2, landmark.natural());
+            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, landmark.since());
+            setInt(cs.preparedStatement(), 3, chapterId);
+            final Integer landmassOceanId = internalFetchId(landmassOceanIdMap, this::fetchLandmassOceanId, landmark.landmassOcean());
+            setInt(cs.preparedStatement(), 4, landmassOceanId);
+            setString(cs.preparedStatement(), 5, landmark.wikiLink());
+            cs.preparedStatement().execute();
+        }
+    }
+
+    private Integer fetchLandmarkId(final String landmarkName) throws SQLException {
+        return internalFetchIdByName("landmark", landmarkName);
     }
 
     private Landmark internalFetchLandmark(final ResultSet rs) throws SQLException {
@@ -564,6 +630,8 @@ public final class DbHelper {
         addBooks(books);
         addChapters(chapters);
         addCharacters(characters);
+        Volume1.fillDb(this);
+        Volume2.fillDb(this);
     }
 
     public static void main(String[] args) throws IOException, SQLException {
@@ -572,7 +640,7 @@ public final class DbHelper {
         try {dbHelper.tearDownTables();}
         catch (SQLException ex) {/* Ignore. */}
         dbHelper.initialize(wikiHelper.fetchVolumes(), wikiHelper.fetchBooks(), wikiHelper.fetchChapters(), wikiHelper.fetchCharacters());
-        System.out.print("DB is up and running. Press Enter to end tear it down. ");
+        System.out.print("DB is up and running. Press Enter to tear it down. ");
         new Scanner(System.in).nextLine();
         dbHelper.tearDownTables();
     }

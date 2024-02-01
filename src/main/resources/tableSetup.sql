@@ -193,15 +193,3 @@ CREATE TABLE char_age (
   PRIMARY KEY (age, char_id, since)
 );
 COMMIT;
-BEGIN;
-CREATE PROCEDURE insert_appearance(ps TEXT, cs TEXT)
-LANGUAGE SQL
-AS $$
-WITH c AS (
-  SELECT id FROM chapter WHERE name=cs
-), p AS (
-  SELECT id FROM character WHERE wiki_link LIKE ps
-)
-INSERT INTO appearance VALUES ((SELECT id FROM p), (SELECT id FROM c))
-$$;
-COMMIT;

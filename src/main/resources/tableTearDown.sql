@@ -1,6 +1,4 @@
 BEGIN;
-DROP PROCEDURE insert_appearance;
-BEGIN;
 DROP TABLE char_age;
 DROP TABLE char_race;
 DROP TABLE last_name;
