@@ -9,6 +9,8 @@ public record World(String name, String wikiLink) implements Named, Comparable<W
 
     public static final String INNWORLD = "Innworld";
 
+    public static final String EARTH = "Earth";
+
     public World(final String name, final String wikiLink) {
         this.name = Objects.requireNonNull(name);
         this.wikiLink = wikiLink;

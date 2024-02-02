@@ -16,6 +16,8 @@ public final class Volume1 {
 
     public static final World INNWORLD = new World(World.INNWORLD, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(World.INNWORLD));
 
+    public static final World EARTH = new World(World.EARTH, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(World.EARTH));
+
     public static final LandmassOcean IZRIL = new LandmassOcean(LandmassOcean.IZRIL, LandmassOceanType.CONTINENT, INNWORLD, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(LandmassOcean.IZRIL));
 
     public static final Landmark FLOODPLAINS = new Landmark(Landmark.FLOODPLAINS, true, IZRIL, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Landmark.FLOODPLAINS));
@@ -111,6 +113,7 @@ public final class Volume1 {
         final Chapter ch = dbHelper.fetchChapter("Chapter 1.00");
         // first appearances/mentions
         dbHelper.addWorld(INNWORLD);
+        dbHelper.addWorld(EARTH);
         dbHelper.addLandmassOcean(IZRIL);
         dbHelper.addLandmark(FLOODPLAINS);
         dbHelper.addLandmark(HIGH_PASSES);
@@ -118,7 +121,8 @@ public final class Volume1 {
         dbHelper.addSpecies(HUMAN);
         dbHelper.addSpecies(GOBLIN);
         dbHelper.addSpecies(DRAGON);
-
+        dbHelper.addCharacterFirstName(ERIN, ch, "Erin");
+        dbHelper.addCharacterLastName(ERIN, ch, "Solstice");
         // appearances/mentions
         dbHelper.addWorldAppearance(INNWORLD, ch);
         dbHelper.addLandmassOceanAppearance(IZRIL, ch);

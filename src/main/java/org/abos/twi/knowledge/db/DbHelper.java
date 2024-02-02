@@ -3,6 +3,7 @@ package org.abos.twi.knowledge.db;
 import org.abos.common.LogUtil;
 import org.abos.common.Named;
 import org.abos.common.StringUtil;
+import org.abos.twi.knowledge.core.CharacterNameType;
 import org.abos.twi.knowledge.core.Species;
 import org.abos.twi.knowledge.core.publication.Book;
 import org.abos.twi.knowledge.core.publication.Chapter;
@@ -726,6 +727,32 @@ public final class DbHelper {
 
     public void addCharacterMention(final Character character, final Chapter chapter) throws SQLException {
         internalAddAppearance(character, chapter, "character", characterIdMap, this::fetchCharacterId, true);
+    }
+
+    private void internalAddCharacterName(final Character character, final Chapter chapter, final String name, final CharacterNameType type) throws SQLException {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO " + type.name().toLowerCase() + "_name (name, character_id, since) VALUES (?,?,?);")) {
+            if (!characterIdMap.containsKey(character)) {
+                characterIdMap.put(character, fetchCharacterId(character.wikiLink()));
+            }
+            final Integer characterId = characterIdMap.get(character);
+            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, chapter);
+            setString(cs.preparedStatement(), 1, name);
+            setInt(cs.preparedStatement(), 2, characterId);
+            setInt(cs.preparedStatement(), 3, chapterId);
+            cs.preparedStatement().execute();
+        }
+    }
+
+    public void addCharacterFirstName(final Character character, final Chapter chapter, final String name) throws SQLException {
+        internalAddCharacterName(character, chapter, name, CharacterNameType.FIRST);
+    }
+
+    public void addCharacterMiddleName(final Character character, final Chapter chapter, final String name) throws SQLException {
+        internalAddCharacterName(character, chapter, name, CharacterNameType.MIDDLE);
+    }
+
+    public void addCharacterLastName(final Character character, final Chapter chapter, final String name) throws SQLException {
+        internalAddCharacterName(character, chapter, name, CharacterNameType.LAST);
     }
 
     private Rsk internalFetchRsk(final ResultSet rs) throws SQLException {
