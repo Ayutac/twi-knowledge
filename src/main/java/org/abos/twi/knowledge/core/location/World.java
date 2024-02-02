@@ -7,6 +7,8 @@ import java.util.Objects;
 
 public record World(String name, String wikiLink) implements Named, Comparable<World> {
 
+    public static final String INNWORLD = "Innworld";
+
     public World(final String name, final String wikiLink) {
         this.name = Objects.requireNonNull(name);
         this.wikiLink = wikiLink;

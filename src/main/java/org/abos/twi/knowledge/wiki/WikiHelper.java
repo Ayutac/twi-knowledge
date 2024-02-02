@@ -73,7 +73,7 @@ public final class WikiHelper {
         moduleRef = fetchPage("Module:Ref");
     }
 
-    private static String sanitizePageName(final String name) {
+    public static String sanitizePageName(final String name) {
         if (name == null) {
             return null;
         }

@@ -105,7 +105,15 @@ public final class DbHelper {
 
     private final BidiMap<LandmassOcean, Integer> landmassOceanIdMap = new DualHashBidiMap<>();
 
+    private final BidiMap<Landmark, Integer> landmarkIdMap = new DualHashBidiMap<>();
+
     private final BidiMap<Nation, Integer> nationIdMap = new DualHashBidiMap<>();
+
+    private final BidiMap<Settlement, Integer> settlementIdMap = new DualHashBidiMap<>();
+
+    private final BidiMap<Species, Integer> speciesIdMap = new DualHashBidiMap<>();
+
+    private final BidiMap<Character, Integer> characterIdMap = new DualHashBidiMap<>();
 
     public DbHelper() throws IllegalStateException {
         final String url = System.getProperty(PROPERTY_URL);
@@ -305,6 +313,16 @@ public final class DbHelper {
         return result;
     }
 
+    private <T extends Named> void internalAddAppearance(final T obj, final Chapter chapter, final String tableName, final BidiMap<T, Integer> cachedId, final SQLFunction<String, Integer> fetcher, final boolean mention) throws SQLException {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO " + (mention ? "mention" : "appearance") + "_" + tableName + " VALUES (?,?)")) {
+            final Integer objectId = internalFetchId(cachedId, fetcher, obj);
+            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, chapter);
+            setInt(cs.preparedStatement(), 1, objectId);
+            setInt(cs.preparedStatement(), 2, chapterId);
+            cs.preparedStatement().execute();
+        }
+    }
+
     private void addVolume(final Volume volume, final PreparedStatement pStmt) throws SQLException {
         setString(pStmt, 1, volume.name());
         setString(pStmt, 2, volume.wikiLink());
@@ -480,6 +498,14 @@ public final class DbHelper {
         return internalFetchAll(this::internalFetchWorld, SELECT_WORLD);
     }
 
+    public void addWorldAppearance(final World world, final Chapter chapter) throws SQLException {
+        internalAddAppearance(world, chapter, "world", worldIdMap, this::fetchWorldId, false);
+    }
+
+    public void addWorldMention(final World world, final Chapter chapter) throws SQLException {
+        internalAddAppearance(world, chapter, "world", worldIdMap, this::fetchWorldId, true);
+    }
+
     public void addLandmassOcean(final LandmassOcean landmassOcean) throws SQLException {
         try (final ConnectionStatement cs = prepareStatement("INSERT INTO landmass_ocean (name, type, world_id, wiki_link) VALUES (?,?::landmass_ocean_type,?,?);")) {
             setString(cs.preparedStatement(), 1, landmassOcean.name());
@@ -506,6 +532,14 @@ public final class DbHelper {
 
     public List<LandmassOcean> fetchLandmassesOceans() throws SQLException {
         return internalFetchAll(this::internalFetchLandmassOcean, SELECT_LANDMASS_OCEAN);
+    }
+
+    public void addLandmassOceanAppearance(final LandmassOcean landmassOcean, final Chapter chapter) throws SQLException {
+        internalAddAppearance(landmassOcean, chapter, "landmass_ocean", landmassOceanIdMap, this::fetchLandmassOceanId, false);
+    }
+
+    public void addLandmassOceanMention(final LandmassOcean landmassOcean, final Chapter chapter) throws SQLException {
+        internalAddAppearance(landmassOcean, chapter, "landmass_ocean", landmassOceanIdMap, this::fetchLandmassOceanId, true);
     }
 
     public void addLandmark(final Landmark landmark) throws SQLException {
@@ -536,6 +570,29 @@ public final class DbHelper {
         return internalFetchAll(this::internalFetchLandmark, SELECT_LANDMARK);
     }
 
+    public void addLandmarkAppearance(final Landmark landmark, final Chapter chapter) throws SQLException {
+        internalAddAppearance(landmark, chapter, "landmark", landmarkIdMap, this::fetchLandmarkId, false);
+    }
+
+    public void addLandmarkMention(final Landmark landmark, final Chapter chapter) throws SQLException {
+        internalAddAppearance(landmark, chapter, "landmark", landmarkIdMap, this::fetchLandmarkId, true);
+    }
+
+    public void addNation(final Nation nation) throws SQLException {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO nation (name, type, landmass_ocean_id, wiki_link) VALUES (?,?,?,?);")) {
+            setString(cs.preparedStatement(), 1, nation.name());
+            setString(cs.preparedStatement(), 2, StringUtil.toCapitalized(nation.nationType().name().replace('_', ' ')));
+            final Integer landmassOceanId = internalFetchId(landmassOceanIdMap, this::fetchLandmassOceanId, nation.landmassOcean());
+            setInt(cs.preparedStatement(), 3, landmassOceanId);
+            setString(cs.preparedStatement(), 4, nation.wikiLink());
+            cs.preparedStatement().execute();
+        }
+    }
+
+    private Integer fetchNationId(final String nationName) throws SQLException {
+        return internalFetchIdByName("nation", nationName);
+    }
+
     private Nation internalFetchNation(final ResultSet rs) throws SQLException {
         final LandmassOcean landmassOcean = internalFetchReference(landmassOceanIdMap, this::fetchLandmassOcean, rs.getInt(3));
         return new Nation(rs.getString(1), Enum.valueOf(NationType.class, rs.getString(2).toUpperCase().replace(' ', '_')), landmassOcean, rs.getString(4));
@@ -547,6 +604,29 @@ public final class DbHelper {
 
     public List<Nation> fetchNations() throws SQLException {
         return internalFetchAll(this::internalFetchNation, SELECT_NATION);
+    }
+
+    public void addNationAppearance(final Nation nation, final Chapter chapter) throws SQLException {
+        internalAddAppearance(nation, chapter, "nation", nationIdMap, this::fetchNationId, false);
+    }
+
+    public void addNationMention(final Nation nation, final Chapter chapter) throws SQLException {
+        internalAddAppearance(nation, chapter, "nation", nationIdMap, this::fetchNationId, true);
+    }
+
+    public void addSettlement(final Settlement settlement) throws SQLException {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO settlement (name, type, nation_id, wiki_link) VALUES (?,?,?,?);")) {
+            setString(cs.preparedStatement(), 1, settlement.name());
+            setString(cs.preparedStatement(), 2, StringUtil.toCapitalized(settlement.settlementType().name().replace('_', ' ')));
+            final Integer nationId = internalFetchId(nationIdMap, this::fetchNationId, settlement.nation());
+            setInt(cs.preparedStatement(), 3, nationId);
+            setString(cs.preparedStatement(), 4, settlement.wikiLink());
+            cs.preparedStatement().execute();
+        }
+    }
+
+    private Integer fetchSettlementId(final String settlementName) throws SQLException {
+        return internalFetchIdByName("settlement", settlementName);
     }
 
     private Settlement internalFetchSettlement(final ResultSet rs) throws SQLException {
@@ -562,6 +642,27 @@ public final class DbHelper {
         return internalFetchAll(this::internalFetchSettlement, SELECT_SETTLEMENT);
     }
 
+    public void addSettlementAppearance(final Settlement settlement, final Chapter chapter) throws SQLException {
+        internalAddAppearance(settlement, chapter, "settlement", settlementIdMap, this::fetchSettlementId, false);
+    }
+
+    public void addSettlementMention(final Settlement settlement, final Chapter chapter) throws SQLException {
+        internalAddAppearance(settlement, chapter, "settlement", settlementIdMap, this::fetchSettlementId, true);
+    }
+
+    public void addSpecies(final Species species) throws SQLException {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO species (name, can_level, wiki_link) VALUES (?,?,?);")) {
+            setString(cs.preparedStatement(), 1, species.name());
+            setBoolean(cs.preparedStatement(), 2, species.canLevel());
+            setString(cs.preparedStatement(), 3, species.wikiLink());
+            cs.preparedStatement().execute();
+        }
+    }
+
+    private Integer fetchSpeciesId(final String speciesName) throws SQLException {
+        return internalFetchIdByName("species", speciesName);
+    }
+
     private Species internalFetchSpecies(final ResultSet rs) throws SQLException {
         return new Species(rs.getString(1), rs.getBoolean(2), rs.getString(3));
     }
@@ -572,6 +673,14 @@ public final class DbHelper {
 
     public List<Species> fetchSpecies() throws SQLException {
         return internalFetchAll(this::internalFetchSpecies, SELECT_SPECIES);
+    }
+
+    public void addSpeciesAppearance(final Species species, final Chapter chapter) throws SQLException {
+        internalAddAppearance(species, chapter, "species", speciesIdMap, this::fetchSpeciesId, false);
+    }
+
+    public void addSpeciesMention(final Species species, final Chapter chapter) throws SQLException {
+        internalAddAppearance(species, chapter, "species", speciesIdMap, this::fetchSpeciesId, true);
     }
 
     public void addCharacter(final Character character, final PreparedStatement pStmt) throws SQLException {
@@ -587,6 +696,18 @@ public final class DbHelper {
         }
     }
 
+    private Integer fetchCharacterId(final String wikiLink) throws SQLException {
+        try (final ConnectionStatement cs = prepareStatement("SELECT id FROM character WHERE wiki_link=?")) {
+            setString(cs.preparedStatement(), 1, wikiLink);
+            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+                return null;
+            }
+        }
+    }
+
     private Character internalFetchCharacter(final ResultSet rs) throws SQLException {
         return new Character(rs.getString(1));
     }
@@ -597,6 +718,14 @@ public final class DbHelper {
 
     public List<Character> fetchCharacters() throws SQLException {
         return internalFetchAll(this::internalFetchCharacter, SELECT_CHARACTER);
+    }
+
+    public void addCharacterAppearance(final Character character, final Chapter chapter) throws SQLException {
+        internalAddAppearance(character, chapter, "character", characterIdMap, this::fetchCharacterId, false);
+    }
+
+    public void addCharacterMention(final Character character, final Chapter chapter) throws SQLException {
+        internalAddAppearance(character, chapter, "character", characterIdMap, this::fetchCharacterId, true);
     }
 
     private Rsk internalFetchRsk(final ResultSet rs) throws SQLException {

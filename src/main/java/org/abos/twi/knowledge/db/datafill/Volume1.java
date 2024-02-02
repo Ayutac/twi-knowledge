@@ -1,5 +1,7 @@
 package org.abos.twi.knowledge.db.datafill;
 
+import org.abos.twi.knowledge.core.Character;
+import org.abos.twi.knowledge.core.Species;
 import org.abos.twi.knowledge.core.location.Landmark;
 import org.abos.twi.knowledge.core.location.LandmassOcean;
 import org.abos.twi.knowledge.core.location.LandmassOceanType;
@@ -11,6 +13,26 @@ import org.abos.twi.knowledge.wiki.WikiHelper;
 import java.sql.SQLException;
 
 public final class Volume1 {
+
+    public static final World INNWORLD = new World(World.INNWORLD, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(World.INNWORLD));
+
+    public static final LandmassOcean IZRIL = new LandmassOcean(LandmassOcean.IZRIL, LandmassOceanType.CONTINENT, INNWORLD, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(LandmassOcean.IZRIL));
+
+    public static final Landmark FLOODPLAINS = new Landmark(Landmark.FLOODPLAINS, true, IZRIL, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Landmark.FLOODPLAINS));
+
+    public static final Landmark HIGH_PASSES = new Landmark(Landmark.HIGH_PASSES, true, IZRIL, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Landmark.HIGH_PASSES));
+
+    public static final Landmark FIRST_WANDERING_INN = new Landmark("Wandering Inn", false, IZRIL, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Landmark.FIRST_WANDERING_INN));
+
+    public static final Species HUMAN = new Species(Species.HUMAN, true, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Species.HUMAN + "s"));
+
+    public static final Species GOBLIN = new Species(Species.GOBLIN, true, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Species.GOBLIN + "s"));
+
+    public static final Species DRAGON = new Species(Species.DRAGON, false, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Species.DRAGON + "s"));
+
+    public static final Character ERIN = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.ERIN));
+
+    public static final Character TERIARCH = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.TERIARCH));
 
     private Volume1() {
         /* No instantiation. */
@@ -87,14 +109,27 @@ public final class Volume1 {
 
     private static void ch00(final DbHelper dbHelper) throws SQLException {
         final Chapter ch = dbHelper.fetchChapter("Chapter 1.00");
-        final World innworld = new World("Innworld", WikiHelper.WIKI_URL + "Innworld");
-        dbHelper.addWorld(innworld);
-        final LandmassOcean izril = new LandmassOcean("Izril", LandmassOceanType.CONTINENT, innworld, WikiHelper.WIKI_URL + "Izril");
-        dbHelper.addLandmassOcean(izril);
-        dbHelper.addLandmark(new Landmark("Floodplains", true, izril, WikiHelper.WIKI_URL + "Floodplains"));
-        dbHelper.addLandmark(new Landmark("High Passes", true, izril, WikiHelper.WIKI_URL + "High_Passes"));
-        dbHelper.addLandmark(new Landmark("Wandering Inn", true, izril, WikiHelper.WIKI_URL + "First_Wandering_Inn"));
+        // first appearances/mentions
+        dbHelper.addWorld(INNWORLD);
+        dbHelper.addLandmassOcean(IZRIL);
+        dbHelper.addLandmark(FLOODPLAINS);
+        dbHelper.addLandmark(HIGH_PASSES);
+        dbHelper.addLandmark(FIRST_WANDERING_INN);
+        dbHelper.addSpecies(HUMAN);
+        dbHelper.addSpecies(GOBLIN);
+        dbHelper.addSpecies(DRAGON);
 
+        // appearances/mentions
+        dbHelper.addWorldAppearance(INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(IZRIL, ch);
+        dbHelper.addLandmarkAppearance(FLOODPLAINS, ch);
+        dbHelper.addLandmarkMention(HIGH_PASSES, ch);
+        dbHelper.addLandmarkAppearance(FIRST_WANDERING_INN, ch);
+        dbHelper.addSpeciesAppearance(HUMAN, ch);
+        dbHelper.addSpeciesMention(DRAGON, ch);
+        dbHelper.addSpeciesMention(GOBLIN, ch);
+        dbHelper.addCharacterAppearance(ERIN, ch);
+        dbHelper.addCharacterMention(TERIARCH, ch);
     }
 
     private static void ch01(final DbHelper dbHelper) throws SQLException {

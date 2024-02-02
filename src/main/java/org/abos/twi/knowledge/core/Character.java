@@ -6,6 +6,10 @@ import java.util.Objects;
 
 public record Character(String wikiLink) implements Named {
 
+    public static final String ERIN = "Erin Solstice";
+
+    public static final String TERIARCH = "Teriarch";
+
     public Character(final String wikiLink) {
         this.wikiLink = Objects.requireNonNull(wikiLink);
     }

@@ -152,7 +152,6 @@ CREATE TABLE nation (
   id                SERIAL,
   name              TEXT        UNIQUE NOT NULL,
   type              nation_type NOT NULL,
-  since             INT                           REFERENCES chapter(id),
   landmass_ocean_id INT                           REFERENCES landmass_ocean(id),
   wiki_link TEXT,
   PRIMARY KEY(id)
@@ -240,7 +239,7 @@ CREATE TABLE last_name (
   since         INT                 REFERENCES chapter(id),
   PRIMARY KEY (name, character_id, since)
 );
-CREATE TABLE character_race (
+CREATE TABLE character_species (
   character_id  INT       NOT NULL  REFERENCES character(id),
   species_id    INT       NOT NULL  REFERENCES species(id),
   since         INT                 REFERENCES chapter(id),

@@ -7,6 +7,16 @@ import java.util.Objects;
 
 public record LandmassOcean(String name, LandmassOceanType type, World world, String wikiLink) implements Named {
 
+    public static final String BALEROS = "Baleros";
+
+    public static final String CHANDRAR = "Chandrar";
+
+    public static final String IZRIL = "Izril";
+
+    public static final String RHIR = "Rhir";
+
+    public static final String TERANDRIA = "Terandria";
+
     public LandmassOcean(final String name, final LandmassOceanType type, final World world, final String wikiLink) {
         this.name = Objects.requireNonNull(name);
         this.type = Objects.requireNonNull(type);
