@@ -1,5 +1,6 @@
 BEGIN;
 CREATE TYPE landmass_ocean_type AS ENUM (
+  'Moon'
   'Continent',
   'Archipelago',
   'Isle',
