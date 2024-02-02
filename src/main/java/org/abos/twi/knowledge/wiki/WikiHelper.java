@@ -549,6 +549,7 @@ public final class WikiHelper {
         final List<String> characterNames = fetchCategory("Characters", true, false);
         characterNames.remove("Cargo Character Test");
         characterNames.remove("Template:Character Preload");
+        characterNames.remove("The Wandering Inn Wiki:New Character Layout");
         final List <Character> result = new LinkedList<>();
         for (String name: characterNames) {
             try {
