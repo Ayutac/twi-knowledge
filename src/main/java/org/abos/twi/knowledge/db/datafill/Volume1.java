@@ -85,7 +85,9 @@ public final class Volume1 {
 
     public static final Species DEMON = new Species(Species.DEMON, true, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Species.DEMON + "s"));
 
-    public static final Species DJINN = new Species(Species.DJINN, true, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Species.DJINN + "i"));
+    public static final Species DJINN = new Species(Species.DJINN, false, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Species.DJINN + "i"));
+
+    public static final Species FLATFISH = new Species(Species.FLATFISH, false, null);
 
     public static final Character ERIN = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.ERIN));
 
@@ -191,8 +193,10 @@ public final class Volume1 {
         dbHelper.addClass(innkeeper);
         final Skill basicCleaning = new Skill(Skill.BASIC_CLEANING, ch, null);
         dbHelper.addSkill(basicCleaning);
+        dbHelper.addClassSkill(innkeeper, basicCleaning);
         final Skill basicCooking = new Skill(Skill.BASIC_COOKING, ch, null);
         dbHelper.addSkill(basicCooking);
+        dbHelper.addClassSkill(innkeeper, basicCooking);
         // events
         dbHelper.addInnworldArrival(new InnworldArrival(ERIN, ch));
         dbHelper.addCharacterStatus(new CharacterStatus(new Status(Status.ALIVE), ERIN, ch));
@@ -299,6 +303,8 @@ public final class Volume1 {
         dbHelper.addClass(chieftain);
         final Class shaman = new Class(Class.SHAMAN, ch, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.SHAMAN + "s"));
         dbHelper.addClass(shaman);
+        dbHelper.addCharacterSpecies(RAGS, GOBLIN, ch);
+        dbHelper.addCharacterSpecies(FLOODED_WATERS_CHIEFTAIN, GOBLIN, ch);
         // events
         // (Erin eats Amentus fruits)
         final Battle rockCrabBattle2 = new Battle("Erin defeats the Rock Crab", null);
@@ -338,7 +344,31 @@ public final class Volume1 {
     }
 
     private static void ch03(final DbHelper dbHelper) throws SQLException {
-
+        final Chapter ch = dbHelper.fetchChapter("Chapter 1.03");
+        // first appearances/mentions
+        dbHelper.addSpecies(FLATFISH);
+        // events
+        final Battle flatfishBattle = new Battle("Erin defeats a flat fish", null);
+        dbHelper.addBattle(flatfishBattle);
+        dbHelper.addBattleChapter(flatfishBattle, ch);
+        dbHelper.addBattleCharacter(flatfishBattle, ERIN);
+        // appearances/mentions
+        // (day 3 since Erin got to Innworld)
+        dbHelper.addWorldAppearance(INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(NORTHERN_IZRIL, ch);
+        dbHelper.addLandmarkAppearance(FLOODPLAINS, ch);
+        dbHelper.addLandmarkAppearance(FIRST_WANDERING_INN, ch);
+        dbHelper.addSpeciesAppearance(HUMAN, ch);
+        dbHelper.addCharacterAppearance(ERIN, ch);
+        dbHelper.addLandmarkAppearance(AMENTUS_GROVE, ch);
+        dbHelper.addSpeciesMention(GOBLIN, ch);
+        dbHelper.addSpeciesMention(HOLLOWSTONE_DECEIVER, ch);
+        dbHelper.addLandmarkAppearance(FLOODPLAINS_STREAM, ch);
+        // (mention of skill [Basic Cleaning])
+        dbHelper.addSpeciesAppearance(FLATFISH, ch);
+        // (mention of skill [Basic Cooking])
+        // (chess is mentioned)
     }
 
     private static void ch04(final DbHelper dbHelper) throws SQLException {

@@ -13,6 +13,8 @@ public record Species(String name, boolean canLevel, String wikiLink) implements
 
     public static final String DRAGON = "Dragon";
 
+    public static final String FLATFISH = "Flatfish";
+
     public static final String GOBLIN = "Goblin";
 
     public static final String HOLLOWSTONE_DECEIVER = "Hollowstone Deceiver";

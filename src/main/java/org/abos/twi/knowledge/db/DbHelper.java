@@ -538,6 +538,16 @@ public final class DbHelper {
         return internalFetchAll(this::internalFetchSkill, SELECT_SKILL);
     }
 
+    public void addClassSkill(final Class clazz, final Skill skill) throws  SQLException {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO class_skill VALUES (?,?);")) {
+            final Integer classId = internalFetchId(classIdMap, this::fetchClassId, clazz);
+            setInt(cs.preparedStatement(), 1, classId);
+            final Integer skillId = internalFetchId(skillIdMap, this::fetchSkillId, skill);
+            setInt(cs.preparedStatement(), 2, skillId);
+            cs.preparedStatement().execute();
+        }
+    }
+
     public void addWorld(final World world) throws SQLException {
         try (final ConnectionStatement cs = prepareStatement("INSERT INTO world (name, wiki_link) VALUES (?,?);")) {
             setString(cs.preparedStatement(), 1, world.name());
