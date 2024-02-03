@@ -5,13 +5,19 @@ import org.abos.twi.knowledge.core.Class;
 import org.abos.twi.knowledge.core.Skill;
 import org.abos.twi.knowledge.core.Species;
 import org.abos.twi.knowledge.core.Status;
+import org.abos.twi.knowledge.core.event.Battle;
 import org.abos.twi.knowledge.core.event.CharacterStatus;
 import org.abos.twi.knowledge.core.event.FirstMeeting;
+import org.abos.twi.knowledge.core.event.InnArrival;
 import org.abos.twi.knowledge.core.event.InnworldArrival;
 import org.abos.twi.knowledge.core.event.LevelUp;
 import org.abos.twi.knowledge.core.location.Landmark;
 import org.abos.twi.knowledge.core.location.LandmassOcean;
 import org.abos.twi.knowledge.core.location.LandmassOceanType;
+import org.abos.twi.knowledge.core.location.Nation;
+import org.abos.twi.knowledge.core.location.NationType;
+import org.abos.twi.knowledge.core.location.Settlement;
+import org.abos.twi.knowledge.core.location.SettlementType;
 import org.abos.twi.knowledge.core.location.World;
 import org.abos.twi.knowledge.core.publication.Chapter;
 import org.abos.twi.knowledge.db.DbHelper;
@@ -25,13 +31,41 @@ public final class Volume1 {
 
     public static final World EARTH = new World(World.EARTH, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(World.EARTH));
 
+    public static final LandmassOcean BLUE_MOON = new LandmassOcean(LandmassOcean.BLUE_MOON, LandmassOceanType.MOON, INNWORLD, null);
+
+    public static final LandmassOcean GREEN_MOON = new LandmassOcean(LandmassOcean.GREEN_MOON, LandmassOceanType.MOON, INNWORLD, null);
+
+    public static final LandmassOcean NORTH_AMERICA = new LandmassOcean(LandmassOcean.NORTH_AMERICA, LandmassOceanType.CONTINENT, EARTH, null);
+
     public static final LandmassOcean IZRIL = new LandmassOcean(LandmassOcean.IZRIL, LandmassOceanType.CONTINENT, INNWORLD, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(LandmassOcean.IZRIL));
 
-    public static final Landmark FLOODPLAINS = new Landmark(Landmark.FLOODPLAINS, true, IZRIL, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Landmark.FLOODPLAINS));
+    public static final LandmassOcean NORTHERN_IZRIL = new LandmassOcean(LandmassOcean.NORTHERN_IZRIL, LandmassOceanType.HALF_CONTINENT, INNWORLD, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(LandmassOcean.IZRIL));
+
+    public static final LandmassOcean SOUTHERN_IZRIL = new LandmassOcean(LandmassOcean.SOUTHERN_IZRIL, LandmassOceanType.HALF_CONTINENT, INNWORLD, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(LandmassOcean.IZRIL));
+
+    public static final Landmark FLOODPLAINS = new Landmark(Landmark.FLOODPLAINS, true, NORTHERN_IZRIL, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Landmark.FLOODPLAINS));
 
     public static final Landmark HIGH_PASSES = new Landmark(Landmark.HIGH_PASSES, true, IZRIL, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Landmark.HIGH_PASSES));
 
-    public static final Landmark FIRST_WANDERING_INN = new Landmark("Wandering Inn", false, IZRIL, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Landmark.FIRST_WANDERING_INN));
+    public static final Landmark FIRST_WANDERING_INN = new Landmark("Wandering Inn", false, NORTHERN_IZRIL, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Landmark.FIRST_WANDERING_INN));
+
+    public static final Landmark AMENTUS_GROVE = new Landmark(Landmark.AMENTUS_GROVE, true, NORTHERN_IZRIL, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName("Amentus"));
+
+    public static final Landmark TERIARCHS_OLD_HIDEOUT = new Landmark(Landmark.TERIARCHS_OLD_HIDEOUT, true, NORTHERN_IZRIL, null);
+
+    public static final Landmark TERIARCHS_NEW_HIDEOUT = new Landmark(Landmark.TERIARCHS_NEW_HIDEOUT, true, NORTHERN_IZRIL, null);
+
+    public static final Nation USA = new Nation(Nation.USA, NationType.REPUBLIC, NORTH_AMERICA, null);
+
+    public static final Nation FIVE_FAMILIES_TERRITORY = new Nation(Nation.FIVE_FAMILIES + " Territory", NationType.OLIGARCHY, NORTHERN_IZRIL, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Nation.FIVE_FAMILIES));
+
+    public static final Nation LISCOR_NATION = new Nation(Nation.LISCOR, NationType.CITY_STATE, NORTHERN_IZRIL, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Nation.LISCOR));
+
+    public static final Settlement CHICAGO = new Settlement(Settlement.CHICAGO, SettlementType.CITY, USA, null);
+
+    public static final Settlement LISCOR = new Settlement(Settlement.LISCOR, SettlementType.CITY, LISCOR_NATION, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Settlement.LISCOR));
+
+    public static final Settlement CELUM = new Settlement(Settlement.CELUM, SettlementType.CITY, FIVE_FAMILIES_TERRITORY, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Settlement.CELUM));
 
     public static final Species HUMAN = new Species(Species.HUMAN, true, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Species.HUMAN + "s"));
 
@@ -39,9 +73,21 @@ public final class Volume1 {
 
     public static final Species DRAGON = new Species(Species.DRAGON, false, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Species.DRAGON + "s"));
 
+    public static final Species HOLLOWSTONE_DECEIVER = new Species(Species.HOLLOWSTONE_DECEIVER, false, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName("Rock Crabs"));
+
+    public static final Species DEMON = new Species(Species.DEMON, true, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Species.DEMON + "s"));
+
+    public static final Species DJINN = new Species(Species.DJINN, true, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Species.DJINN + "i"));
+
     public static final Character ERIN = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.ERIN));
 
     public static final Character TERIARCH = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.TERIARCH));
+
+    public static final Character AZKERASH = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.AZKERASH));
+
+    public static final Character MAGNOLIA = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.MAGNOLIA));
+
+    public static final Character QUARASS = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.QUARASS));
 
     private Volume1() {
         /* No instantiation. */
@@ -122,6 +168,7 @@ public final class Volume1 {
         dbHelper.addWorld(INNWORLD);
         dbHelper.addWorld(EARTH);
         dbHelper.addLandmassOcean(IZRIL);
+        dbHelper.addLandmassOcean(NORTHERN_IZRIL);
         dbHelper.addLandmark(FLOODPLAINS);
         dbHelper.addLandmark(HIGH_PASSES);
         dbHelper.addLandmark(FIRST_WANDERING_INN);
@@ -139,6 +186,7 @@ public final class Volume1 {
         dbHelper.addCharacterStatus(new CharacterStatus(new Status(Status.ALIVE), ERIN, ch));
         dbHelper.addCharacterStatus(new CharacterStatus(new Status(Status.ALIVE), TERIARCH, ch));
         dbHelper.maybeAddFirstMeeting(new FirstMeeting(ERIN, TERIARCH, ch));
+        dbHelper.addInnArrival(new InnArrival(ERIN, ch));
         final LevelUp lvErin = new LevelUp(ERIN, ch, 1, innkeeper, false, false);
         dbHelper.addLevelUp(lvErin);
         dbHelper.addLevelUpSkill(lvErin, basicCleaning);
@@ -151,6 +199,7 @@ public final class Volume1 {
         // appearances/mentions
         dbHelper.addWorldAppearance(INNWORLD, ch);
         dbHelper.addLandmassOceanAppearance(IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(NORTHERN_IZRIL, ch);
         dbHelper.addLandmarkAppearance(FLOODPLAINS, ch);
         dbHelper.addLandmarkMention(HIGH_PASSES, ch);
         dbHelper.addLandmarkAppearance(FIRST_WANDERING_INN, ch);
@@ -159,10 +208,72 @@ public final class Volume1 {
         dbHelper.addSpeciesMention(GOBLIN, ch);
         dbHelper.addCharacterAppearance(ERIN, ch);
         dbHelper.addCharacterMention(TERIARCH, ch);
+        // chess is mentioned
+        // day 1 since Erin arrived
     }
 
     private static void ch01(final DbHelper dbHelper) throws SQLException {
-
+        final Chapter ch = dbHelper.fetchChapter("Chapter 1.01");
+        // first appearances/mentions
+        dbHelper.addLandmassOcean(BLUE_MOON);
+        dbHelper.addLandmassOcean(GREEN_MOON);
+        dbHelper.addLandmassOcean(NORTH_AMERICA);
+        dbHelper.addNation(USA);
+        dbHelper.addSettlement(CHICAGO);
+        dbHelper.addNation(LISCOR_NATION);
+        dbHelper.addSettlement(LISCOR);
+        dbHelper.addLandmark(AMENTUS_GROVE);
+        dbHelper.addSpecies(HOLLOWSTONE_DECEIVER);
+        dbHelper.addLandmark(TERIARCHS_OLD_HIDEOUT);
+        dbHelper.addLandmark(TERIARCHS_NEW_HIDEOUT);
+        dbHelper.addSpecies(DEMON);
+        dbHelper.addSpecies(DJINN);
+        final Class knight = new Class(Class.KNIGHT, ch, WikiHelper.WIKI_URL + Class.KNIGHT + "s");
+        dbHelper.addClass(knight);
+        final Class hero = new Class(Class.HERO, ch, WikiHelper.WIKI_URL + Class.KNIGHT + "es");
+        dbHelper.addClass(hero);
+        dbHelper.addNation(FIVE_FAMILIES_TERRITORY);
+        dbHelper.addSettlement(CELUM);
+        // events
+        final Battle rockCrabBattle = new Battle("Erin gets surprised by a Rock Crab", null);
+        dbHelper.addBattle(rockCrabBattle);
+        dbHelper.addBattleChapter(rockCrabBattle, ch);
+        dbHelper.addBattleCharacter(rockCrabBattle, ERIN);
+        // appearances/mentions
+        dbHelper.addWorldAppearance(INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(NORTHERN_IZRIL, ch);
+        dbHelper.addLandmarkAppearance(FLOODPLAINS, ch);
+        dbHelper.addLandmarkAppearance(FIRST_WANDERING_INN, ch);
+        dbHelper.addLandmassOceanMention(BLUE_MOON, ch);
+        dbHelper.addLandmassOceanMention(GREEN_MOON, ch);
+        dbHelper.addSpeciesAppearance(HUMAN, ch);
+        dbHelper.addCharacterAppearance(ERIN, ch);
+        dbHelper.addSpeciesMention(DRAGON, ch);
+        dbHelper.addSpeciesMention(GOBLIN, ch);
+        // chess is mentioned
+        // day 1 and 2 since Erin arrived
+        dbHelper.addWorldMention(EARTH, ch);
+        dbHelper.addLandmassOceanMention(NORTH_AMERICA, ch);
+        dbHelper.addNationMention(USA, ch);
+        dbHelper.addSettlementMention(CHICAGO, ch);
+        dbHelper.addNationMention(LISCOR_NATION, ch);
+        dbHelper.addSettlementMention(LISCOR, ch);
+        dbHelper.addLandmarkAppearance(AMENTUS_GROVE, ch);
+        dbHelper.addSpeciesAppearance(HOLLOWSTONE_DECEIVER, ch);
+        dbHelper.addCharacterAppearance(TERIARCH, ch);
+        dbHelper.addSpeciesAppearance(DRAGON, ch);
+        dbHelper.addLandmarkAppearance(TERIARCHS_OLD_HIDEOUT, ch);
+        dbHelper.addLandmarkAppearance(TERIARCHS_NEW_HIDEOUT, ch);
+        dbHelper.addCharacterMention(AZKERASH, ch);
+        // class [Knight] and [Hero] are mentioned
+        // Teriarch checks cave from day 1 to day 3 since erin appeared + 2 weeks checking for pursuit
+        dbHelper.addCharacterMention(MAGNOLIA, ch);
+        dbHelper.addSpeciesMention(DEMON, ch);
+        dbHelper.addSpeciesMention(DJINN, ch);
+        dbHelper.addCharacterMention(QUARASS, ch);
+        dbHelper.addNationMention(FIVE_FAMILIES_TERRITORY, ch);
+        dbHelper.addSettlementMention(CELUM, ch);
     }
 
     private static void ch02(final DbHelper dbHelper) throws SQLException {

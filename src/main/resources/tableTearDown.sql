@@ -1,6 +1,7 @@
 BEGIN;
 DROP TABLE level_up_skill;
 DROP TABLE level_up;
+DROP TABLE inn_arrival;
 DROP TABLE innworld_arrival;
 DROP TABLE solstice_chapter;
 DROP TABLE solstice;
@@ -35,6 +36,7 @@ DROP TABLE appearance_nation;
 DROP TABLE nation;
 DROP TABLE mention_landmark;
 DROP TABLE appearance_landmark;
+--DROP VIEW landmark_izril;
 DROP TABLE landmark;
 DROP TABLE mention_landmass_ocean;
 DROP TABLE appearance_landmass_ocean;

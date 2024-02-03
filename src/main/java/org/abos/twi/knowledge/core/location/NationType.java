@@ -6,7 +6,11 @@ public enum NationType {
 
     KINGDOM,
 
-    TERRITORY,
+    OLIGARCHY,
+
+    REPUBLIC,
+
+    JUNTA,
 
     WALLED_CITY,
 

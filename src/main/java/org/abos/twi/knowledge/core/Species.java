@@ -7,9 +7,15 @@ import java.util.Objects;
 
 public record Species(String name, boolean canLevel, String wikiLink) implements Named, Comparable<Species> {
 
+    public static final String DJINN = "Djinn";
+
+    public static final String DEMON = "Demon";
+
     public static final String DRAGON = "Dragon";
 
     public static final String GOBLIN = "Goblin";
+
+    public static final String HOLLOWSTONE_DECEIVER = "Hollowstone Deceiver";
 
     public static final String HUMAN = "Human";
 

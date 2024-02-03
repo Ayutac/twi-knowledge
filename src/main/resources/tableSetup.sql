@@ -2,6 +2,7 @@ BEGIN;
 CREATE TYPE landmass_ocean_type AS ENUM (
   'Moon',
   'Continent',
+  'Half continent',
   'Archipelago',
   'Isle',
   'Ocean'
@@ -9,7 +10,9 @@ CREATE TYPE landmass_ocean_type AS ENUM (
 CREATE TYPE nation_type AS ENUM (
   'Empire',
   'Kingdom',
-  'Territory',
+  'Oligarchy',
+  'Republic',
+  'Junta',
   'Walled city',
   'City state'
 );
@@ -139,6 +142,7 @@ CREATE TABLE landmark (
   wiki_link TEXT,
   PRIMARY KEY(id)
 );
+--CREATE VIEW landmark_izril
 CREATE TABLE appearance_landmark (
   landmark_id INT NOT NULL  REFERENCES landmark(id),
   chapter_id  INT NOT NULL  REFERENCES chapter(id),
@@ -321,6 +325,12 @@ CREATE TABLE solstice_chapter (
   PRIMARY KEY(solstice_id, chapter_id)
 );
 CREATE TABLE innworld_arrival (
+  id            SERIAL,
+  character_id  INT     NOT NULL  REFERENCES character(id),
+  chapter_id    INT     NOT NULL  REFERENCES chapter(id),
+  PRIMARY KEY(id)
+);
+CREATE TABLE inn_arrival (
   id            SERIAL,
   character_id  INT     NOT NULL  REFERENCES character(id),
   chapter_id    INT     NOT NULL  REFERENCES chapter(id),

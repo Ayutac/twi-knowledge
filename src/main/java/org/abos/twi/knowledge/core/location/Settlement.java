@@ -7,6 +7,12 @@ import java.util.Objects;
 
 public record Settlement(String name, SettlementType settlementType, Nation nation, String wikiLink) implements Named {
 
+    public static final String CHICAGO = "Chicago";
+
+    public static final String CELUM = "Celum";
+
+    public static final String LISCOR = Nation.LISCOR;
+
     public Settlement(final String name, final SettlementType settlementType, final Nation nation, final String wikiLink) {
         this.name = Objects.requireNonNull(name);
         this.settlementType = Objects.requireNonNull(settlementType);

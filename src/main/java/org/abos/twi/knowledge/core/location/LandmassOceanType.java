@@ -6,6 +6,8 @@ public enum LandmassOceanType {
 
     CONTINENT,
 
+    HALF_CONTINENT,
+
     ARCHIPELAGO,
 
     ISLE,

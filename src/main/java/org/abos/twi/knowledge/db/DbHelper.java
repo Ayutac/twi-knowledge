@@ -9,6 +9,7 @@ import org.abos.twi.knowledge.core.Status;
 import org.abos.twi.knowledge.core.event.Battle;
 import org.abos.twi.knowledge.core.event.CharacterStatus;
 import org.abos.twi.knowledge.core.event.FirstMeeting;
+import org.abos.twi.knowledge.core.event.InnArrival;
 import org.abos.twi.knowledge.core.event.InnworldArrival;
 import org.abos.twi.knowledge.core.event.LevelUp;
 import org.abos.twi.knowledge.core.event.Solstice;
@@ -345,7 +346,7 @@ public final class DbHelper {
     }
 
     private <T extends Named> void internalAddAppearance(final T obj, final Chapter chapter, final String tableName, final BidiMap<T, Integer> cachedId, final SQLFunction<String, Integer> fetcher, final boolean mention) throws SQLException {
-        try (final ConnectionStatement cs = prepareStatement("INSERT INTO " + (mention ? "mention" : "appearance") + "_" + tableName + " VALUES (?,?)")) {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO " + (mention ? "mention" : "appearance") + "_" + tableName + " VALUES (?,?);")) {
             final Integer objectId = internalFetchId(cachedId, fetcher, obj);
             final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, chapter);
             setInt(cs.preparedStatement(), 1, objectId);
@@ -480,7 +481,7 @@ public final class DbHelper {
     }
 
     public void addClass(final Class clazz) throws SQLException {
-        try (final ConnectionStatement cs = prepareStatement("INSERT INTO class (name, since, wiki_link) VALUES (?,?,?)")) {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO class (name, since, wiki_link) VALUES (?,?,?);")) {
             setString(cs.preparedStatement(), 1, clazz.name());
             final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, clazz.since());
             setInt(cs.preparedStatement(), 2, chapterId);
@@ -494,7 +495,7 @@ public final class DbHelper {
     }
 
     public void addSkill(final Skill skill) throws SQLException {
-        try (final ConnectionStatement cs = prepareStatement("INSERT INTO skill (name, since, wiki_link) VALUES (?,?,?)")) {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO skill (name, since, wiki_link) VALUES (?,?,?);")) {
             setString(cs.preparedStatement(), 1, skill.name());
             final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, skill.since());
             setInt(cs.preparedStatement(), 2, chapterId);
@@ -582,7 +583,7 @@ public final class DbHelper {
 
     private LandmassOcean internalFetchLandmassOcean(final ResultSet rs) throws SQLException {
         final World world = internalFetchReference(worldIdMap, this::fetchWorld, rs.getInt(3));
-        return new LandmassOcean(rs.getString(1), Enum.valueOf(LandmassOceanType.class, rs.getString(2).toUpperCase()), world, rs.getString(4));
+        return new LandmassOcean(rs.getString(1), Enum.valueOf(LandmassOceanType.class, rs.getString(2).toUpperCase().replace(' ', '_')), world, rs.getString(4));
     }
 
     private LandmassOcean fetchLandmassOcean(final int landmassOceanId) throws SQLException {
@@ -638,7 +639,7 @@ public final class DbHelper {
     }
 
     public void addNation(final Nation nation) throws SQLException {
-        try (final ConnectionStatement cs = prepareStatement("INSERT INTO nation (name, type, landmass_ocean_id, wiki_link) VALUES (?,?,?,?);")) {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO nation (name, type, landmass_ocean_id, wiki_link) VALUES (?,?::nation_type,?,?);")) {
             setString(cs.preparedStatement(), 1, nation.name());
             setString(cs.preparedStatement(), 2, StringUtil.toCapitalized(nation.nationType().name().replace('_', ' ')));
             final Integer landmassOceanId = internalFetchId(landmassOceanIdMap, this::fetchLandmassOceanId, nation.landmassOcean());
@@ -674,7 +675,7 @@ public final class DbHelper {
     }
 
     public void addSettlement(final Settlement settlement) throws SQLException {
-        try (final ConnectionStatement cs = prepareStatement("INSERT INTO settlement (name, type, nation_id, wiki_link) VALUES (?,?,?,?);")) {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO settlement (name, type, nation_id, wiki_link) VALUES (?,?::settlement_type,?,?);")) {
             setString(cs.preparedStatement(), 1, settlement.name());
             setString(cs.preparedStatement(), 2, StringUtil.toCapitalized(settlement.settlementType().name().replace('_', ' ')));
             final Integer nationId = internalFetchId(nationIdMap, this::fetchNationId, settlement.nation());
@@ -802,7 +803,7 @@ public final class DbHelper {
     }
 
     private void internalAddCharacterAppearance(final Character character, final Chapter chapter, final boolean mention) throws SQLException {
-        try (final ConnectionStatement cs = prepareStatement("INSERT INTO " + (mention ? "mention" : "appearance") + "_character VALUES (?,?)")) {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO " + (mention ? "mention" : "appearance") + "_character VALUES (?,?);")) {
             final Integer characterId = fetchCharacterId(character);
             final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, chapter);
             setInt(cs.preparedStatement(), 1, characterId);
@@ -859,7 +860,7 @@ public final class DbHelper {
     }
 
     public void addCharacterStatus(final CharacterStatus characterStatus) throws SQLException {
-        try (ConnectionStatement cs = prepareStatement("INSERT INTO character_status (status_id, character_id, since) VALUES (?,?,?)")) {
+        try (ConnectionStatement cs = prepareStatement("INSERT INTO character_status (status_id, character_id, since) VALUES (?,?,?);")) {
             final Integer statusId = internalFetchId(statusIdMap, this::fetchStatusId, characterStatus.status());
             setInt(cs.preparedStatement(), 1, statusId);
             final Integer characterId = fetchCharacterId(characterStatus.character());
@@ -960,7 +961,7 @@ public final class DbHelper {
     }
 
     public void addBattleChapter(final Battle battle, final Chapter chapter) throws SQLException {
-        try (ConnectionStatement cs = prepareStatement("INSERT INTO battle_chapter (battle_id, character_id) VALUES (?,?);")) {
+        try (ConnectionStatement cs = prepareStatement("INSERT INTO battle_chapter (battle_id, chapter_id) VALUES (?,?);")) {
             final Integer battleId = internalFetchId(battleIdMap, this::fetchBattleId, battle);
             setInt(cs.preparedStatement(), 1, battleId);
             final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, chapter);
@@ -1025,9 +1026,19 @@ public final class DbHelper {
 
     public void addInnworldArrival(final InnworldArrival innworldArrival) throws SQLException {
         try (ConnectionStatement cs = prepareStatement("INSERT INTO innworld_arrival (character_id, chapter_id) VALUES (?,?);")) {
-            final Integer solsticeId = fetchCharacterId(innworldArrival.character());
-            setInt(cs.preparedStatement(), 1, solsticeId);
+            final Integer characterId = fetchCharacterId(innworldArrival.character());
+            setInt(cs.preparedStatement(), 1, characterId);
             final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, innworldArrival.chapter());
+            setInt(cs.preparedStatement(), 2, chapterId);
+            cs.preparedStatement().execute();
+        }
+    }
+
+    public void addInnArrival(final InnArrival innArrival) throws SQLException {
+        try (ConnectionStatement cs = prepareStatement("INSERT INTO inn_arrival (character_id, chapter_id) VALUES (?,?);")) {
+            final Integer characterId = fetchCharacterId(innArrival.character());
+            setInt(cs.preparedStatement(), 1, characterId);
+            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, innArrival.chapter());
             setInt(cs.preparedStatement(), 2, chapterId);
             cs.preparedStatement().execute();
         }
@@ -1046,7 +1057,7 @@ public final class DbHelper {
     }
 
     public void addLevelUp(final LevelUp levelUp) throws SQLException {
-        try (ConnectionStatement cs = prepareStatement("INSERT INTO level_up (character_id, chapter_id, new_level, class_id, capstone, canceled) VALUES (?,?,?,?,?,?)")) {
+        try (ConnectionStatement cs = prepareStatement("INSERT INTO level_up (character_id, chapter_id, new_level, class_id, capstone, canceled) VALUES (?,?,?,?,?,?);")) {
             internalFillLevelUpStatement(levelUp, cs.preparedStatement());
             cs.preparedStatement().execute();
         }
@@ -1070,7 +1081,7 @@ public final class DbHelper {
     }
 
     public void addLevelUpSkill(final LevelUp levelUp, final Skill skill) throws SQLException {
-        try (final ConnectionStatement cs = prepareStatement("INSERT INTO level_up_skill VALUES (?,?)")) {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO level_up_skill VALUES (?,?);")) {
             final Integer levelUpId = fetchLevelUpId(levelUp);
             setInt(cs.preparedStatement(), 1, levelUpId);
             final Integer skillId = internalFetchId(skillIdMap, this::fetchSkillId, skill);
