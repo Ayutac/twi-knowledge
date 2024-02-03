@@ -1,6 +1,6 @@
 BEGIN;
 CREATE TYPE landmass_ocean_type AS ENUM (
-  'Moon'
+  'Moon',
   'Continent',
   'Archipelago',
   'Isle',
@@ -226,30 +226,76 @@ CREATE TABLE first_name (
   name          TEXT      NOT NULL,
   character_id  INT       NOT NULL  REFERENCES character(id),
   since         INT                 REFERENCES chapter(id),
-  PRIMARY KEY (name, character_id, since)
+  PRIMARY KEY(name, character_id, since)
 );
 CREATE TABLE middle_name (
   name          TEXT      NOT NULL,
   character_id  INT       NOT NULL  REFERENCES character(id),
   since         INT                 REFERENCES chapter(id),
-  PRIMARY KEY (name, character_id, since)
+  PRIMARY KEY(name, character_id, since)
 );
 CREATE TABLE last_name (
   name          TEXT      NOT NULL,
   character_id  INT       NOT NULL  REFERENCES character(id),
   since         INT                 REFERENCES chapter(id),
-  PRIMARY KEY (name, character_id, since)
+  PRIMARY KEY(name, character_id, since)
 );
 CREATE TABLE character_species (
   character_id  INT       NOT NULL  REFERENCES character(id),
   species_id    INT       NOT NULL  REFERENCES species(id),
   since         INT                 REFERENCES chapter(id),
-  PRIMARY KEY (character_id, species_id, since)
+  PRIMARY KEY(character_id, species_id, since)
 );
 CREATE TABLE character_age (
   age           INT  NOT NULL,
   character_id  INT  NOT NULL  REFERENCES character(id),
   since         INT            REFERENCES chapter(id),
-  PRIMARY KEY (age, character_id, since)
+  PRIMARY KEY(age, character_id, since)
+);
+CREATE TABLE status (
+  id    SERIAL,
+  name  TEXT    UNIQUE NOT NULL,
+  PRIMARY KEY(id)
+);
+CREATE TABLE character_status (
+  id            SERIAL,
+  status_id     INT     NOT NULL  REFERENCES status(id),
+  character_id  INT     NOT NULL  REFERENCES character(id),
+  since         INT     NOT NULL  REFERENCES chapter(id),
+  PRIMARY KEY(status_id, character_id, since)
+);
+CREATE TABLE first_meeting_left (
+  id            SERIAL,
+  character1_id INT NOT NULL  REFERENCES character(id),
+  character2_id INT NOT NULL  REFERENCES character(id),
+  chapter_id    INT NOT NULL  REFERENCES chapter(id),
+  CONSTRAINT different_ids CHECK (character1_id != character2_id),
+  PRIMARY KEY(character1_id, character2_id)
+);
+CREATE VIEW first_meeting_right AS
+  SELECT m.id AS id, m.character2_id AS character1_id, m.character1_id AS character2_id, m.chapter_id AS chapter_id
+  FROM first_meeting_left m;
+CREATE VIEW first_meeting AS
+  SELECT * FROM first_meeting_left UNION SELECT * FROM first_meeting_right;
+CREATE TABLE battle (
+  id        SERIAL,
+  name      TEXT    UNIQUE NOT NULL,
+  wiki_link TEXT,
+  PRIMARY KEY(id)
+);
+CREATE TABLE battle_character (
+  battle_id     INT   NOT NULL  REFERENCES battle(id),
+  character_id  INT   NOT NULL  REFERENCES character(id),
+  PRIMARY KEY(battle_id, character_id)
+);
+CREATE TABLE battle_chapter (
+  battle_id     INT   NOT NULL  REFERENCES battle(id),
+  chapter_id    INT   NOT NULL  REFERENCES chapter(id),
+  PRIMARY KEY(battle_id, chapter_id)
+);
+CREATE TABLE battle_status (
+  battle_id     INT   NOT NULL  REFERENCES battle(id),
+  status_id     INT   NOT NULL  REFERENCES character_status(id),
+  PRIMARY KEY(battle_id, status_id)
 );
 COMMIT;

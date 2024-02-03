@@ -2,6 +2,9 @@ package org.abos.twi.knowledge.db.datafill;
 
 import org.abos.twi.knowledge.core.Character;
 import org.abos.twi.knowledge.core.Species;
+import org.abos.twi.knowledge.core.Status;
+import org.abos.twi.knowledge.core.event.CharacterStatus;
+import org.abos.twi.knowledge.core.event.FirstMeeting;
 import org.abos.twi.knowledge.core.location.Landmark;
 import org.abos.twi.knowledge.core.location.LandmassOcean;
 import org.abos.twi.knowledge.core.location.LandmassOceanType;
@@ -121,8 +124,12 @@ public final class Volume1 {
         dbHelper.addSpecies(HUMAN);
         dbHelper.addSpecies(GOBLIN);
         dbHelper.addSpecies(DRAGON);
+        // events
+        dbHelper.addCharacterStatus(new CharacterStatus(new Status(Status.ALIVE), ERIN, ch));
         dbHelper.addCharacterFirstName(ERIN, ch, "Erin");
         dbHelper.addCharacterLastName(ERIN, ch, "Solstice");
+        dbHelper.addCharacterStatus(new CharacterStatus(new Status(Status.ALIVE), TERIARCH, ch));
+        dbHelper.maybeAddFirstMeeting(new FirstMeeting(ERIN, TERIARCH, ch));
         // appearances/mentions
         dbHelper.addWorldAppearance(INNWORLD, ch);
         dbHelper.addLandmassOceanAppearance(IZRIL, ch);

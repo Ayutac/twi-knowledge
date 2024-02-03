@@ -1,4 +1,13 @@
 BEGIN;
+DROP TABLE battle_status;
+DROP TABLE battle_chapter;
+DROP TABLE battle_character;
+DROP TABLE battle;
+DROP VIEW first_meeting;
+DROP VIEW first_meeting_right;
+DROP TABLE first_meeting_left;
+DROP TABLE character_status;
+DROP TABLE status;
 DROP TABLE character_age;
 DROP TABLE character_species;
 DROP TABLE last_name;

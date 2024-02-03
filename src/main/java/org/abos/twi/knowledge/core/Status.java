@@ -4,12 +4,11 @@ import org.abos.common.Named;
 
 import java.util.Objects;
 
-/**
- * RsK is short for Relationship Kind
- */
-public record Rsk(String name) implements Named {
+public record Status(String name) implements Named {
 
-    public Rsk(final String name) {
+    public static final String ALIVE = "Alive";
+
+    public Status(final String name) {
         this.name = Objects.requireNonNull(name);
     }
 

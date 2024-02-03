@@ -5,6 +5,10 @@ import org.abos.common.Named;
 import org.abos.common.StringUtil;
 import org.abos.twi.knowledge.core.CharacterNameType;
 import org.abos.twi.knowledge.core.Species;
+import org.abos.twi.knowledge.core.Status;
+import org.abos.twi.knowledge.core.event.Battle;
+import org.abos.twi.knowledge.core.event.CharacterStatus;
+import org.abos.twi.knowledge.core.event.FirstMeeting;
 import org.abos.twi.knowledge.core.publication.Book;
 import org.abos.twi.knowledge.core.publication.Chapter;
 import org.abos.twi.knowledge.core.Character;
@@ -86,7 +90,13 @@ public final class DbHelper {
 
     private static final String SELECT_CHARACTER = "SELECT wiki_link FROM character";
 
+    private static final String SELECT_STATUS = "SELECT name FROM status";
+
     private static final String SELECT_RSK = "SELECT name FROM rsk";
+
+    private static final String SELECT_FIRST_MEETING = "SELECT * FROM first_meeting WHERE character1_id=? AND character2_id=?;";
+
+    private static final String INSERT_FIRST_MEETING = "INSERT INTO first_meeting_left (character1_id, character2_id, chapter_id) VALUES (?,?,?);";
 
     private static final Logger LOGGER = LogManager.getLogger(DbHelper.class);
 
@@ -115,6 +125,12 @@ public final class DbHelper {
     private final BidiMap<Species, Integer> speciesIdMap = new DualHashBidiMap<>();
 
     private final BidiMap<Character, Integer> characterIdMap = new DualHashBidiMap<>();
+
+    private final BidiMap<Status, Integer> statusIdMap = new DualHashBidiMap<>();
+
+    private final BidiMap<CharacterStatus, Integer> characterStatusIdMap = new DualHashBidiMap<>();
+
+    private final BidiMap<Battle, Integer> battleIdMap = new DualHashBidiMap<>();
 
     public DbHelper() throws IllegalStateException {
         final String url = System.getProperty(PROPERTY_URL);
@@ -709,6 +725,16 @@ public final class DbHelper {
         }
     }
 
+    private Integer fetchCharacterId(final Character character) throws SQLException {
+        if (!characterIdMap.containsKey(character)) {
+            final Integer fetch = fetchCharacterId(character.wikiLink());
+            if (fetch != null) {
+                characterIdMap.put(character, fetch);
+            }
+        }
+        return characterIdMap.get(character);
+    }
+
     private Character internalFetchCharacter(final ResultSet rs) throws SQLException {
         return new Character(rs.getString(1));
     }
@@ -721,20 +747,27 @@ public final class DbHelper {
         return internalFetchAll(this::internalFetchCharacter, SELECT_CHARACTER);
     }
 
+    private void internalAddCharacterAppearance(final Character character, final Chapter chapter, final boolean mention) throws SQLException {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO " + (mention ? "mention" : "appearance") + "_character VALUES (?,?)")) {
+            final Integer characterId = fetchCharacterId(character);
+            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, chapter);
+            setInt(cs.preparedStatement(), 1, characterId);
+            setInt(cs.preparedStatement(), 2, chapterId);
+            cs.preparedStatement().execute();
+        }
+    }
+
     public void addCharacterAppearance(final Character character, final Chapter chapter) throws SQLException {
-        internalAddAppearance(character, chapter, "character", characterIdMap, this::fetchCharacterId, false);
+        internalAddCharacterAppearance(character, chapter, false);
     }
 
     public void addCharacterMention(final Character character, final Chapter chapter) throws SQLException {
-        internalAddAppearance(character, chapter, "character", characterIdMap, this::fetchCharacterId, true);
+        internalAddCharacterAppearance(character, chapter, true);
     }
 
     private void internalAddCharacterName(final Character character, final Chapter chapter, final String name, final CharacterNameType type) throws SQLException {
         try (final ConnectionStatement cs = prepareStatement("INSERT INTO " + type.name().toLowerCase() + "_name (name, character_id, since) VALUES (?,?,?);")) {
-            if (!characterIdMap.containsKey(character)) {
-                characterIdMap.put(character, fetchCharacterId(character.wikiLink()));
-            }
-            final Integer characterId = characterIdMap.get(character);
+            final Integer characterId = fetchCharacterId(character);
             final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, chapter);
             setString(cs.preparedStatement(), 1, name);
             setInt(cs.preparedStatement(), 2, characterId);
@@ -755,6 +788,56 @@ public final class DbHelper {
         internalAddCharacterName(character, chapter, name, CharacterNameType.LAST);
     }
 
+    private Integer fetchStatusId(final String statusName) throws SQLException {
+        return internalFetchIdByName("status", statusName);
+    }
+
+    private Status internalFetchStatus(final ResultSet rs) throws SQLException {
+        return new Status(rs.getString(1));
+    }
+
+    private Status fetchStatus(final int statusId) throws SQLException {
+        return internalFetchById(this::internalFetchStatus, SELECT_STATUS, statusId);
+    }
+
+    public List<Status> fetchStatuses() throws SQLException {
+        return internalFetchAll(this::internalFetchStatus, SELECT_STATUS);
+    }
+
+    public void addCharacterStatus(final CharacterStatus characterStatus) throws SQLException {
+        try (ConnectionStatement cs = prepareStatement("INSERT INTO character_status (status_id, character_id, since) VALUES (?,?,?)")) {
+            final Integer statusId = internalFetchId(statusIdMap, this::fetchStatusId, characterStatus.status());
+            setInt(cs.preparedStatement(), 1, statusId);
+            final Integer characterId = fetchCharacterId(characterStatus.character());
+            setInt(cs.preparedStatement(), 2, characterId);
+            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, characterStatus.since());
+            setInt(cs.preparedStatement(), 3, chapterId);
+            cs.preparedStatement().execute();
+        }
+    }
+
+    public Integer fetchCharacterStatusId(final CharacterStatus characterStatus) throws SQLException {
+        if (characterStatusIdMap.containsKey(characterStatus)) {
+            return characterStatusIdMap.get(characterStatus);
+        }
+        try (ConnectionStatement cs = prepareStatement("SELECT id FROM character_status WHERE status_id=? AND character_id=? AND since=?;")) {
+            final Integer statusId = internalFetchId(statusIdMap, this::fetchStatusId, characterStatus.status());
+            setInt(cs.preparedStatement(), 1, statusId);
+            final Integer characterId = fetchCharacterId(characterStatus.character());
+            setInt(cs.preparedStatement(), 2, characterId);
+            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, characterStatus.since());
+            setInt(cs.preparedStatement(), 3, chapterId);
+            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
+                if (rs.next()) {
+                    final int fetch = rs.getInt(1);
+                    characterStatusIdMap.put(characterStatus, fetch);
+                    return fetch;
+                }
+            }
+        }
+        return null;
+    }
+
     private Rsk internalFetchRsk(final ResultSet rs) throws SQLException {
         return new Rsk(rs.getString(1));
     }
@@ -765,6 +848,81 @@ public final class DbHelper {
 
     public List<Rsk> fetchRsks() throws SQLException {
         return internalFetchAll(this::internalFetchRsk, SELECT_RSK);
+    }
+
+    private void internalMaybeAddFirstMeeting(final FirstMeeting firstMeeting, ConnectionStatement selectCs, ConnectionStatement insertCs) throws SQLException {
+        final Integer character1Id = internalFetchId(characterIdMap, this::fetchChapterId, firstMeeting.character1());
+        final Integer character2Id = internalFetchId(characterIdMap, this::fetchChapterId, firstMeeting.character2());
+        final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, firstMeeting.chapter());
+        setInt(selectCs.preparedStatement(), 1, character1Id);
+        setInt(selectCs.preparedStatement(), 2, character2Id);
+        try (final ResultSet rs = selectCs.preparedStatement().executeQuery()) {
+            if (rs.next()) {
+                return;
+            }
+        }
+        setInt(insertCs.preparedStatement(), 1, character1Id);
+        setInt(insertCs.preparedStatement(), 2, character2Id);
+        setInt(insertCs.preparedStatement(), 3, chapterId);
+        insertCs.preparedStatement().execute();
+    }
+
+    public void maybeAddFirstMeeting(final FirstMeeting firstMeeting) throws SQLException {
+        try (final ConnectionStatement selectCs = prepareStatement(SELECT_FIRST_MEETING);
+             final ConnectionStatement insertCs = prepareStatement(INSERT_FIRST_MEETING)) {
+            internalMaybeAddFirstMeeting(firstMeeting, selectCs, insertCs);
+        }
+    }
+
+    public void maybeAddFirstMeetings(final List<FirstMeeting> firstMeetings) throws SQLException {
+        try (final ConnectionStatement selectCs = prepareStatement(SELECT_FIRST_MEETING);
+             final ConnectionStatement insertCs = prepareStatement(INSERT_FIRST_MEETING)) {
+            for (FirstMeeting firstMeeting : firstMeetings) {
+                internalMaybeAddFirstMeeting(firstMeeting, selectCs, insertCs);
+            }
+        }
+    }
+
+    public void addBattle(final Battle battle) throws SQLException {
+        try (ConnectionStatement cs = prepareStatement("INSERT INTO battle (name, wiki_link) VALUES (?,?);")) {
+            setString(cs.preparedStatement(), 1, battle.name());
+            setString(cs.preparedStatement(), 2, battle.wikiLink());
+            cs.preparedStatement().execute();
+        }
+    }
+
+    private Integer fetchBattleId(final String battleName) throws SQLException {
+        return internalFetchIdByName("battle", battleName);
+    }
+
+    public void addBattleCharacter(final Battle battle, final Character character) throws SQLException {
+        try (ConnectionStatement cs = prepareStatement("INSERT INTO battle_character (battle_id, character_id) VALUES (?,?);")) {
+            final Integer battleId = internalFetchId(battleIdMap, this::fetchBattleId, battle);
+            setInt(cs.preparedStatement(), 1, battleId);
+            final Integer characterId = fetchCharacterId(character);
+            setInt(cs.preparedStatement(), 2, characterId);
+            cs.preparedStatement().execute();
+        }
+    }
+
+    public void addBattleChapter(final Battle battle, final Chapter chapter) throws SQLException {
+        try (ConnectionStatement cs = prepareStatement("INSERT INTO battle_character (battle_id, character_id) VALUES (?,?);")) {
+            final Integer battleId = internalFetchId(battleIdMap, this::fetchBattleId, battle);
+            setInt(cs.preparedStatement(), 1, battleId);
+            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, chapter);
+            setInt(cs.preparedStatement(), 2, chapterId);
+            cs.preparedStatement().execute();
+        }
+    }
+
+    public void addBattleStatus(final Battle battle, final CharacterStatus status) throws SQLException {
+        try (ConnectionStatement cs = prepareStatement("INSERT INTO battle_status (battle_id, status_id) VALUES (?,?);")) {
+            final Integer battleId = internalFetchId(battleIdMap, this::fetchBattleId, battle);
+            setInt(cs.preparedStatement(), 1, battleId);
+            final Integer statusId = fetchCharacterStatusId(status);
+            setInt(cs.preparedStatement(), 2, statusId);
+            cs.preparedStatement().execute();
+        }
     }
 
     public void initialize(final List<Volume> volumes, final List<Book> books, final List<Chapter> chapters, final List<Character> characters) throws SQLException, IOException {
