@@ -9,6 +9,7 @@ import org.abos.twi.knowledge.core.Status;
 import org.abos.twi.knowledge.core.event.Battle;
 import org.abos.twi.knowledge.core.event.CharacterStatus;
 import org.abos.twi.knowledge.core.event.FirstMeeting;
+import org.abos.twi.knowledge.core.event.InnworldArrival;
 import org.abos.twi.knowledge.core.event.Solstice;
 import org.abos.twi.knowledge.core.event.War;
 import org.abos.twi.knowledge.core.publication.Book;
@@ -966,10 +967,20 @@ public final class DbHelper {
     }
 
     public void addSolsticeChapter(final Solstice solstice, final Chapter chapter) throws SQLException {
-        try (ConnectionStatement cs = prepareStatement("INSERT INTO solstice_chapter (solstice_id, character_id) VALUES (?,?);")) {
+        try (ConnectionStatement cs = prepareStatement("INSERT INTO solstice_chapter (solstice_id, chapter_id) VALUES (?,?);")) {
             final Integer solsticeId = internalFetchId(solsticeIdMap, this::fetchSolsticeId, solstice);
             setInt(cs.preparedStatement(), 1, solsticeId);
             final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, chapter);
+            setInt(cs.preparedStatement(), 2, chapterId);
+            cs.preparedStatement().execute();
+        }
+    }
+
+    public void addInnworldArrival(final InnworldArrival innworldArrival) throws SQLException {
+        try (ConnectionStatement cs = prepareStatement("INSERT INTO innworld_arrival (character_id, chapter_id) VALUES (?,?);")) {
+            final Integer solsticeId = fetchCharacterId(innworldArrival.character());
+            setInt(cs.preparedStatement(), 1, solsticeId);
+            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, innworldArrival.chapter());
             setInt(cs.preparedStatement(), 2, chapterId);
             cs.preparedStatement().execute();
         }

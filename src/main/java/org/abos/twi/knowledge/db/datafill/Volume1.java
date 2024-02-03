@@ -5,6 +5,7 @@ import org.abos.twi.knowledge.core.Species;
 import org.abos.twi.knowledge.core.Status;
 import org.abos.twi.knowledge.core.event.CharacterStatus;
 import org.abos.twi.knowledge.core.event.FirstMeeting;
+import org.abos.twi.knowledge.core.event.InnworldArrival;
 import org.abos.twi.knowledge.core.location.Landmark;
 import org.abos.twi.knowledge.core.location.LandmassOcean;
 import org.abos.twi.knowledge.core.location.LandmassOceanType;
@@ -125,6 +126,7 @@ public final class Volume1 {
         dbHelper.addSpecies(GOBLIN);
         dbHelper.addSpecies(DRAGON);
         // events
+        dbHelper.addInnworldArrival(new InnworldArrival(ERIN, ch));
         dbHelper.addCharacterStatus(new CharacterStatus(new Status(Status.ALIVE), ERIN, ch));
         dbHelper.addCharacterFirstName(ERIN, ch, "Erin");
         dbHelper.addCharacterLastName(ERIN, ch, "Solstice");

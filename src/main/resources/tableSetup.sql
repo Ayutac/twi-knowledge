@@ -318,6 +318,12 @@ CREATE TABLE solstice (
 CREATE TABLE solstice_chapter (
   solstice_id   INT   NOT NULL  REFERENCES solstice(id),
   chapter_id    INT   NOT NULL  REFERENCES chapter(id),
-  PRIMARY KEY(battle_id, chapter_id)
+  PRIMARY KEY(solstice_id, chapter_id)
+);
+CREATE TABLE innworld_arrival (
+  id            SERIAL,
+  character_id  INT     NOT NULL  REFERENCES character(id),
+  chapter_id    INT     NOT NULL  REFERENCES chapter(id),
+  PRIMARY KEY(id)
 );
 COMMIT;
