@@ -128,10 +128,13 @@ public final class Volume1 {
         // events
         dbHelper.addInnworldArrival(new InnworldArrival(ERIN, ch));
         dbHelper.addCharacterStatus(new CharacterStatus(new Status(Status.ALIVE), ERIN, ch));
-        dbHelper.addCharacterFirstName(ERIN, ch, "Erin");
-        dbHelper.addCharacterLastName(ERIN, ch, "Solstice");
         dbHelper.addCharacterStatus(new CharacterStatus(new Status(Status.ALIVE), TERIARCH, ch));
         dbHelper.maybeAddFirstMeeting(new FirstMeeting(ERIN, TERIARCH, ch));
+        // misc
+        dbHelper.addCharacterFirstName(ERIN, ch, "Erin");
+        dbHelper.addCharacterLastName(ERIN, ch, "Solstice");
+        dbHelper.addCharacterSpecies(ERIN, HUMAN, ch);
+        dbHelper.addCharacterSpecies(TERIARCH, DRAGON, ch);
         // appearances/mentions
         dbHelper.addWorldAppearance(INNWORLD, ch);
         dbHelper.addLandmassOceanAppearance(IZRIL, ch);

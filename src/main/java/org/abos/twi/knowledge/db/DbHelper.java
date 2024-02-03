@@ -754,6 +754,18 @@ public final class DbHelper {
         return internalFetchAll(this::internalFetchCharacter, SELECT_CHARACTER);
     }
 
+    public void addCharacterSpecies(final Character character, final Species species, final Chapter since) throws SQLException {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO character_species VALUES (?,?,?);")) {
+            final Integer characterId = fetchCharacterId(character);
+            setInt(cs.preparedStatement(), 1, characterId);
+            final Integer speciesId = internalFetchId(speciesIdMap, this::fetchSpeciesId, species);
+            setInt(cs.preparedStatement(), 2, speciesId);
+            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, since);
+            setInt(cs.preparedStatement(), 3, chapterId);
+            cs.preparedStatement().execute();
+        }
+    }
+
     private void internalAddCharacterAppearance(final Character character, final Chapter chapter, final boolean mention) throws SQLException {
         try (final ConnectionStatement cs = prepareStatement("INSERT INTO " + (mention ? "mention" : "appearance") + "_character VALUES (?,?)")) {
             final Integer characterId = fetchCharacterId(character);
