@@ -59,6 +59,8 @@ public final class Volume1 {
 
     public static final Landmark FLOODED_WATERS_CAVE = new Landmark(Landmark.FLOODED_WATERS_CAVE, true, NORTHERN_IZRIL, null);
 
+    public static final Landmark PISCES_HIDEOUT = new Landmark(Landmark.PISCES_HIDEOUT, true, NORTHERN_IZRIL, null);
+
     public static final Nation USA = new Nation(Nation.USA, NationType.REPUBLIC, NORTH_AMERICA, null);
 
     public static final Nation MICHIGAN = new Nation(Nation.MICHIGAN, NationType.REPUBLIC, NORTH_AMERICA, null);
@@ -100,6 +102,8 @@ public final class Volume1 {
     public static final Character QUARASS = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.QUARASS));
 
     public static final Character RAGS = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.RAGS));
+
+    public static final Character PISCES = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.PISCES));
 
     public static final Character FLOODED_WATERS_CHIEFTAIN = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.FLOODED_WATERS_CHIEFTAIN));
 
@@ -246,7 +250,7 @@ public final class Volume1 {
         dbHelper.addSpecies(DJINN);
         final Class knight = new Class(Class.KNIGHT, ch, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.KNIGHT + "s"));
         dbHelper.addClass(knight);
-        final Class hero = new Class(Class.HERO, ch, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.KNIGHT + "es"));
+        final Class hero = new Class(Class.HERO, ch, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.HERO + "es"));
         dbHelper.addClass(hero);
         dbHelper.addNation(FIVE_FAMILIES_TERRITORY);
         dbHelper.addSettlement(CELUM);
@@ -372,7 +376,29 @@ public final class Volume1 {
     }
 
     private static void ch04(final DbHelper dbHelper) throws SQLException {
-
+        final Chapter ch = dbHelper.fetchChapter("Chapter 1.04");
+        // first appearances/mentions
+        dbHelper.addLandmark(PISCES_HIDEOUT);
+        // events
+        // (Erin destroys the preservation runes)
+        final Battle sevenGoblins2 = new Battle("Erin defeats a goblin sneaking through the inn", null);
+        dbHelper.addBattle(sevenGoblins2);
+        dbHelper.addBattleChapter(sevenGoblins2, ch);
+        dbHelper.addBattleCharacter(sevenGoblins2, ERIN);
+        // appearances/mentions
+        // (day 4 since Erin got to Innworld)
+        dbHelper.addWorldAppearance(INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(NORTHERN_IZRIL, ch);
+        dbHelper.addLandmarkAppearance(FLOODPLAINS, ch);
+        dbHelper.addLandmarkAppearance(FIRST_WANDERING_INN, ch);
+        dbHelper.addSpeciesAppearance(HUMAN, ch);
+        dbHelper.addCharacterAppearance(ERIN, ch);
+        dbHelper.addSpeciesAppearance(GOBLIN, ch);
+        // (appearance of Injured Crotch, indirectly)
+        dbHelper.addCharacterAppearance(RAGS, ch);
+        dbHelper.addCharacterAppearance(PISCES, ch);
+        dbHelper.addLandmarkMention(PISCES_HIDEOUT, ch);
     }
 
     private static void ch05(final DbHelper dbHelper) throws SQLException {

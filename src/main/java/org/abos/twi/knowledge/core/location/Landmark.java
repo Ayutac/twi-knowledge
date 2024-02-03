@@ -19,6 +19,8 @@ public record Landmark(String name, boolean natural, LandmassOcean landmassOcean
 
     public static final String HIGH_PASSES = "High Passes";
 
+    public static final String PISCES_HIDEOUT = "Pisces' hideout";
+
     public static final String TERIARCHS_NEW_HIDEOUT = "Teriarch's new hideout";
 
     public static final String TERIARCHS_OLD_HIDEOUT = "Teriarch's old hideout";

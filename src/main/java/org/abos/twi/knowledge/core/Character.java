@@ -14,6 +14,8 @@ public record Character(String wikiLink) implements Named {
 
     public static final String MAGNOLIA = "Magnolia Reinhart";
 
+    public static final String PISCES = "Pisces Jealnet";
+
     public static final String QUARASS = "Quarass";
 
     public static final String RAGS = "Rags";
