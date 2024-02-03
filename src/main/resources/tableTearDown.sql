@@ -1,4 +1,6 @@
 BEGIN;
+DROP TABLE solstice_chapter;
+DROP TABLE solstice;
 DROP TABLE war_battle;
 DROP TABLE war;
 DROP TABLE battle_status;

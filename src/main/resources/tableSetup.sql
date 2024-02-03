@@ -309,4 +309,15 @@ CREATE TABLE war_battle (
   battle_id  INT   NOT NULL  REFERENCES battle(id),
   PRIMARY KEY(war_id, battle_id)
 );
+CREATE TABLE solstice (
+  id        SERIAL,
+  name      TEXT    UNIQUE NOT NULL,
+  wiki_link TEXT,
+  PRIMARY KEY(id)
+);
+CREATE TABLE solstice_chapter (
+  solstice_id   INT   NOT NULL  REFERENCES solstice(id),
+  chapter_id    INT   NOT NULL  REFERENCES chapter(id),
+  PRIMARY KEY(battle_id, chapter_id)
+);
 COMMIT;
