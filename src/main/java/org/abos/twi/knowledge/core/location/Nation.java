@@ -9,6 +9,8 @@ public record Nation(String name, NationType nationType, LandmassOcean landmassO
 
     public static final String USA = "USA";
 
+    public static final String MICHIGAN = "Michigan";
+
     public static final String FIVE_FAMILIES = "Five Families";
 
     public static final String LISCOR = "Liscor";

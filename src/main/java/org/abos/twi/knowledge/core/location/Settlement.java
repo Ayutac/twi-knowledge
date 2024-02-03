@@ -1,13 +1,14 @@
 package org.abos.twi.knowledge.core.location;
 
 import org.abos.common.Named;
-import org.abos.twi.knowledge.core.publication.Chapter;
 
 import java.util.Objects;
 
 public record Settlement(String name, SettlementType settlementType, Nation nation, String wikiLink) implements Named {
 
     public static final String CHICAGO = "Chicago";
+
+    public static final String GRAND_RAPIDS = "Grand Rapids";
 
     public static final String CELUM = "Celum";
 

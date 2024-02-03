@@ -251,9 +251,9 @@ CREATE TABLE character_species (
   PRIMARY KEY(character_id, species_id, since)
 );
 CREATE TABLE character_age (
-  age           INT  NOT NULL,
-  character_id  INT  NOT NULL  REFERENCES character(id),
-  since         INT            REFERENCES chapter(id),
+  age           INT  NOT NULL   CONSTRAINT non_negative_age CHECK(age >= 0),
+  character_id  INT  NOT NULL   REFERENCES character(id),
+  since         INT             REFERENCES chapter(id),
   PRIMARY KEY(age, character_id, since)
 );
 CREATE TABLE status (

@@ -517,6 +517,10 @@ public final class DbHelper {
         return internalFetchById(this::internalFetchClass, SELECT_CLASS, classId);
     }
 
+    public Class fetchClass(final String className) throws SQLException {
+        return internalFetchByName(this::internalFetchClass, SELECT_CLASS, className);
+    }
+
     public List<Class> fetchClasses() throws SQLException {
         return internalFetchAll(this::internalFetchClass, SELECT_CLASS);
     }
@@ -796,6 +800,17 @@ public final class DbHelper {
             setInt(cs.preparedStatement(), 1, characterId);
             final Integer speciesId = internalFetchId(speciesIdMap, this::fetchSpeciesId, species);
             setInt(cs.preparedStatement(), 2, speciesId);
+            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, since);
+            setInt(cs.preparedStatement(), 3, chapterId);
+            cs.preparedStatement().execute();
+        }
+    }
+
+    public void addCharacterAge(final Character character, final int age, final Chapter since) throws SQLException {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO character_age VALUES (?,?,?);")) {
+            setInt(cs.preparedStatement(), 1, age);
+            final Integer characterId = fetchCharacterId(character);
+            setInt(cs.preparedStatement(), 2, characterId);
             final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, since);
             setInt(cs.preparedStatement(), 3, chapterId);
             cs.preparedStatement().execute();

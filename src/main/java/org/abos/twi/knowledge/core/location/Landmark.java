@@ -11,7 +11,11 @@ public record Landmark(String name, boolean natural, LandmassOcean landmassOcean
 
     public static final String FIRST_WANDERING_INN = "First Wandering Inn";
 
-    public static final String FLOODPLAINS = "Flood Plains";
+    public static final String FLOODED_WATERS_CAVE = "Original cave of the Flooded Waters Tribe";
+
+    public static final String FLOODPLAINS = "Floodplains";
+
+    public static final String FLOODPLAINS_STREAM = "Stream in the Floodplains";
 
     public static final String HIGH_PASSES = "High Passes";
 

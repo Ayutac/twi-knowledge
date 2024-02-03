@@ -10,9 +10,13 @@ public record Character(String wikiLink) implements Named {
 
     public static final String ERIN = "Erin Solstice";
 
+    public static final String FLOODED_WATERS_CHIEFTAIN = "Goblin Chieftain";
+
     public static final String MAGNOLIA = "Magnolia Reinhart";
 
     public static final String QUARASS = "Quarass";
+
+    public static final String RAGS = "Rags";
 
     public static final String TERIARCH = "Teriarch";
 
