@@ -9,6 +9,7 @@ import org.abos.twi.knowledge.core.Status;
 import org.abos.twi.knowledge.core.event.Battle;
 import org.abos.twi.knowledge.core.event.CharacterStatus;
 import org.abos.twi.knowledge.core.event.FirstMeeting;
+import org.abos.twi.knowledge.core.event.War;
 import org.abos.twi.knowledge.core.publication.Book;
 import org.abos.twi.knowledge.core.publication.Chapter;
 import org.abos.twi.knowledge.core.Character;
@@ -131,6 +132,8 @@ public final class DbHelper {
     private final BidiMap<CharacterStatus, Integer> characterStatusIdMap = new DualHashBidiMap<>();
 
     private final BidiMap<Battle, Integer> battleIdMap = new DualHashBidiMap<>();
+
+    private final BidiMap<War, Integer> warIdMap = new DualHashBidiMap<>();
 
     public DbHelper() throws IllegalStateException {
         final String url = System.getProperty(PROPERTY_URL);
@@ -921,6 +924,28 @@ public final class DbHelper {
             setInt(cs.preparedStatement(), 1, battleId);
             final Integer statusId = fetchCharacterStatusId(status);
             setInt(cs.preparedStatement(), 2, statusId);
+            cs.preparedStatement().execute();
+        }
+    }
+
+    public void addWar(final War war) throws SQLException {
+        try (ConnectionStatement cs = prepareStatement("INSERT INTO war (name, wiki_link) VALUES (?,?);")) {
+            setString(cs.preparedStatement(), 1, war.name());
+            setString(cs.preparedStatement(), 2, war.wikiLink());
+            cs.preparedStatement().execute();
+        }
+    }
+
+    public Integer fetchWarId(final String warName) throws SQLException {
+        return internalFetchIdByName("war", warName);
+    }
+
+    public void addWarBattle(final War war, final Battle battle) throws SQLException {
+        try (ConnectionStatement cs = prepareStatement("INSERT INTO war_battle (war_id, battle_id) VALUES (?,?);")) {
+            final Integer warId = internalFetchId(warIdMap, this::fetchWarId, war);
+            setInt(cs.preparedStatement(), 1, warId);
+            final Integer battleId = internalFetchId(battleIdMap, this::fetchBattleId, battle);
+            setInt(cs.preparedStatement(), 2, battleId);
             cs.preparedStatement().execute();
         }
     }

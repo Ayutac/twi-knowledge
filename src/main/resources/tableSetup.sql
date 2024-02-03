@@ -262,7 +262,7 @@ CREATE TABLE character_status (
   status_id     INT     NOT NULL  REFERENCES status(id),
   character_id  INT     NOT NULL  REFERENCES character(id),
   since         INT     NOT NULL  REFERENCES chapter(id),
-  PRIMARY KEY(status_id, character_id, since)
+  PRIMARY KEY(id)
 );
 CREATE TABLE first_meeting_left (
   id            SERIAL,
@@ -297,5 +297,16 @@ CREATE TABLE battle_status (
   battle_id     INT   NOT NULL  REFERENCES battle(id),
   status_id     INT   NOT NULL  REFERENCES character_status(id),
   PRIMARY KEY(battle_id, status_id)
+);
+CREATE TABLE war (
+  id        SERIAL,
+  name      TEXT    UNIQUE NOT NULL,
+  wiki_link TEXT,
+  PRIMARY KEY(id)
+);
+CREATE TABLE war_battle (
+  war_id     INT   NOT NULL  REFERENCES war(id),
+  battle_id  INT   NOT NULL  REFERENCES battle(id),
+  PRIMARY KEY(war_id, battle_id)
 );
 COMMIT;
