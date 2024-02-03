@@ -10,6 +10,7 @@ import org.abos.twi.knowledge.core.event.Battle;
 import org.abos.twi.knowledge.core.event.CharacterStatus;
 import org.abos.twi.knowledge.core.event.FirstMeeting;
 import org.abos.twi.knowledge.core.event.InnworldArrival;
+import org.abos.twi.knowledge.core.event.LevelUp;
 import org.abos.twi.knowledge.core.event.Solstice;
 import org.abos.twi.knowledge.core.event.War;
 import org.abos.twi.knowledge.core.publication.Book;
@@ -115,6 +116,10 @@ public final class DbHelper {
 
     private final BidiMap<Chapter, Integer> chapterIdMap = new DualHashBidiMap<>();
 
+    private final BidiMap<Class, Integer> classIdMap = new DualHashBidiMap<>();
+
+    private final BidiMap<Skill, Integer> skillIdMap = new DualHashBidiMap<>();
+
     private final BidiMap<World, Integer> worldIdMap = new DualHashBidiMap<>();
 
     private final BidiMap<LandmassOcean, Integer> landmassOceanIdMap = new DualHashBidiMap<>();
@@ -138,6 +143,8 @@ public final class DbHelper {
     private final BidiMap<War, Integer> warIdMap = new DualHashBidiMap<>();
 
     private final BidiMap<Solstice, Integer> solsticeIdMap = new DualHashBidiMap<>();
+
+    private final BidiMap<LevelUp, Integer> levelUpIdMap = new DualHashBidiMap<>();
 
     public DbHelper() throws IllegalStateException {
         final String url = System.getProperty(PROPERTY_URL);
@@ -470,6 +477,34 @@ public final class DbHelper {
     
     public List<Chapter> fetchChapters() throws SQLException {
         return internalFetchAll(this::internalFetchChapter, SELECT_CHAPTER);
+    }
+
+    public void addClass(final Class clazz) throws SQLException {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO class (name, since, wiki_link) VALUES (?,?,?)")) {
+            setString(cs.preparedStatement(), 1, clazz.name());
+            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, clazz.since());
+            setInt(cs.preparedStatement(), 2, chapterId);
+            setString(cs.preparedStatement(), 3, clazz.wikiLink());
+            cs.preparedStatement().execute();
+        }
+    }
+
+    private Integer fetchClassId(final String worldName) throws SQLException {
+        return internalFetchIdByName("class", worldName);
+    }
+
+    public void addSkill(final Skill skill) throws SQLException {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO skill (name, since, wiki_link) VALUES (?,?,?)")) {
+            setString(cs.preparedStatement(), 1, skill.name());
+            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, skill.since());
+            setInt(cs.preparedStatement(), 2, chapterId);
+            setString(cs.preparedStatement(), 3, skill.wikiLink());
+            cs.preparedStatement().execute();
+        }
+    }
+
+    private Integer fetchSkillId(final String skillName) throws SQLException {
+        return internalFetchIdByName("skill", skillName);
     }
 
     private Class internalFetchClass(final ResultSet rs) throws SQLException {
@@ -994,6 +1029,52 @@ public final class DbHelper {
             setInt(cs.preparedStatement(), 1, solsticeId);
             final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, innworldArrival.chapter());
             setInt(cs.preparedStatement(), 2, chapterId);
+            cs.preparedStatement().execute();
+        }
+    }
+
+    private void internalFillLevelUpStatement(final LevelUp levelUp, final PreparedStatement pStmt) throws SQLException {
+        final Integer characterId = fetchCharacterId(levelUp.character());
+        setInt(pStmt, 1, characterId);
+        final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, levelUp.chapter());
+        setInt(pStmt, 2, chapterId);
+        setInt(pStmt, 3, levelUp.newLevel());
+        final Integer classId = levelUp.clazz() == null ? null : internalFetchId(classIdMap, this::fetchClassId, levelUp.clazz());
+        setInt(pStmt, 4, classId);
+        setBoolean(pStmt, 5, levelUp.capstone());
+        setBoolean(pStmt, 6, levelUp.canceled());
+    }
+
+    public void addLevelUp(final LevelUp levelUp) throws SQLException {
+        try (ConnectionStatement cs = prepareStatement("INSERT INTO level_up (character_id, chapter_id, new_level, class_id, capstone, canceled) VALUES (?,?,?,?,?,?)")) {
+            internalFillLevelUpStatement(levelUp, cs.preparedStatement());
+            cs.preparedStatement().execute();
+        }
+    }
+
+    private Integer fetchLevelUpId(final LevelUp levelUp) throws SQLException {
+        if (levelUpIdMap.containsKey(levelUp)) {
+            return levelUpIdMap.get(levelUp);
+        }
+        try (ConnectionStatement cs = prepareStatement("SELECT id FROM level_up WHERE character_id=? AND chapter_id=? AND new_level=? AND class_id=? AND capstone=? AND canceled=?;")) {
+            internalFillLevelUpStatement(levelUp, cs.preparedStatement());
+            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
+                if (rs.next()) {
+                    final int fetch = rs.getInt(1);
+                    levelUpIdMap.put(levelUp, fetch);
+                    return fetch;
+                }
+            }
+        }
+        return null;
+    }
+
+    public void addLevelUpSkill(final LevelUp levelUp, final Skill skill) throws SQLException {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO level_up_skill VALUES (?,?)")) {
+            final Integer levelUpId = fetchLevelUpId(levelUp);
+            setInt(cs.preparedStatement(), 1, levelUpId);
+            final Integer skillId = internalFetchId(skillIdMap, this::fetchSkillId, skill);
+            setInt(cs.preparedStatement(), 2, skillId);
             cs.preparedStatement().execute();
         }
     }

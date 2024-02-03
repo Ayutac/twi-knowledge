@@ -7,6 +7,8 @@ import java.util.Objects;
 
 public record Class(String name, Chapter since, String wikiLink) implements Named {
 
+    public static final String INNKEEPER = "Innkeeper";
+
     public Class(final String name, final Chapter since, final String wikiLink) {
         this.name = Objects.requireNonNull(name);
         this.since = since;

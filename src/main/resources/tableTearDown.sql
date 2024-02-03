@@ -1,4 +1,6 @@
 BEGIN;
+DROP TABLE level_up_skill;
+DROP TABLE level_up;
 DROP TABLE innworld_arrival;
 DROP TABLE solstice_chapter;
 DROP TABLE solstice;

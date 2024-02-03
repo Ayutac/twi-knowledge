@@ -326,4 +326,19 @@ CREATE TABLE innworld_arrival (
   chapter_id    INT     NOT NULL  REFERENCES chapter(id),
   PRIMARY KEY(id)
 );
+CREATE TABLE level_up (
+  id            SERIAL,
+  character_id  INT     NOT NULL  REFERENCES character(id),
+  chapter_id    INT     NOT NULL  REFERENCES chapter(id),
+  new_level     INT,
+  class_id      INT               REFERENCES class(id),
+  capstone      BOOLEAN NOT NULL,
+  canceled      BOOLEAN NOT NULL  DEFAULT TRUE,
+  PRIMARY KEY(id)
+);
+CREATE TABLE level_up_skill (
+  level_up_id INT   NOT NULL  REFERENCES level_up(id),
+  skill_id    INT   NOT NULL  REFERENCES skill(id),
+  PRIMARY KEY(level_up_id, skill_id)
+);
 COMMIT;

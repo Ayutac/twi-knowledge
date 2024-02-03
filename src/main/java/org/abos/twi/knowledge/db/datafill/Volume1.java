@@ -1,11 +1,14 @@
 package org.abos.twi.knowledge.db.datafill;
 
 import org.abos.twi.knowledge.core.Character;
+import org.abos.twi.knowledge.core.Class;
+import org.abos.twi.knowledge.core.Skill;
 import org.abos.twi.knowledge.core.Species;
 import org.abos.twi.knowledge.core.Status;
 import org.abos.twi.knowledge.core.event.CharacterStatus;
 import org.abos.twi.knowledge.core.event.FirstMeeting;
 import org.abos.twi.knowledge.core.event.InnworldArrival;
+import org.abos.twi.knowledge.core.event.LevelUp;
 import org.abos.twi.knowledge.core.location.Landmark;
 import org.abos.twi.knowledge.core.location.LandmassOcean;
 import org.abos.twi.knowledge.core.location.LandmassOceanType;
@@ -125,11 +128,21 @@ public final class Volume1 {
         dbHelper.addSpecies(HUMAN);
         dbHelper.addSpecies(GOBLIN);
         dbHelper.addSpecies(DRAGON);
+        final Class innkeeper = new Class(Class.INNKEEPER, ch, WikiHelper.WIKI_URL + Class.INNKEEPER + "s");
+        dbHelper.addClass(innkeeper);
+        final Skill basicCleaning = new Skill(Skill.BASIC_CLEANING, ch, null);
+        dbHelper.addSkill(basicCleaning);
+        final Skill basicCooking = new Skill(Skill.BASIC_COOKING, ch, null);
+        dbHelper.addSkill(basicCooking);
         // events
         dbHelper.addInnworldArrival(new InnworldArrival(ERIN, ch));
         dbHelper.addCharacterStatus(new CharacterStatus(new Status(Status.ALIVE), ERIN, ch));
         dbHelper.addCharacterStatus(new CharacterStatus(new Status(Status.ALIVE), TERIARCH, ch));
         dbHelper.maybeAddFirstMeeting(new FirstMeeting(ERIN, TERIARCH, ch));
+        final LevelUp lvErin = new LevelUp(ERIN, ch, 1, innkeeper, false, false);
+        dbHelper.addLevelUp(lvErin);
+        dbHelper.addLevelUpSkill(lvErin, basicCleaning);
+        dbHelper.addLevelUpSkill(lvErin, basicCooking);
         // misc
         dbHelper.addCharacterFirstName(ERIN, ch, "Erin");
         dbHelper.addCharacterLastName(ERIN, ch, "Solstice");
