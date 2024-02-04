@@ -41,7 +41,7 @@ DROP TABLE nation;
 DROP VIEW appearance_mention_landmark;
 DROP TABLE mention_landmark;
 DROP TABLE appearance_landmark;
---DROP VIEW landmark_izril;
+DROP VIEW landmark_izril_all;
 DROP TABLE landmark;
 DROP VIEW appearance_mention_landmass_ocean;
 DROP TABLE mention_landmass_ocean;

@@ -152,7 +152,11 @@ CREATE TABLE landmark (
   wiki_link TEXT,
   PRIMARY KEY(id)
 );
---CREATE VIEW landmark_izril
+CREATE VIEW landmark_izril_all AS
+  WITH m AS (
+    SELECT id FROM landmass_ocean WHERE name LIKE '%Izril%'
+  )
+  SELECT * FROM landmark WHERE landmass_ocean_id IN (SELECT id FROM m);
 CREATE TABLE appearance_landmark (
   landmark_id INT NOT NULL  REFERENCES landmark(id),
   chapter_id  INT NOT NULL  REFERENCES chapter(id),
