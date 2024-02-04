@@ -202,6 +202,7 @@ public final class Volume1 {
         dbHelper.addLandmarkAppearance(Landmark.TERIARCHS_OLD_HIDEOUT, ch);
         dbHelper.addLandmarkAppearance(Landmark.TERIARCHS_NEW_HIDEOUT, ch);
         dbHelper.addCharacterMention(Character.AZKERASH, ch);
+        dbHelper.addCharacterNickName(Character.AZKERASH, ch, "The Necromancer");
         dbHelper.addClassMention(Class.KNIGHT, ch);
         dbHelper.addClassMention(Class.HERO, ch);
         // (Teriarch checks cave from day 1 to day 3 since erin appeared + 2 weeks checking for pursuit)
@@ -209,6 +210,7 @@ public final class Volume1 {
         dbHelper.addSpeciesMention(Species.DEMON, ch);
         dbHelper.addSpeciesMention(Species.DJINNI, ch);
         dbHelper.addCharacterMention(Character.QUARASS, ch);
+        dbHelper.addCharacterNickName(Character.QUARASS, ch, "The Quarass");
         dbHelper.addNationMention(Nation.FIVE_FAMILIES_TERRITORY, ch);
         dbHelper.addSettlementMention(Settlement.CELUM, ch);
     }
@@ -403,7 +405,8 @@ public final class Volume1 {
         dbHelper.addSpeciesMention(Species.GOBLIN, ch);
         dbHelper.addSpeciesMention(Species.RAZORBEAK, ch);
         dbHelper.addSpeciesMention(Species.HOLLOWSTONE_DECEIVER, ch);
-        // Klbkch's names Klbkch and Klb are revealed
+        dbHelper.addCharacterNickName(Character.KLBKCH, ch, "Klbkch");
+        dbHelper.addCharacterNickName(Character.KLBKCH, ch, "Klb");
         dbHelper.addCharacterFirstName(Character.RELC, ch, "Relc");
         dbHelper.addClassMention(Class.CHEF, ch);
         dbHelper.addClassMention(Class.INNKEEPER, ch);
@@ -469,7 +472,7 @@ public final class Volume1 {
         dbHelper.addCharacterAppearance(Character.KLBKCH, ch);
         dbHelper.addSpeciesAppearance(Species.DRAKE, ch);
         dbHelper.addCharacterAppearance(Character.RELC, ch);
-        // (Caption Z as nickname for Zevara)
+        dbHelper.addCharacterNickName(Character.ZEVARA, ch, "Captain Z");
         dbHelper.addCharacterAppearance(Character.ZEVARA, ch);
         dbHelper.addCharacterAppearance(Character.PISCES, ch);
     }

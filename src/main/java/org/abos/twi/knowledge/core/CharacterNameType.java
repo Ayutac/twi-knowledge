@@ -6,5 +6,7 @@ public enum CharacterNameType {
 
     MIDDLE,
 
-    LAST
+    LAST,
+
+    NICK
 }

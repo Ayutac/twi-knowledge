@@ -831,6 +831,27 @@ public final class DbHelper {
         }
     }
 
+    private Species fetchLatestCharacterSpecies(final Character character, final Chapter until) throws SQLException {
+        final Integer speciesId;
+        try (ConnectionStatement cs = prepareStatement("SELECT species_id FROM character_species_ordered WHERE character_id = ? AND (volume_id < ? OR (volume_id = ? AND volume_ord <= ?)) ORDER BY volume_id DESC, volume_ord DESC LIMIT 1;")) {
+            final Integer characterId = fetchCharacterId(character);
+            setInt(cs.preparedStatement(), 1, characterId);
+            final Integer volumeId = internalFetchId(volumeIdMap, this::fetchVolumeId, until.volume());
+            setInt(cs.preparedStatement(), 2, volumeId);
+            setInt(cs.preparedStatement(), 3, volumeId);
+            setInt(cs.preparedStatement(), 4, until.volumeOrd());
+            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
+                if (rs.next()) {
+                    speciesId = rs.getInt(1);
+                }
+                else {
+                    return null;
+                }
+            }
+        }
+        return fetchSpecies(speciesId);
+    }
+
     public void addCharacterAge(final Character character, final int age, final Chapter since) throws SQLException {
         try (final ConnectionStatement cs = prepareStatement("INSERT INTO character_age VALUES (?,?,?);")) {
             setInt(cs.preparedStatement(), 1, age);
@@ -871,16 +892,92 @@ public final class DbHelper {
         }
     }
 
+    private String internalFetchLatestCharacterName(final Character character, final Chapter until, final CharacterNameType type) throws SQLException {
+        try (ConnectionStatement cs = prepareStatement("SELECT name FROM " + type.name().toLowerCase() + "_name_ordered WHERE character_id = ? AND (volume_id < ? OR (volume_id = ? AND volume_ord <= ?)) ORDER BY volume_id DESC, volume_ord DESC LIMIT 1;")) {
+            final Integer characterId = fetchCharacterId(character);
+            setInt(cs.preparedStatement(), 1, characterId);
+            final Integer volumeId = internalFetchId(volumeIdMap, this::fetchVolumeId, until.volume());
+            setInt(cs.preparedStatement(), 2, volumeId);
+            setInt(cs.preparedStatement(), 3, volumeId);
+            setInt(cs.preparedStatement(), 4, until.volumeOrd());
+            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString(1);
+                }
+            }
+        }
+        return null;
+    }
+
     public void addCharacterFirstName(final Character character, final Chapter chapter, final String name) throws SQLException {
         internalAddCharacterName(character, chapter, name, CharacterNameType.FIRST);
+    }
+
+    public String fetchLatestCharacterFirstName(final Character character, final Chapter until) throws SQLException {
+        return internalFetchLatestCharacterName(character, until, CharacterNameType.FIRST);
     }
 
     public void addCharacterMiddleName(final Character character, final Chapter chapter, final String name) throws SQLException {
         internalAddCharacterName(character, chapter, name, CharacterNameType.MIDDLE);
     }
 
+    public String fetchLatestCharacterMiddleName(final Character character, final Chapter until) throws SQLException {
+        return internalFetchLatestCharacterName(character, until, CharacterNameType.MIDDLE);
+    }
+
     public void addCharacterLastName(final Character character, final Chapter chapter, final String name) throws SQLException {
         internalAddCharacterName(character, chapter, name, CharacterNameType.LAST);
+    }
+
+    public String fetchLatestCharacterLastName(final Character character, final Chapter until) throws SQLException {
+        return internalFetchLatestCharacterName(character, until, CharacterNameType.LAST);
+    }
+
+    public void addCharacterNickName(final Character character, final Chapter chapter, final String name) throws SQLException {
+        internalAddCharacterName(character, chapter, name, CharacterNameType.NICK);
+    }
+
+    public String fetchLatestCharacterNickName(final Character character, final Chapter until) throws SQLException {
+        return internalFetchLatestCharacterName(character, until, CharacterNameType.NICK);
+    }
+
+    public String buildLatestCharacterName(final Character character, final Chapter until) throws SQLException {
+        final StringBuilder s = new StringBuilder();
+        boolean anything = false;
+        final String first = fetchLatestCharacterFirstName(character, until);
+        if (first != null) {
+            s.append(first);
+            anything = true;
+        }
+        final String middle = fetchLatestCharacterMiddleName(character, until);
+        if (middle != null) {
+            s.append(middle);
+            anything = true;
+        }
+        final String last = fetchLatestCharacterLastName(character, until);
+        if (last != null) {
+            s.append(last);
+            anything = true;
+        }
+        if (!anything) {
+            final String nick = fetchLatestCharacterNickName(character, until);
+            if (nick != null) {
+                s.append(nick);
+                anything = true;
+            }
+        }
+        if (!anything) {
+            final Species species = fetchLatestCharacterSpecies(character, until);
+            if (species != null) {
+                s.append("the ");
+                s.append(species.name());
+                anything = true;
+            }
+        }
+        if (!anything) {
+            s.append("the creature");
+        }
+        return s.toString();
     }
 
     private Integer fetchStatusId(final String statusName) throws SQLException {

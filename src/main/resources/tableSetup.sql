@@ -257,24 +257,40 @@ CREATE TABLE first_name (
   since         INT                 REFERENCES chapter(id),
   PRIMARY KEY(name, character_id, since)
 );
+CREATE VIEW first_name_ordered AS
+  SELECT n.name AS name, n.character_id AS character_id, c.volume_id AS volume_id, c.volume_ord AS volume_ord FROM first_name n LEFT JOIN chapter c ON n.since = c.id;
 CREATE TABLE middle_name (
   name          TEXT      NOT NULL,
   character_id  INT       NOT NULL  REFERENCES character(id),
   since         INT                 REFERENCES chapter(id),
   PRIMARY KEY(name, character_id, since)
 );
+CREATE VIEW middle_name_ordered AS
+  SELECT n.name AS name, n.character_id AS character_id, c.volume_id AS volume_id, c.volume_ord AS volume_ord FROM middle_name n LEFT JOIN chapter c ON n.since = c.id;
 CREATE TABLE last_name (
   name          TEXT      NOT NULL,
   character_id  INT       NOT NULL  REFERENCES character(id),
   since         INT                 REFERENCES chapter(id),
   PRIMARY KEY(name, character_id, since)
 );
+CREATE VIEW last_name_ordered AS
+  SELECT n.name AS name, n.character_id AS character_id, c.volume_id AS volume_id, c.volume_ord AS volume_ord FROM last_name n LEFT JOIN chapter c ON n.since = c.id;
+CREATE TABLE nick_name (
+  name          TEXT      NOT NULL,
+  character_id  INT       NOT NULL  REFERENCES character(id),
+  since         INT                 REFERENCES chapter(id),
+  PRIMARY KEY(name, character_id, since)
+);
+CREATE VIEW nick_name_ordered AS
+  SELECT n.name AS name, n.character_id AS character_id, c.volume_id AS volume_id, c.volume_ord AS volume_ord FROM nick_name n LEFT JOIN chapter c ON n.since = c.id;
 CREATE TABLE character_species (
   character_id  INT       NOT NULL  REFERENCES character(id),
   species_id    INT       NOT NULL  REFERENCES species(id),
   since         INT                 REFERENCES chapter(id),
   PRIMARY KEY(character_id, species_id, since)
 );
+CREATE VIEW character_species_ordered AS
+  SELECT cs.species_id AS species_id, cs.character_id AS character_id, c.volume_id AS volume_id, c.volume_ord AS volume_ord FROM character_species cs LEFT JOIN chapter c ON cs.since = c.id;
 CREATE TABLE character_age (
   age           INT  NOT NULL   CONSTRAINT non_negative_age CHECK(age >= 0),
   character_id  INT  NOT NULL   REFERENCES character(id),
