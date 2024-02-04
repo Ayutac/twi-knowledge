@@ -5,7 +5,7 @@ import org.abos.twi.knowledge.core.publication.Chapter;
 
 import java.util.Objects;
 
-public record Class(String name, Chapter since, String wikiLink) implements Named {
+public record Class(String name, String wikiLink) implements Named {
 
     public static final String CHIEFTAIN = "Chieftain";
 
@@ -19,9 +19,8 @@ public record Class(String name, Chapter since, String wikiLink) implements Name
 
     public static final String SHAMAN = "Shaman";
 
-    public Class(final String name, final Chapter since, final String wikiLink) {
+    public Class(final String name, final String wikiLink) {
         this.name = Objects.requireNonNull(name);
-        this.since = since;
         this.wikiLink = wikiLink;
     }
 

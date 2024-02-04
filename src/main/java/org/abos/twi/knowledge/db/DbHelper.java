@@ -77,9 +77,9 @@ public final class DbHelper {
 
     private static final String SELECT_CHAPTER = "SELECT name, volume_ord, book_ord, release, words, book_id, volume_id, link, wiki_link FROM chapter";
 
-    private static final String SELECT_CLASS = "SELECT name, since, wiki_link FROM class";
+    private static final String SELECT_CLASS = "SELECT name, wiki_link FROM class";
 
-    private static final String SELECT_SKILL = "SELECT name, since, wiki_link FROM skill";
+    private static final String SELECT_SKILL = "SELECT name, wiki_link FROM skill";
 
     private static final String SELECT_WORLD = "SELECT name, wiki_link FROM world";
 
@@ -481,11 +481,9 @@ public final class DbHelper {
     }
 
     public void addClass(final Class clazz) throws SQLException {
-        try (final ConnectionStatement cs = prepareStatement("INSERT INTO class (name, since, wiki_link) VALUES (?,?,?);")) {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO class (name, wiki_link) VALUES (?,?);")) {
             setString(cs.preparedStatement(), 1, clazz.name());
-            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, clazz.since());
-            setInt(cs.preparedStatement(), 2, chapterId);
-            setString(cs.preparedStatement(), 3, clazz.wikiLink());
+            setString(cs.preparedStatement(), 2, clazz.wikiLink());
             cs.preparedStatement().execute();
         }
     }
@@ -495,11 +493,9 @@ public final class DbHelper {
     }
 
     public void addSkill(final Skill skill) throws SQLException {
-        try (final ConnectionStatement cs = prepareStatement("INSERT INTO skill (name, since, wiki_link) VALUES (?,?,?);")) {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO skill (name, wiki_link) VALUES (?,?);")) {
             setString(cs.preparedStatement(), 1, skill.name());
-            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, skill.since());
-            setInt(cs.preparedStatement(), 2, chapterId);
-            setString(cs.preparedStatement(), 3, skill.wikiLink());
+            setString(cs.preparedStatement(), 2, skill.wikiLink());
             cs.preparedStatement().execute();
         }
     }
@@ -509,8 +505,7 @@ public final class DbHelper {
     }
 
     private Class internalFetchClass(final ResultSet rs) throws SQLException {
-        final Chapter chapter = internalFetchReference(chapterIdMap, this::fetchChapter, rs.getInt(2));
-        return new Class(rs.getString(1), chapter, rs.getString(3));
+        return new Class(rs.getString(1), rs.getString(2));
     }
 
     private Class fetchClass(final int classId) throws SQLException {
@@ -525,9 +520,18 @@ public final class DbHelper {
         return internalFetchAll(this::internalFetchClass, SELECT_CLASS);
     }
 
+    public void addClassMention(final Class clazz, final Chapter chapter) throws SQLException {
+        try (ConnectionStatement cs = prepareStatement("INSERT INTO mention_class VALUES (?,?);")) {
+            final Integer classId = internalFetchId(classIdMap, this::fetchClassId, clazz);
+            setInt(cs.preparedStatement(), 1, classId);
+            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, chapter);
+            setInt(cs.preparedStatement(), 2, chapterId);
+            cs.preparedStatement().execute();
+        }
+    }
+
     private Skill internalFetchSkill(final ResultSet rs) throws SQLException {
-        final Chapter chapter = internalFetchReference(chapterIdMap, this::fetchChapter, rs.getInt(2));
-        return new Skill(rs.getString(1), chapter, rs.getString(3));
+        return new Skill(rs.getString(1), rs.getString(2));
     }
 
     private Skill fetchSkill(final int skillId) throws SQLException {
@@ -536,6 +540,16 @@ public final class DbHelper {
 
     public List<Skill> fetchSkills() throws SQLException {
         return internalFetchAll(this::internalFetchSkill, SELECT_SKILL);
+    }
+
+    public void addSkillMention(final Skill skill, final Chapter chapter) throws SQLException {
+        try (ConnectionStatement cs = prepareStatement("INSERT INTO mention_skill VALUES (?,?);")) {
+            final Integer skillId = internalFetchId(skillIdMap, this::fetchSkillId, skill);
+            setInt(cs.preparedStatement(), 1, skillId);
+            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, chapter);
+            setInt(cs.preparedStatement(), 2, chapterId);
+            cs.preparedStatement().execute();
+        }
     }
 
     public void addClassSkill(final Class clazz, final Skill skill) throws  SQLException {

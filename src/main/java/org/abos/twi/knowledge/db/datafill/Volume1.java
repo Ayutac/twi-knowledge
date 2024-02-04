@@ -97,6 +97,22 @@ public final class Volume1 {
 
     public static final Species ANTINIUM = new Species(Species.ANTINIUM, true, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Species.ANTINIUM));
 
+    public static final Class INNKEEPER = new Class(Class.INNKEEPER, WikiHelper.WIKI_URL + Class.INNKEEPER + "s");
+
+    public static final Class KNIGHT = new Class(Class.KNIGHT, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.KNIGHT + "s"));
+
+    public static final Class HERO = new Class(Class.HERO, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.HERO + "es"));
+
+    public static final Class CHIEFTAIN = new Class(Class.CHIEFTAIN, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.CHIEFTAIN + "s"));
+
+    public static final Class SHAMAN = new Class(Class.SHAMAN, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.SHAMAN + "s"));
+
+    public static final Class GUARDSWOMAN = new Class(Class.GUARDWOMAN, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName("Watch"));
+
+    public static final Skill BASIC_CLEANING = new Skill(Skill.BASIC_CLEANING, null);
+
+    public static final Skill BASIC_COOKING = new Skill(Skill.BASIC_COOKING, null);
+
     public static final Character ERIN = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.ERIN));
 
     public static final Character TERIARCH = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.TERIARCH));
@@ -205,24 +221,21 @@ public final class Volume1 {
         dbHelper.addSpecies(HUMAN);
         dbHelper.addSpecies(GOBLIN);
         dbHelper.addSpecies(DRAGON);
-        final Class innkeeper = new Class(Class.INNKEEPER, ch, WikiHelper.WIKI_URL + Class.INNKEEPER + "s");
-        dbHelper.addClass(innkeeper);
-        final Skill basicCleaning = new Skill(Skill.BASIC_CLEANING, ch, null);
-        dbHelper.addSkill(basicCleaning);
-        dbHelper.addClassSkill(innkeeper, basicCleaning);
-        final Skill basicCooking = new Skill(Skill.BASIC_COOKING, ch, null);
-        dbHelper.addSkill(basicCooking);
-        dbHelper.addClassSkill(innkeeper, basicCooking);
+        dbHelper.addClass(INNKEEPER);
+        dbHelper.addSkill(BASIC_CLEANING);
+        dbHelper.addClassSkill(INNKEEPER, BASIC_CLEANING);
+        dbHelper.addSkill(BASIC_COOKING);
+        dbHelper.addClassSkill(INNKEEPER, BASIC_COOKING);
         // events
         dbHelper.addInnworldArrival(new InnworldArrival(ERIN, ch));
         dbHelper.addCharacterStatus(new CharacterStatus(new Status(Status.ALIVE), ERIN, ch));
         dbHelper.addCharacterStatus(new CharacterStatus(new Status(Status.ALIVE), TERIARCH, ch));
         dbHelper.maybeAddFirstMeeting(new FirstMeeting(ERIN, TERIARCH, ch));
         dbHelper.addInnArrival(new InnArrival(ERIN, ch));
-        final LevelUp lvErin = new LevelUp(ERIN, ch, 1, innkeeper, false, false);
+        final LevelUp lvErin = new LevelUp(ERIN, ch, 1, INNKEEPER, false, false);
         dbHelper.addLevelUp(lvErin);
-        dbHelper.addLevelUpSkill(lvErin, basicCleaning);
-        dbHelper.addLevelUpSkill(lvErin, basicCooking);
+        dbHelper.addLevelUpSkill(lvErin, BASIC_CLEANING);
+        dbHelper.addLevelUpSkill(lvErin, BASIC_COOKING);
         // misc
         dbHelper.addCharacterFirstName(ERIN, ch, "Erin");
         dbHelper.addCharacterLastName(ERIN, ch, "Solstice");
@@ -240,6 +253,9 @@ public final class Volume1 {
         dbHelper.addSpeciesMention(GOBLIN, ch);
         dbHelper.addCharacterAppearance(ERIN, ch);
         dbHelper.addCharacterMention(TERIARCH, ch);
+        dbHelper.addClassMention(INNKEEPER, ch);
+        dbHelper.addSkillMention(BASIC_CLEANING, ch);
+        dbHelper.addSkillMention(BASIC_COOKING, ch);
         // chess is mentioned
         // day 1 since Erin arrived
     }
@@ -260,10 +276,8 @@ public final class Volume1 {
         dbHelper.addLandmark(TERIARCHS_NEW_HIDEOUT);
         dbHelper.addSpecies(DEMON);
         dbHelper.addSpecies(DJINN);
-        final Class knight = new Class(Class.KNIGHT, ch, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.KNIGHT + "s"));
-        dbHelper.addClass(knight);
-        final Class hero = new Class(Class.HERO, ch, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.HERO + "es"));
-        dbHelper.addClass(hero);
+        dbHelper.addClass(KNIGHT);
+        dbHelper.addClass(HERO);
         dbHelper.addNation(FIVE_FAMILIES_TERRITORY);
         dbHelper.addSettlement(CELUM);
         // events
@@ -298,7 +312,8 @@ public final class Volume1 {
         dbHelper.addLandmarkAppearance(TERIARCHS_OLD_HIDEOUT, ch);
         dbHelper.addLandmarkAppearance(TERIARCHS_NEW_HIDEOUT, ch);
         dbHelper.addCharacterMention(AZKERASH, ch);
-        // (classes [Knight] and [Hero] are mentioned)
+        dbHelper.addClassMention(KNIGHT, ch);
+        dbHelper.addClassMention(HERO, ch);
         // (Teriarch checks cave from day 1 to day 3 since erin appeared + 2 weeks checking for pursuit)
         dbHelper.addCharacterMention(MAGNOLIA, ch);
         dbHelper.addSpeciesMention(DEMON, ch);
@@ -315,10 +330,8 @@ public final class Volume1 {
         dbHelper.addSettlement(GRAND_RAPIDS);
         dbHelper.addLandmark(FLOODPLAINS_STREAM);
         dbHelper.addLandmark(FLOODED_WATERS_CAVE);
-        final Class chieftain = new Class(Class.CHIEFTAIN, ch, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.CHIEFTAIN + "s"));
-        dbHelper.addClass(chieftain);
-        final Class shaman = new Class(Class.SHAMAN, ch, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.SHAMAN + "s"));
-        dbHelper.addClass(shaman);
+        dbHelper.addClass(CHIEFTAIN);
+        dbHelper.addClass(SHAMAN);
         dbHelper.addCharacterSpecies(RAGS, GOBLIN, ch);
         dbHelper.addCharacterSpecies(FLOODED_WATERS_CHIEFTAIN, GOBLIN, ch);
         // events
@@ -351,12 +364,12 @@ public final class Volume1 {
         dbHelper.addLandmarkAppearance(FLOODPLAINS_STREAM, ch);
         dbHelper.addLandmarkAppearance(FIRST_WANDERING_INN, ch);
         dbHelper.addCharacterAppearance(RAGS, ch);
-        // (appearance of class [Chieftain])
+        dbHelper.addClassMention(CHIEFTAIN, ch);
         // (appearance of a goblin called Injured Crotch)
         // (appearance of the Flooded Water Tribe)
         dbHelper.addLandmarkAppearance(FLOODED_WATERS_CAVE, ch);
         dbHelper.addCharacterAppearance(FLOODED_WATERS_CHIEFTAIN, ch);
-        // (mention of class [Shaman])
+        dbHelper.addClassMention(SHAMAN, ch);
     }
 
     private static void ch03(final DbHelper dbHelper) throws SQLException {
@@ -381,9 +394,9 @@ public final class Volume1 {
         dbHelper.addSpeciesMention(GOBLIN, ch);
         dbHelper.addSpeciesMention(HOLLOWSTONE_DECEIVER, ch);
         dbHelper.addLandmarkAppearance(FLOODPLAINS_STREAM, ch);
-        // (mention of skill [Basic Cleaning])
+        dbHelper.addSkillMention(BASIC_CLEANING, ch);
         dbHelper.addSpeciesAppearance(FLATFISH, ch);
-        // (mention of skill [Basic Cooking])
+        dbHelper.addSkillMention(BASIC_COOKING, ch);
         // (chess is mentioned)
     }
 
@@ -417,8 +430,7 @@ public final class Volume1 {
         final Chapter ch = dbHelper.fetchChapter("Chapter 1.05");
         // first appearances/mentions
         dbHelper.addSpecies(ACID_FLY);
-        final Class guardswoman = new Class(Class.GUARDWOMAN, ch, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName("Watch"));
-        dbHelper.addClass(guardswoman);
+        dbHelper.addClass(GUARDSWOMAN);
         dbHelper.addSpecies(RAZORBEAK);
         dbHelper.addSpecies(ANTINIUM);
         // events
@@ -436,11 +448,11 @@ public final class Volume1 {
         dbHelper.addSpeciesAppearance(FLATFISH, ch);
         dbHelper.addSpeciesAppearance(ACID_FLY, ch);
         dbHelper.addLandmarkAppearance(FLOODPLAINS_STREAM, ch);
-        // (mention and use of [Basic Cooking])
+        dbHelper.addSkillMention(BASIC_COOKING, ch);
         dbHelper.addNationAppearance(LISCOR_NATION, ch);
         dbHelper.addSettlementAppearance(LISCOR, ch);
         // (appearance of unnamed guard)
-        // (mention of class [Guardwoman])
+        dbHelper.addClassMention(GUARDSWOMAN, ch);
         dbHelper.addCharacterAppearance(BEILMARK, ch);
         // (Beilmark is a [Guardwoman])
         dbHelper.addCharacterMention(RELC, ch);

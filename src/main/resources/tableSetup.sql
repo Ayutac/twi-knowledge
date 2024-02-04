@@ -72,9 +72,13 @@ LEFT JOIN chapter ON book.id = chapter.book_id;
 CREATE TABLE class (
   id        SERIAL,
   name      TEXT      UNIQUE NOT NULL,
-  since     INT                         REFERENCES chapter(id),
   wiki_link TEXT,
   PRIMARY KEY(id)
+);
+CREATE TABLE mention_class (
+  class_id    INT   REFERENCES class(id),
+  chapter_id  INT   REFERENCES chapter(id),
+  PRIMARY KEY(class_id, chapter_id)
 );
 CREATE TABLE class_upgrade (
   base_id     INT   NOT NULL REFERENCES class(id),
@@ -85,9 +89,13 @@ CREATE TABLE class_upgrade (
 CREATE TABLE skill (
   id        SERIAL,
   name      TEXT      UNIQUE NOT NULL,
-  since     INT                         REFERENCES chapter(id),
   wiki_link TEXT,
   PRIMARY KEY(id)
+);
+CREATE TABLE mention_skill (
+  skill_id    INT   REFERENCES skill(id),
+  chapter_id  INT   REFERENCES chapter(id),
+  PRIMARY KEY(skill_id, chapter_id)
 );
 CREATE TABLE skill_upgrade (
   base_id     INT   NOT NULL REFERENCES skill(id),
