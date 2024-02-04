@@ -61,6 +61,8 @@ public final class Volume1 {
 
     public static final Landmark PISCES_HIDEOUT = new Landmark(Landmark.PISCES_HIDEOUT, true, NORTHERN_IZRIL, null);
 
+    public static final Landmark BLOODFIELDS = new Landmark(Landmark.BLOODFIELDS, true, IZRIL, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Landmark.BLOODFIELDS));
+
     public static final Nation USA = new Nation(Nation.USA, NationType.REPUBLIC, NORTH_AMERICA, null);
 
     public static final Nation MICHIGAN = new Nation(Nation.MICHIGAN, NationType.REPUBLIC, NORTH_AMERICA, null);
@@ -69,6 +71,8 @@ public final class Volume1 {
 
     public static final Nation LISCOR_NATION = new Nation(Nation.LISCOR, NationType.CITY_STATE, NORTHERN_IZRIL, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Nation.LISCOR));
 
+    public static final Nation PALLASS_NATION = new Nation(Nation.PALLASS, NationType.WALLED_CITY, NORTHERN_IZRIL, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Nation.PALLASS));
+
     public static final Settlement CHICAGO = new Settlement(Settlement.CHICAGO, SettlementType.CITY, USA, null);
 
     public static final Settlement GRAND_RAPIDS = new Settlement(Settlement.GRAND_RAPIDS, SettlementType.CITY, USA, null);
@@ -76,6 +80,8 @@ public final class Volume1 {
     public static final Settlement LISCOR = new Settlement(Settlement.LISCOR, SettlementType.CITY, LISCOR_NATION, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Settlement.LISCOR));
 
     public static final Settlement CELUM = new Settlement(Settlement.CELUM, SettlementType.CITY, FIVE_FAMILIES_TERRITORY, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Settlement.CELUM));
+
+    public static final Settlement PALLASS = new Settlement(Settlement.PALLASS, SettlementType.CITY, PALLASS_NATION, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Settlement.PALLASS));
 
     public static final Species HUMAN = new Species(Species.HUMAN, true, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Species.HUMAN + "s"));
 
@@ -97,6 +103,8 @@ public final class Volume1 {
 
     public static final Species ANTINIUM = new Species(Species.ANTINIUM, true, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Species.ANTINIUM));
 
+    public static final Species DRAKE = new Species(Species.DRAKE, true, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Species.DRAKE + "s"));
+
     public static final Class INNKEEPER = new Class(Class.INNKEEPER, WikiHelper.WIKI_URL + Class.INNKEEPER + "s");
 
     public static final Class KNIGHT = new Class(Class.KNIGHT, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.KNIGHT + "s"));
@@ -109,9 +117,31 @@ public final class Volume1 {
 
     public static final Class GUARDSWOMAN = new Class(Class.GUARDWOMAN, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName("Watch"));
 
-    public static final Skill BASIC_CLEANING = new Skill(Skill.BASIC_CLEANING, null);
+    public static final Class CHEF = new Class(Class.CHEF, null);
 
-    public static final Skill BASIC_COOKING = new Skill(Skill.BASIC_COOKING, null);
+    public static final Class GUARDSMAN = new Class(Class.GUARDSMAN, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName("Watch"));
+
+    public static final Class SPEARMASTER = new Class(Class.SPEARMASTER, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.SPEARMASTER + "s"));
+
+    public static final Class SWORDSLAYER = new Class(Class.SWORDSLAYER, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.SWORDSLAYER + "s"));
+
+    public static final Class WARRIOR = new Class(Class.WARRIOR, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.WARRIOR + "s"));
+
+    public static final Class SURVIVOR = new Class(Class.SURVIVOR, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.SURVIVOR + "s"));
+
+    public static final Class LORD = new Class(Class.LORD, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.LORD + "s"));
+
+    public static final Class LADY = new Class(Class.LADY, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName("Ladies"));
+
+    public static final Class GOOD_PERSON = new Class(Class.GOOD_PERSON, null);
+
+    public static final Skill BASIC_CLEANING = new Skill(Skill.BASIC_CLEANING, false, null);
+
+    public static final Skill BASIC_COOKING = new Skill(Skill.BASIC_COOKING, false, null);
+
+    public static final Skill TELEPORTATION = new Skill(Skill.TELEPORTATION, true, null);
+
+    public static final Skill BASIC_CRAFTING = new Skill(Skill.BASIC_CRAFTING, false, null);
 
     public static final Character ERIN = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.ERIN));
 
@@ -132,6 +162,8 @@ public final class Volume1 {
     public static final Character BEILMARK = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.BEILMARK));
 
     public static final Character RELC = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.RELC));
+
+    public static final Character ZEVARA = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.ZEVARA));
 
     public static final Character KLBKCH = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.KLBKCH));
 
@@ -456,13 +488,80 @@ public final class Volume1 {
         dbHelper.addCharacterAppearance(BEILMARK, ch);
         // (Beilmark is a [Guardwoman])
         dbHelper.addCharacterMention(RELC, ch);
+        dbHelper.addCharacterMention(ZEVARA, ch);
         dbHelper.addSpeciesAppearance(RAZORBEAK, ch);
         dbHelper.addSpeciesAppearance(ANTINIUM, ch);
+        // note that Klbkch is Centenium?
         dbHelper.addCharacterAppearance(KLBKCH, ch);
+        dbHelper.addCharacterSpecies(KLBKCH, ANTINIUM, ch);
     }
 
     private static void ch06(final DbHelper dbHelper) throws SQLException {
-
+        final Chapter ch = dbHelper.fetchChapter("Chapter 1.06");
+        // first appearances/mentions
+        dbHelper.addSpecies(DRAKE);
+        dbHelper.addSkill(TELEPORTATION);
+        dbHelper.addClass(CHEF);
+        dbHelper.addClass(GUARDSMAN);
+        dbHelper.addClass(SPEARMASTER);
+        dbHelper.addClass(SWORDSLAYER);
+        dbHelper.addClass(WARRIOR);
+        dbHelper.addClass(SURVIVOR);
+        dbHelper.addClass(LORD);
+        dbHelper.addClass(LADY);
+        dbHelper.addClass(GOOD_PERSON);
+        dbHelper.addLandmassOcean(SOUTHERN_IZRIL);
+        dbHelper.addNation(PALLASS_NATION);
+        dbHelper.addSettlement(PALLASS);
+        dbHelper.addLandmark(BLOODFIELDS);
+        dbHelper.addSkill(BASIC_CRAFTING);
+        dbHelper.addClassSkill(INNKEEPER, BASIC_CRAFTING);
+        // events
+        final LevelUp lvErin = new LevelUp(ERIN, ch, 5, INNKEEPER, false, false);
+        dbHelper.addLevelUp(lvErin);
+        dbHelper.addLevelUpSkill(lvErin, BASIC_CRAFTING);
+        // appearances/mentions
+        // (still day 5 since Erin got to Innworld)
+        dbHelper.addWorldAppearance(INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(NORTHERN_IZRIL, ch);
+        dbHelper.addLandmarkAppearance(FLOODPLAINS, ch);
+        dbHelper.addLandmarkAppearance(FIRST_WANDERING_INN, ch);
+        dbHelper.addSpeciesAppearance(ANTINIUM, ch);
+        dbHelper.addCharacterAppearance(KLBKCH, ch);
+        dbHelper.addSpeciesAppearance(HUMAN, ch);
+        dbHelper.addCharacterAppearance(ERIN, ch);
+        dbHelper.addSpeciesMention(DRAGON, ch);
+        dbHelper.addSpeciesAppearance(DRAKE, ch);
+        dbHelper.addCharacterAppearance(RELC, ch);
+        dbHelper.addCharacterSpecies(RELC, DRAKE, ch);
+        // mention of subspecies Oldblood
+        // appearance of Liscors Watch
+        dbHelper.addCharacterMention(ZEVARA, ch);
+        dbHelper.addNationMention(MICHIGAN, ch);
+        dbHelper.addSkillMention(TELEPORTATION, ch);
+        // mention of Mage Guild
+        dbHelper.addSpeciesMention(GOBLIN, ch);
+        dbHelper.addSpeciesMention(RAZORBEAK, ch);
+        dbHelper.addSpeciesMention(HOLLOWSTONE_DECEIVER, ch);
+        // Klbkch's names Klbkch and Klb are revealed
+        dbHelper.addCharacterFirstName(RELC, ch, "Relc");
+        dbHelper.addClassMention(CHEF, ch);
+        dbHelper.addClassMention(INNKEEPER, ch);
+        // Relc is [Spearmaster], Klbkch is [Swordslayer], both are [Guardsman]
+        dbHelper.addClassMention(GUARDSMAN, ch);
+        dbHelper.addClassMention(SPEARMASTER, ch);
+        dbHelper.addClassMention(SWORDSLAYER, ch);
+        dbHelper.addClassMention(WARRIOR, ch);
+        dbHelper.addClassMention(SURVIVOR, ch);
+        dbHelper.addClassMention(LORD, ch);
+        dbHelper.addClassMention(LADY, ch);
+        dbHelper.addClassMention(GOOD_PERSON, ch);
+        dbHelper.addLandmassOceanMention(SOUTHERN_IZRIL, ch);
+        dbHelper.addNationMention(PALLASS_NATION, ch);
+        dbHelper.addSettlementMention(PALLASS, ch);
+        dbHelper.addLandmarkMention(BLOODFIELDS, ch);
+        dbHelper.addSkillMention(BASIC_CRAFTING, ch);
     }
 
     private static void ch07(final DbHelper dbHelper) throws SQLException {

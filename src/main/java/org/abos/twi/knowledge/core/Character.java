@@ -28,6 +28,8 @@ public record Character(String wikiLink) implements Named {
 
     public static final String TERIARCH = "Teriarch";
 
+    public static final String ZEVARA = "Zevara Sunderscale";
+
     public Character(final String wikiLink) {
         this.wikiLink = Objects.requireNonNull(wikiLink);
     }

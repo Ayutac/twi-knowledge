@@ -1,13 +1,14 @@
 package org.abos.twi.knowledge.core.location;
 
 import org.abos.common.Named;
-import org.abos.twi.knowledge.core.publication.Chapter;
 
 import java.util.Objects;
 
 public record Landmark(String name, boolean natural, LandmassOcean landmassOcean, String wikiLink) implements Named {
 
     public static final String AMENTUS_GROVE = "Amentus Grove";
+
+    public static final String BLOODFIELDS = "Bloodfields";
 
     public static final String FIRST_WANDERING_INN = "First Wandering Inn";
 

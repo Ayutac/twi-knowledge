@@ -87,6 +87,7 @@ CREATE TABLE class_upgrade (
 CREATE TABLE skill (
   id        SERIAL,
   name      TEXT      UNIQUE NOT NULL,
+  spell     BOOLEAN   NOT NULL,
   wiki_link TEXT,
   PRIMARY KEY(id)
 );

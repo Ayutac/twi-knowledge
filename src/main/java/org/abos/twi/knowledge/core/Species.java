@@ -1,7 +1,6 @@
 package org.abos.twi.knowledge.core;
 
 import org.abos.common.Named;
-import org.abos.twi.knowledge.core.publication.Chapter;
 
 import java.util.Objects;
 
@@ -14,6 +13,8 @@ public record Species(String name, boolean canLevel, String wikiLink) implements
     public static final String DJINN = "Djinn";
 
     public static final String DEMON = "Demon";
+
+    public static final String DRAKE = "Drake";
 
     public static final String DRAGON = "Dragon";
 

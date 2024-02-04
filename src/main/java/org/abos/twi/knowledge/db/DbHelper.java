@@ -79,7 +79,7 @@ public final class DbHelper {
 
     private static final String SELECT_CLASS = "SELECT name, wiki_link FROM class";
 
-    private static final String SELECT_SKILL = "SELECT name, wiki_link FROM skill";
+    private static final String SELECT_SKILL = "SELECT name, spell, wiki_link FROM skill";
 
     private static final String SELECT_WORLD = "SELECT name, wiki_link FROM world";
 
@@ -493,9 +493,10 @@ public final class DbHelper {
     }
 
     public void addSkill(final Skill skill) throws SQLException {
-        try (final ConnectionStatement cs = prepareStatement("INSERT INTO skill (name, wiki_link) VALUES (?,?);")) {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO skill (name, spell, wiki_link) VALUES (?,?,?);")) {
             setString(cs.preparedStatement(), 1, skill.name());
-            setString(cs.preparedStatement(), 2, skill.wikiLink());
+            setBoolean(cs.preparedStatement(), 2, skill.spell());
+            setString(cs.preparedStatement(), 3, skill.wikiLink());
             cs.preparedStatement().execute();
         }
     }
@@ -531,7 +532,7 @@ public final class DbHelper {
     }
 
     private Skill internalFetchSkill(final ResultSet rs) throws SQLException {
-        return new Skill(rs.getString(1), rs.getString(2));
+        return new Skill(rs.getString(1), rs.getBoolean(2), rs.getString(3));
     }
 
     private Skill fetchSkill(final int skillId) throws SQLException {

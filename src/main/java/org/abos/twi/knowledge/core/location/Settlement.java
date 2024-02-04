@@ -14,6 +14,8 @@ public record Settlement(String name, SettlementType settlementType, Nation nati
 
     public static final String LISCOR = Nation.LISCOR;
 
+    public static final String PALLASS = Nation.PALLASS;
+
     public Settlement(final String name, final SettlementType settlementType, final Nation nation, final String wikiLink) {
         this.name = Objects.requireNonNull(name);
         this.settlementType = Objects.requireNonNull(settlementType);
