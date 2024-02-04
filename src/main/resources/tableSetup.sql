@@ -124,6 +124,8 @@ CREATE TABLE mention_world (
   chapter_id  INT NOT NULL  REFERENCES chapter(id),
   PRIMARY KEY(world_id, chapter_id)
 );
+CREATE VIEW appearance_mention_world AS
+  (SELECT * FROM appearance_world) UNION (SELECT * FROM mention_world);
 CREATE TABLE landmass_ocean (
   id        SERIAL,
   name      TEXT                UNIQUE NOT NULL,
@@ -142,6 +144,8 @@ CREATE TABLE mention_landmass_ocean (
   chapter_id        INT NOT NULL  REFERENCES chapter(id),
   PRIMARY KEY(landmass_ocean_id, chapter_id)
 );
+CREATE VIEW appearance_mention_landmass_ocean AS
+  (SELECT * FROM appearance_landmass_ocean) UNION (SELECT * FROM mention_landmass_ocean);
 CREATE TABLE landmark (
   id                SERIAL,
   name              TEXT    UNIQUE NOT NULL,
@@ -161,6 +165,8 @@ CREATE TABLE mention_landmark (
   chapter_id  INT NOT NULL  REFERENCES chapter(id),
   PRIMARY KEY(landmark_id, chapter_id)
 );
+CREATE VIEW appearance_mention_landmark AS
+  (SELECT * FROM appearance_landmark) UNION (SELECT * FROM mention_landmark);
 CREATE TABLE nation (
   id                SERIAL,
   name              TEXT        UNIQUE NOT NULL,
@@ -179,6 +185,8 @@ CREATE TABLE mention_nation (
   chapter_id  INT NOT NULL  REFERENCES chapter(id),
   PRIMARY KEY(nation_id, chapter_id)
 );
+CREATE VIEW appearance_mention_nation AS
+  (SELECT * FROM appearance_nation) UNION (SELECT * FROM mention_nation);
 CREATE TABLE settlement (
   id        SERIAL,
   name      TEXT            UNIQUE NOT NULL,
@@ -197,6 +205,8 @@ CREATE TABLE mention_settlement (
   chapter_id        INT NOT NULL  REFERENCES chapter(id),
   PRIMARY KEY(settlement_id, chapter_id)
 );
+CREATE VIEW appearance_mention_settlement AS
+  (SELECT * FROM appearance_settlement) UNION (SELECT * FROM mention_settlement);
 CREATE TABLE species (
   id                SERIAL,
   name              TEXT      UNIQUE NOT NULL,
@@ -214,6 +224,8 @@ CREATE TABLE mention_species (
   chapter_id    INT NOT NULL  REFERENCES chapter(id),
   PRIMARY KEY(species_id, chapter_id)
 );
+CREATE VIEW appearance_mention_species AS
+  (SELECT * FROM appearance_species) UNION (SELECT * FROM mention_species);
 CREATE TABLE rsk ( -- short for: RelationShip Kind
   id    SERIAL,
   name  TEXT    UNIQUE NOT NULL,
@@ -234,6 +246,8 @@ CREATE TABLE mention_character (
   chapter_id    INT NOT NULL  REFERENCES chapter(id),
   PRIMARY KEY(character_id, chapter_id)
 );
+CREATE VIEW appearance_mention_character AS
+  (SELECT * FROM appearance_character) UNION (SELECT * FROM mention_character);
 CREATE TABLE first_name (
   name          TEXT      NOT NULL,
   character_id  INT       NOT NULL  REFERENCES character(id),
