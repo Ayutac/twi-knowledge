@@ -23,6 +23,8 @@ import java.sql.SQLException;
 
 public final class Volume1 {
 
+    public static final Battle PISCES_FIGHT = new Battle("Erin vs. Pisces", null);
+
     private Volume1() {
         /* No instantiation. */
     }
@@ -376,6 +378,7 @@ public final class Volume1 {
         final LevelUp lvErin = new LevelUp(Character.ERIN, ch, 5, Class.INNKEEPER, false, false);
         dbHelper.addLevelUp(lvErin);
         dbHelper.addLevelUpSkill(lvErin, Skill.BASIC_CRAFTING);
+        // (healing potion is used)
         // appearances/mentions
         // (still day 5 since Erin got to Innworld)
         dbHelper.addWorldAppearance(World.INNWORLD, ch);
@@ -421,7 +424,54 @@ public final class Volume1 {
     }
 
     private static void ch07(final DbHelper dbHelper) throws SQLException {
-
+        final Chapter ch = dbHelper.fetchChapter("Chapter 1.07");
+        // first appearances/mentions
+        dbHelper.addClass(Class.GUARD);
+        dbHelper.addClass(Class.GATHERER);
+        dbHelper.addSkill(Skill.DETECT_POISON);
+        dbHelper.addClassSkill(Class.GATHERER, Skill.DETECT_POISON);
+        dbHelper.addSkill(Skill.BAD_FRUIT_DETECTOR);
+        // events
+        // (Erin crafts a basket out of grass)
+        final Battle razorbeak = new Battle("Erin fights a Razorbeak for its eggs", null);
+        dbHelper.addBattle(razorbeak);
+        dbHelper.addBattleChapter(razorbeak, ch);
+        dbHelper.addBattleCharacter(razorbeak, Character.ERIN);
+        dbHelper.addBattle(PISCES_FIGHT);
+        dbHelper.addBattleChapter(PISCES_FIGHT, ch);
+        dbHelper.addBattleCharacter(PISCES_FIGHT, Character.ERIN);
+        dbHelper.addBattleCharacter(PISCES_FIGHT, Character.PISCES);
+        // appearances/mentions
+        // (day 6 since Erin got to Innworld)
+        dbHelper.addWorldAppearance(World.INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.NORTHERN_IZRIL, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FLOODPLAINS, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FIRST_WANDERING_INN, ch);
+        dbHelper.addSpeciesAppearance(Species.HUMAN, ch);
+        dbHelper.addCharacterAppearance(Character.ERIN, ch);
+        // (mention of healing potion)
+        dbHelper.addClassMention(Class.INNKEEPER, ch);
+        dbHelper.addSkillMention(Skill.BASIC_CRAFTING, ch);
+        dbHelper.addLandmarkAppearance(Landmark.AMENTUS_GROVE, ch);
+        dbHelper.addSpeciesAppearance(Species.RAZORBEAK, ch);
+        dbHelper.addSpeciesAppearance(Species.HOLLOWSTONE_DECEIVER, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FLOODPLAINS_STREAM, ch);
+        dbHelper.addSpeciesAppearance(Species.FLATFISH, ch);
+        dbHelper.addSpeciesAppearance(Species.GOBLIN, ch);
+        dbHelper.addCharacterAppearance(Character.RAGS, ch);
+        dbHelper.addSpeciesAppearance(Species.ANTINIUM, ch);
+        dbHelper.addClassMention(Class.GUARD, ch);
+        dbHelper.addClassMention(Class.CHIEFTAIN, ch);
+        dbHelper.addClassMention(Class.GATHERER, ch);
+        dbHelper.addSkillMention(Skill.DETECT_POISON, ch);
+        dbHelper.addSkillMention(Skill.BAD_FRUIT_DETECTOR, ch);
+        dbHelper.addCharacterAppearance(Character.KLBKCH, ch);
+        dbHelper.addSpeciesAppearance(Species.DRAKE, ch);
+        dbHelper.addCharacterAppearance(Character.RELC, ch);
+        // (Caption Z as nickname for Zevara)
+        dbHelper.addCharacterAppearance(Character.ZEVARA, ch);
+        dbHelper.addCharacterAppearance(Character.PISCES, ch);
     }
 
     private static void ch08(final DbHelper dbHelper) throws SQLException {
