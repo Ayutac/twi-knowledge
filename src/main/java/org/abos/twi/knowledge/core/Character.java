@@ -1,34 +1,24 @@
 package org.abos.twi.knowledge.core;
 
 import org.abos.common.Named;
+import org.abos.twi.knowledge.wiki.WikiHelper;
 
 import java.util.Objects;
 
 public record Character(String wikiLink) implements Named {
 
-    public static final String AZKERASH = "Az’kerash";
-
-    public static final String BEILMARK = "Beilmark";
-
-    public static final String ERIN = "Erin Solstice";
-
-    public static final String FLOODED_WATERS_CHIEFTAIN = "Goblin Chieftain";
-
-    public static final String MAGNOLIA = "Magnolia Reinhart";
-
-    public static final String PISCES = "Pisces Jealnet";
-
-    public static final String KLBKCH = "Klbkch";
-
-    public static final String QUARASS = "Quarass";
-
-    public static final String RAGS = "Rags";
-
-    public static final String RELC = "Relc Grasstongue";
-
-    public static final String TERIARCH = "Teriarch";
-
-    public static final String ZEVARA = "Zevara Sunderscale";
+    public static final Character AZKERASH = new Character(WikiHelper.WIKI_URL + "Az’kerash");
+    public static final Character BEILMARK = new Character(WikiHelper.WIKI_URL + "Beilmark");
+    public static final Character ERIN = new Character(WikiHelper.WIKI_URL + "Erin_Solstice");
+    public static final Character FLOODED_WATERS_CHIEFTAIN = new Character(WikiHelper.WIKI_URL + "Goblin_Chieftain");
+    public static final Character KLBKCH = new Character(WikiHelper.WIKI_URL + "Klbkch");
+    public static final Character MAGNOLIA = new Character(WikiHelper.WIKI_URL + "Magnolia_Reinhart");
+    public static final Character PISCES = new Character(WikiHelper.WIKI_URL + "Pisces_Jealnet");
+    public static final Character QUARASS = new Character(WikiHelper.WIKI_URL + "Quarass");
+    public static final Character RAGS = new Character(WikiHelper.WIKI_URL + "Rags");
+    public static final Character RELC = new Character(WikiHelper.WIKI_URL + "Relc_Grasstongue");
+    public static final Character TERIARCH = new Character(WikiHelper.WIKI_URL + "Teriarch");
+    public static final Character ZEVARA = new Character(WikiHelper.WIKI_URL + "Zevara_Sunderscale");
 
     public Character(final String wikiLink) {
         this.wikiLink = Objects.requireNonNull(wikiLink);

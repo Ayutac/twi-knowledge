@@ -1,30 +1,18 @@
 package org.abos.twi.knowledge.core.location;
 
 import org.abos.common.Named;
+import org.abos.twi.knowledge.wiki.WikiHelper;
 
 import java.util.Objects;
 
 public record LandmassOcean(String name, LandmassOceanType type, World world, String wikiLink) implements Named {
 
-    public static final String NORTH_AMERICA = "North America";
-
-    public static final String BLUE_MOON = "Blue Moon";
-
-    public static final String GREEN_MOON = "Green Moon";
-
-    public static final String BALEROS = "Baleros";
-
-    public static final String CHANDRAR = "Chandrar";
-
-    public static final String IZRIL = "Izril";
-
-    public static final String RHIR = "Rhir";
-
-    public static final String TERANDRIA = "Terandria";
-
-    public static final String NORTHERN_IZRIL = "Northern Izril";
-
-    public static final String SOUTHERN_IZRIL = "Southern Izril";
+    public static final LandmassOcean BLUE_MOON = new LandmassOcean("Blue Moon", LandmassOceanType.MOON, World.INNWORLD, null);
+    public static final LandmassOcean GREEN_MOON = new LandmassOcean("Green Moon", LandmassOceanType.MOON, World.INNWORLD, null);
+    public static final LandmassOcean NORTH_AMERICA = new LandmassOcean("North America", LandmassOceanType.CONTINENT, World.EARTH, null);
+    public static final LandmassOcean IZRIL = new LandmassOcean("Izril", LandmassOceanType.CONTINENT, World.INNWORLD, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName("Izril"));
+    public static final LandmassOcean NORTHERN_IZRIL = new LandmassOcean("Northern Izril", LandmassOceanType.HALF_CONTINENT, World.INNWORLD, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName("Izril"));
+    public static final LandmassOcean SOUTHERN_IZRIL = new LandmassOcean("Southern Izril", LandmassOceanType.HALF_CONTINENT, World.INNWORLD, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName("Izril"));
 
     public LandmassOcean(final String name, final LandmassOceanType type, final World world, final String wikiLink) {
         this.name = Objects.requireNonNull(name);

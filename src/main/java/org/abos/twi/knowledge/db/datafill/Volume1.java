@@ -13,159 +13,15 @@ import org.abos.twi.knowledge.core.event.InnworldArrival;
 import org.abos.twi.knowledge.core.event.LevelUp;
 import org.abos.twi.knowledge.core.location.Landmark;
 import org.abos.twi.knowledge.core.location.LandmassOcean;
-import org.abos.twi.knowledge.core.location.LandmassOceanType;
 import org.abos.twi.knowledge.core.location.Nation;
-import org.abos.twi.knowledge.core.location.NationType;
 import org.abos.twi.knowledge.core.location.Settlement;
-import org.abos.twi.knowledge.core.location.SettlementType;
 import org.abos.twi.knowledge.core.location.World;
 import org.abos.twi.knowledge.core.publication.Chapter;
 import org.abos.twi.knowledge.db.DbHelper;
-import org.abos.twi.knowledge.wiki.WikiHelper;
 
 import java.sql.SQLException;
 
 public final class Volume1 {
-
-    public static final World INNWORLD = new World(World.INNWORLD, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(World.INNWORLD));
-
-    public static final World EARTH = new World(World.EARTH, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(World.EARTH));
-
-    public static final LandmassOcean BLUE_MOON = new LandmassOcean(LandmassOcean.BLUE_MOON, LandmassOceanType.MOON, INNWORLD, null);
-
-    public static final LandmassOcean GREEN_MOON = new LandmassOcean(LandmassOcean.GREEN_MOON, LandmassOceanType.MOON, INNWORLD, null);
-
-    public static final LandmassOcean NORTH_AMERICA = new LandmassOcean(LandmassOcean.NORTH_AMERICA, LandmassOceanType.CONTINENT, EARTH, null);
-
-    public static final LandmassOcean IZRIL = new LandmassOcean(LandmassOcean.IZRIL, LandmassOceanType.CONTINENT, INNWORLD, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(LandmassOcean.IZRIL));
-
-    public static final LandmassOcean NORTHERN_IZRIL = new LandmassOcean(LandmassOcean.NORTHERN_IZRIL, LandmassOceanType.HALF_CONTINENT, INNWORLD, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(LandmassOcean.IZRIL));
-
-    public static final LandmassOcean SOUTHERN_IZRIL = new LandmassOcean(LandmassOcean.SOUTHERN_IZRIL, LandmassOceanType.HALF_CONTINENT, INNWORLD, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(LandmassOcean.IZRIL));
-
-    public static final Landmark FLOODPLAINS = new Landmark(Landmark.FLOODPLAINS, true, NORTHERN_IZRIL, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Landmark.FLOODPLAINS));
-
-    public static final Landmark HIGH_PASSES = new Landmark(Landmark.HIGH_PASSES, true, IZRIL, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Landmark.HIGH_PASSES));
-
-    public static final Landmark FIRST_WANDERING_INN = new Landmark("Wandering Inn", false, NORTHERN_IZRIL, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Landmark.FIRST_WANDERING_INN));
-
-    public static final Landmark AMENTUS_GROVE = new Landmark(Landmark.AMENTUS_GROVE, true, NORTHERN_IZRIL, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName("Amentus"));
-
-    public static final Landmark TERIARCHS_OLD_HIDEOUT = new Landmark(Landmark.TERIARCHS_OLD_HIDEOUT, true, NORTHERN_IZRIL, null);
-
-    public static final Landmark TERIARCHS_NEW_HIDEOUT = new Landmark(Landmark.TERIARCHS_NEW_HIDEOUT, true, NORTHERN_IZRIL, null);
-
-    public static final Landmark FLOODPLAINS_STREAM = new Landmark(Landmark.FLOODPLAINS_STREAM, true, NORTHERN_IZRIL, null);
-
-    public static final Landmark FLOODED_WATERS_CAVE = new Landmark(Landmark.FLOODED_WATERS_CAVE, true, NORTHERN_IZRIL, null);
-
-    public static final Landmark PISCES_HIDEOUT = new Landmark(Landmark.PISCES_HIDEOUT, true, NORTHERN_IZRIL, null);
-
-    public static final Landmark BLOODFIELDS = new Landmark(Landmark.BLOODFIELDS, true, IZRIL, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Landmark.BLOODFIELDS));
-
-    public static final Nation USA = new Nation(Nation.USA, NationType.REPUBLIC, NORTH_AMERICA, null);
-
-    public static final Nation MICHIGAN = new Nation(Nation.MICHIGAN, NationType.REPUBLIC, NORTH_AMERICA, null);
-
-    public static final Nation FIVE_FAMILIES_TERRITORY = new Nation(Nation.FIVE_FAMILIES + " Territory", NationType.OLIGARCHY, NORTHERN_IZRIL, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Nation.FIVE_FAMILIES));
-
-    public static final Nation LISCOR_NATION = new Nation(Nation.LISCOR, NationType.CITY_STATE, NORTHERN_IZRIL, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Nation.LISCOR));
-
-    public static final Nation PALLASS_NATION = new Nation(Nation.PALLASS, NationType.WALLED_CITY, NORTHERN_IZRIL, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Nation.PALLASS));
-
-    public static final Settlement CHICAGO = new Settlement(Settlement.CHICAGO, SettlementType.CITY, USA, null);
-
-    public static final Settlement GRAND_RAPIDS = new Settlement(Settlement.GRAND_RAPIDS, SettlementType.CITY, USA, null);
-
-    public static final Settlement LISCOR = new Settlement(Settlement.LISCOR, SettlementType.CITY, LISCOR_NATION, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Settlement.LISCOR));
-
-    public static final Settlement CELUM = new Settlement(Settlement.CELUM, SettlementType.CITY, FIVE_FAMILIES_TERRITORY, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Settlement.CELUM));
-
-    public static final Settlement PALLASS = new Settlement(Settlement.PALLASS, SettlementType.CITY, PALLASS_NATION, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Settlement.PALLASS));
-
-    public static final Species HUMAN = new Species(Species.HUMAN, true, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Species.HUMAN + "s"));
-
-    public static final Species GOBLIN = new Species(Species.GOBLIN, true, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Species.GOBLIN + "s"));
-
-    public static final Species DRAGON = new Species(Species.DRAGON, false, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Species.DRAGON + "s"));
-
-    public static final Species HOLLOWSTONE_DECEIVER = new Species(Species.HOLLOWSTONE_DECEIVER, false, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName("Rock Crabs"));
-
-    public static final Species DEMON = new Species(Species.DEMON, true, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Species.DEMON + "s"));
-
-    public static final Species DJINN = new Species(Species.DJINN, false, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Species.DJINN + "i"));
-
-    public static final Species FLATFISH = new Species(Species.FLATFISH, false, null);
-
-    public static final Species ACID_FLY = new Species(Species.ACID_FLY, false, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName("Acid Flies"));
-
-    public static final Species RAZORBEAK = new Species(Species.RAZORBEAK, false, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Species.RAZORBEAK + "s"));
-
-    public static final Species ANTINIUM = new Species(Species.ANTINIUM, true, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Species.ANTINIUM));
-
-    public static final Species DRAKE = new Species(Species.DRAKE, true, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Species.DRAKE + "s"));
-
-    public static final Class INNKEEPER = new Class(Class.INNKEEPER, WikiHelper.WIKI_URL + Class.INNKEEPER + "s");
-
-    public static final Class KNIGHT = new Class(Class.KNIGHT, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.KNIGHT + "s"));
-
-    public static final Class HERO = new Class(Class.HERO, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.HERO + "es"));
-
-    public static final Class CHIEFTAIN = new Class(Class.CHIEFTAIN, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.CHIEFTAIN + "s"));
-
-    public static final Class SHAMAN = new Class(Class.SHAMAN, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.SHAMAN + "s"));
-
-    public static final Class GUARDSWOMAN = new Class(Class.GUARDWOMAN, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName("Watch"));
-
-    public static final Class CHEF = new Class(Class.CHEF, null);
-
-    public static final Class GUARDSMAN = new Class(Class.GUARDSMAN, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName("Watch"));
-
-    public static final Class SPEARMASTER = new Class(Class.SPEARMASTER, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.SPEARMASTER + "s"));
-
-    public static final Class SWORDSLAYER = new Class(Class.SWORDSLAYER, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.SWORDSLAYER + "s"));
-
-    public static final Class WARRIOR = new Class(Class.WARRIOR, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.WARRIOR + "s"));
-
-    public static final Class SURVIVOR = new Class(Class.SURVIVOR, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.SURVIVOR + "s"));
-
-    public static final Class LORD = new Class(Class.LORD, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Class.LORD + "s"));
-
-    public static final Class LADY = new Class(Class.LADY, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName("Ladies"));
-
-    public static final Class GOOD_PERSON = new Class(Class.GOOD_PERSON, null);
-
-    public static final Skill BASIC_CLEANING = new Skill(Skill.BASIC_CLEANING, false, null);
-
-    public static final Skill BASIC_COOKING = new Skill(Skill.BASIC_COOKING, false, null);
-
-    public static final Skill TELEPORTATION = new Skill(Skill.TELEPORTATION, true, null);
-
-    public static final Skill BASIC_CRAFTING = new Skill(Skill.BASIC_CRAFTING, false, null);
-
-    public static final Character ERIN = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.ERIN));
-
-    public static final Character TERIARCH = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.TERIARCH));
-
-    public static final Character AZKERASH = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.AZKERASH));
-
-    public static final Character MAGNOLIA = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.MAGNOLIA));
-
-    public static final Character QUARASS = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.QUARASS));
-
-    public static final Character RAGS = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.RAGS));
-
-    public static final Character PISCES = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.PISCES));
-
-    public static final Character FLOODED_WATERS_CHIEFTAIN = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.FLOODED_WATERS_CHIEFTAIN));
-
-    public static final Character BEILMARK = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.BEILMARK));
-
-    public static final Character RELC = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.RELC));
-
-    public static final Character ZEVARA = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.ZEVARA));
-
-    public static final Character KLBKCH = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.KLBKCH));
 
     private Volume1() {
         /* No instantiation. */
@@ -243,51 +99,51 @@ public final class Volume1 {
     private static void ch00(final DbHelper dbHelper) throws SQLException {
         final Chapter ch = dbHelper.fetchChapter("Chapter 1.00");
         // first appearances/mentions
-        dbHelper.addWorld(INNWORLD);
-        dbHelper.addWorld(EARTH);
-        dbHelper.addLandmassOcean(IZRIL);
-        dbHelper.addLandmassOcean(NORTHERN_IZRIL);
-        dbHelper.addLandmark(FLOODPLAINS);
-        dbHelper.addLandmark(HIGH_PASSES);
-        dbHelper.addLandmark(FIRST_WANDERING_INN);
-        dbHelper.addSpecies(HUMAN);
-        dbHelper.addSpecies(GOBLIN);
-        dbHelper.addSpecies(DRAGON);
-        dbHelper.addClass(INNKEEPER);
-        dbHelper.addSkill(BASIC_CLEANING);
-        dbHelper.addClassSkill(INNKEEPER, BASIC_CLEANING);
-        dbHelper.addSkill(BASIC_COOKING);
-        dbHelper.addClassSkill(INNKEEPER, BASIC_COOKING);
+        dbHelper.addWorld(World.INNWORLD);
+        dbHelper.addWorld(World.EARTH);
+        dbHelper.addLandmassOcean(LandmassOcean.IZRIL);
+        dbHelper.addLandmassOcean(LandmassOcean.NORTHERN_IZRIL);
+        dbHelper.addLandmark(Landmark.FLOODPLAINS);
+        dbHelper.addLandmark(Landmark.HIGH_PASSES);
+        dbHelper.addLandmark(Landmark.FIRST_WANDERING_INN);
+        dbHelper.addSpecies(Species.HUMAN);
+        dbHelper.addSpecies(Species.GOBLIN);
+        dbHelper.addSpecies(Species.DRAGON);
+        dbHelper.addClass(Class.INNKEEPER);
+        dbHelper.addSkill(Skill.BASIC_CLEANING);
+        dbHelper.addClassSkill(Class.INNKEEPER, Skill.BASIC_CLEANING);
+        dbHelper.addSkill(Skill.BASIC_COOKING);
+        dbHelper.addClassSkill(Class.INNKEEPER, Skill.BASIC_COOKING);
         // events
-        dbHelper.addInnworldArrival(new InnworldArrival(ERIN, ch));
-        dbHelper.addCharacterStatus(new CharacterStatus(new Status(Status.ALIVE), ERIN, ch));
-        dbHelper.addCharacterStatus(new CharacterStatus(new Status(Status.ALIVE), TERIARCH, ch));
-        dbHelper.maybeAddFirstMeeting(new FirstMeeting(ERIN, TERIARCH, ch));
-        dbHelper.addInnArrival(new InnArrival(ERIN, ch));
-        final LevelUp lvErin = new LevelUp(ERIN, ch, 1, INNKEEPER, false, false);
+        dbHelper.addInnworldArrival(new InnworldArrival(Character.ERIN, ch));
+        dbHelper.addCharacterStatus(new CharacterStatus(new Status(Status.ALIVE), Character.ERIN, ch));
+        dbHelper.addCharacterStatus(new CharacterStatus(new Status(Status.ALIVE), Character.TERIARCH, ch));
+        dbHelper.maybeAddFirstMeeting(new FirstMeeting(Character.ERIN, Character.TERIARCH, ch));
+        dbHelper.addInnArrival(new InnArrival(Character.ERIN, ch));
+        final LevelUp lvErin = new LevelUp(Character.ERIN, ch, 1, Class.INNKEEPER, false, false);
         dbHelper.addLevelUp(lvErin);
-        dbHelper.addLevelUpSkill(lvErin, BASIC_CLEANING);
-        dbHelper.addLevelUpSkill(lvErin, BASIC_COOKING);
+        dbHelper.addLevelUpSkill(lvErin, Skill.BASIC_CLEANING);
+        dbHelper.addLevelUpSkill(lvErin, Skill.BASIC_COOKING);
         // misc
-        dbHelper.addCharacterFirstName(ERIN, ch, "Erin");
-        dbHelper.addCharacterLastName(ERIN, ch, "Solstice");
-        dbHelper.addCharacterSpecies(ERIN, HUMAN, ch);
-        dbHelper.addCharacterSpecies(TERIARCH, DRAGON, ch);
+        dbHelper.addCharacterFirstName(Character.ERIN, ch, "Erin");
+        dbHelper.addCharacterLastName(Character.ERIN, ch, "Solstice");
+        dbHelper.addCharacterSpecies(Character.ERIN, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.TERIARCH, Species.DRAGON, ch);
         // appearances/mentions
-        dbHelper.addWorldAppearance(INNWORLD, ch);
-        dbHelper.addLandmassOceanAppearance(IZRIL, ch);
-        dbHelper.addLandmassOceanAppearance(NORTHERN_IZRIL, ch);
-        dbHelper.addLandmarkAppearance(FLOODPLAINS, ch);
-        dbHelper.addLandmarkMention(HIGH_PASSES, ch);
-        dbHelper.addLandmarkAppearance(FIRST_WANDERING_INN, ch);
-        dbHelper.addSpeciesAppearance(HUMAN, ch);
-        dbHelper.addSpeciesMention(DRAGON, ch);
-        dbHelper.addSpeciesMention(GOBLIN, ch);
-        dbHelper.addCharacterAppearance(ERIN, ch);
-        dbHelper.addCharacterMention(TERIARCH, ch);
-        dbHelper.addClassMention(INNKEEPER, ch);
-        dbHelper.addSkillMention(BASIC_CLEANING, ch);
-        dbHelper.addSkillMention(BASIC_COOKING, ch);
+        dbHelper.addWorldAppearance(World.INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.NORTHERN_IZRIL, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FLOODPLAINS, ch);
+        dbHelper.addLandmarkMention(Landmark.HIGH_PASSES, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FIRST_WANDERING_INN, ch);
+        dbHelper.addSpeciesAppearance(Species.HUMAN, ch);
+        dbHelper.addSpeciesMention(Species.DRAGON, ch);
+        dbHelper.addSpeciesMention(Species.GOBLIN, ch);
+        dbHelper.addCharacterAppearance(Character.ERIN, ch);
+        dbHelper.addCharacterMention(Character.TERIARCH, ch);
+        dbHelper.addClassMention(Class.INNKEEPER, ch);
+        dbHelper.addSkillMention(Skill.BASIC_CLEANING, ch);
+        dbHelper.addSkillMention(Skill.BASIC_COOKING, ch);
         // chess is mentioned
         // day 1 since Erin arrived
     }
@@ -295,273 +151,273 @@ public final class Volume1 {
     private static void ch01(final DbHelper dbHelper) throws SQLException {
         final Chapter ch = dbHelper.fetchChapter("Chapter 1.01");
         // first appearances/mentions
-        dbHelper.addLandmassOcean(BLUE_MOON);
-        dbHelper.addLandmassOcean(GREEN_MOON);
-        dbHelper.addLandmassOcean(NORTH_AMERICA);
-        dbHelper.addNation(USA);
-        dbHelper.addSettlement(CHICAGO);
-        dbHelper.addNation(LISCOR_NATION);
-        dbHelper.addSettlement(LISCOR);
-        dbHelper.addLandmark(AMENTUS_GROVE);
-        dbHelper.addSpecies(HOLLOWSTONE_DECEIVER);
-        dbHelper.addLandmark(TERIARCHS_OLD_HIDEOUT);
-        dbHelper.addLandmark(TERIARCHS_NEW_HIDEOUT);
-        dbHelper.addSpecies(DEMON);
-        dbHelper.addSpecies(DJINN);
-        dbHelper.addClass(KNIGHT);
-        dbHelper.addClass(HERO);
-        dbHelper.addNation(FIVE_FAMILIES_TERRITORY);
-        dbHelper.addSettlement(CELUM);
+        dbHelper.addLandmassOcean(LandmassOcean.BLUE_MOON);
+        dbHelper.addLandmassOcean(LandmassOcean.GREEN_MOON);
+        dbHelper.addLandmassOcean(LandmassOcean.NORTH_AMERICA);
+        dbHelper.addNation(Nation.USA);
+        dbHelper.addSettlement(Settlement.CHICAGO);
+        dbHelper.addNation(Nation.LISCOR);
+        dbHelper.addSettlement(Settlement.LISCOR);
+        dbHelper.addLandmark(Landmark.AMENTUS_GROVE);
+        dbHelper.addSpecies(Species.HOLLOWSTONE_DECEIVER);
+        dbHelper.addLandmark(Landmark.TERIARCHS_OLD_HIDEOUT);
+        dbHelper.addLandmark(Landmark.TERIARCHS_NEW_HIDEOUT);
+        dbHelper.addSpecies(Species.DEMON);
+        dbHelper.addSpecies(Species.DJINNI);
+        dbHelper.addClass(Class.KNIGHT);
+        dbHelper.addClass(Class.HERO);
+        dbHelper.addNation(Nation.FIVE_FAMILIES_TERRITORY);
+        dbHelper.addSettlement(Settlement.CELUM);
         // events
         final Battle rockCrabBattle = new Battle("Erin gets surprised by a Rock Crab", null);
         dbHelper.addBattle(rockCrabBattle);
         dbHelper.addBattleChapter(rockCrabBattle, ch);
-        dbHelper.addBattleCharacter(rockCrabBattle, ERIN);
+        dbHelper.addBattleCharacter(rockCrabBattle, Character.ERIN);
         // appearances/mentions
-        dbHelper.addWorldAppearance(INNWORLD, ch);
-        dbHelper.addLandmassOceanAppearance(IZRIL, ch);
-        dbHelper.addLandmassOceanAppearance(NORTHERN_IZRIL, ch);
-        dbHelper.addLandmarkAppearance(FLOODPLAINS, ch);
-        dbHelper.addLandmarkAppearance(FIRST_WANDERING_INN, ch);
-        dbHelper.addLandmassOceanMention(BLUE_MOON, ch);
-        dbHelper.addLandmassOceanMention(GREEN_MOON, ch);
-        dbHelper.addSpeciesAppearance(HUMAN, ch);
-        dbHelper.addCharacterAppearance(ERIN, ch);
-        dbHelper.addSpeciesMention(GOBLIN, ch);
+        dbHelper.addWorldAppearance(World.INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.NORTHERN_IZRIL, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FLOODPLAINS, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FIRST_WANDERING_INN, ch);
+        dbHelper.addLandmassOceanMention(LandmassOcean.BLUE_MOON, ch);
+        dbHelper.addLandmassOceanMention(LandmassOcean.GREEN_MOON, ch);
+        dbHelper.addSpeciesAppearance(Species.HUMAN, ch);
+        dbHelper.addCharacterAppearance(Character.ERIN, ch);
+        dbHelper.addSpeciesMention(Species.GOBLIN, ch);
         // (chess is mentioned)
         // (day 1 and 2 since Erin arrived)
-        dbHelper.addWorldMention(EARTH, ch);
-        dbHelper.addLandmassOceanMention(NORTH_AMERICA, ch);
-        dbHelper.addNationMention(USA, ch);
-        dbHelper.addSettlementMention(CHICAGO, ch);
-        dbHelper.addNationMention(LISCOR_NATION, ch);
-        dbHelper.addSettlementMention(LISCOR, ch);
-        dbHelper.addLandmarkAppearance(AMENTUS_GROVE, ch);
+        dbHelper.addWorldMention(World.EARTH, ch);
+        dbHelper.addLandmassOceanMention(LandmassOcean.NORTH_AMERICA, ch);
+        dbHelper.addNationMention(Nation.USA, ch);
+        dbHelper.addSettlementMention(Settlement.CHICAGO, ch);
+        dbHelper.addNationMention(Nation.LISCOR, ch);
+        dbHelper.addSettlementMention(Settlement.LISCOR, ch);
+        dbHelper.addLandmarkAppearance(Landmark.AMENTUS_GROVE, ch);
         // (Erin picks up an Amentus fruit)
-        dbHelper.addSpeciesAppearance(HOLLOWSTONE_DECEIVER, ch);
-        dbHelper.addCharacterAppearance(TERIARCH, ch);
-        dbHelper.addSpeciesAppearance(DRAGON, ch);
-        dbHelper.addLandmarkAppearance(TERIARCHS_OLD_HIDEOUT, ch);
-        dbHelper.addLandmarkAppearance(TERIARCHS_NEW_HIDEOUT, ch);
-        dbHelper.addCharacterMention(AZKERASH, ch);
-        dbHelper.addClassMention(KNIGHT, ch);
-        dbHelper.addClassMention(HERO, ch);
+        dbHelper.addSpeciesAppearance(Species.HOLLOWSTONE_DECEIVER, ch);
+        dbHelper.addCharacterAppearance(Character.TERIARCH, ch);
+        dbHelper.addSpeciesAppearance(Species.DRAGON, ch);
+        dbHelper.addLandmarkAppearance(Landmark.TERIARCHS_OLD_HIDEOUT, ch);
+        dbHelper.addLandmarkAppearance(Landmark.TERIARCHS_NEW_HIDEOUT, ch);
+        dbHelper.addCharacterMention(Character.AZKERASH, ch);
+        dbHelper.addClassMention(Class.KNIGHT, ch);
+        dbHelper.addClassMention(Class.HERO, ch);
         // (Teriarch checks cave from day 1 to day 3 since erin appeared + 2 weeks checking for pursuit)
-        dbHelper.addCharacterMention(MAGNOLIA, ch);
-        dbHelper.addSpeciesMention(DEMON, ch);
-        dbHelper.addSpeciesMention(DJINN, ch);
-        dbHelper.addCharacterMention(QUARASS, ch);
-        dbHelper.addNationMention(FIVE_FAMILIES_TERRITORY, ch);
-        dbHelper.addSettlementMention(CELUM, ch);
+        dbHelper.addCharacterMention(Character.MAGNOLIA, ch);
+        dbHelper.addSpeciesMention(Species.DEMON, ch);
+        dbHelper.addSpeciesMention(Species.DJINNI, ch);
+        dbHelper.addCharacterMention(Character.QUARASS, ch);
+        dbHelper.addNationMention(Nation.FIVE_FAMILIES_TERRITORY, ch);
+        dbHelper.addSettlementMention(Settlement.CELUM, ch);
     }
 
     private static void ch02(final DbHelper dbHelper) throws SQLException {
         final Chapter ch = dbHelper.fetchChapter("Chapter 1.02");
         // first appearances/mentions
-        dbHelper.addNation(MICHIGAN);
-        dbHelper.addSettlement(GRAND_RAPIDS);
-        dbHelper.addLandmark(FLOODPLAINS_STREAM);
-        dbHelper.addLandmark(FLOODED_WATERS_CAVE);
-        dbHelper.addClass(CHIEFTAIN);
-        dbHelper.addClass(SHAMAN);
-        dbHelper.addCharacterSpecies(RAGS, GOBLIN, ch);
-        dbHelper.addCharacterSpecies(FLOODED_WATERS_CHIEFTAIN, GOBLIN, ch);
+        dbHelper.addNation(Nation.MICHIGAN);
+        dbHelper.addSettlement(Settlement.GRAND_RAPIDS);
+        dbHelper.addLandmark(Landmark.FLOODPLAINS_STREAM);
+        dbHelper.addLandmark(Landmark.FLOODED_WATERS_CAVE);
+        dbHelper.addClass(Class.CHIEFTAIN);
+        dbHelper.addClass(Class.SHAMAN);
+        dbHelper.addCharacterSpecies(Character.RAGS, Species.GOBLIN, ch);
+        dbHelper.addCharacterSpecies(Character.FLOODED_WATERS_CHIEFTAIN, Species.GOBLIN, ch);
         // events
         // (Erin eats Amentus fruits)
         final Battle rockCrabBattle2 = new Battle("Erin defeats the Rock Crab", null);
         dbHelper.addBattle(rockCrabBattle2);
         dbHelper.addBattleChapter(rockCrabBattle2, ch);
-        dbHelper.addBattleCharacter(rockCrabBattle2, ERIN);
+        dbHelper.addBattleCharacter(rockCrabBattle2, Character.ERIN);
         // (Chess, Shogi and Go are mentioned)
         final Battle sevenGoblins = new Battle("Erin fights off seven Goblins", null);
         dbHelper.addBattle(sevenGoblins);
         dbHelper.addBattleChapter(sevenGoblins, ch);
-        dbHelper.addBattleCharacter(sevenGoblins, ERIN);
-        final LevelUp lvErin = new LevelUp(ERIN, ch, 4, dbHelper.fetchClass(Class.INNKEEPER), false, false);
+        dbHelper.addBattleCharacter(sevenGoblins, Character.ERIN);
+        final LevelUp lvErin = new LevelUp(Character.ERIN, ch, 4, dbHelper.fetchClass("Innkeeper"), false, false);
         dbHelper.addLevelUp(lvErin);
         // misc
-        dbHelper.addCharacterAge(ERIN, 20, ch);
-        dbHelper.addCharacterAge(RAGS, 1, ch);
+        dbHelper.addCharacterAge(Character.ERIN, 20, ch);
+        dbHelper.addCharacterAge(Character.RAGS, 1, ch);
         // appearances/mentions
-        dbHelper.addWorldAppearance(INNWORLD, ch);
-        dbHelper.addLandmassOceanAppearance(IZRIL, ch);
-        dbHelper.addLandmassOceanAppearance(NORTHERN_IZRIL, ch);
-        dbHelper.addLandmarkAppearance(FLOODPLAINS, ch);
-        dbHelper.addLandmarkAppearance(AMENTUS_GROVE, ch);
-        dbHelper.addSpeciesAppearance(HUMAN, ch);
-        dbHelper.addCharacterAppearance(ERIN, ch);
-        dbHelper.addSpeciesAppearance(GOBLIN, ch);
-        dbHelper.addNationMention(MICHIGAN, ch);
-        dbHelper.addSettlementMention(GRAND_RAPIDS, ch);
-        dbHelper.addLandmarkAppearance(FLOODPLAINS_STREAM, ch);
-        dbHelper.addLandmarkAppearance(FIRST_WANDERING_INN, ch);
-        dbHelper.addCharacterAppearance(RAGS, ch);
-        dbHelper.addClassMention(CHIEFTAIN, ch);
+        dbHelper.addWorldAppearance(World.INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.NORTHERN_IZRIL, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FLOODPLAINS, ch);
+        dbHelper.addLandmarkAppearance(Landmark.AMENTUS_GROVE, ch);
+        dbHelper.addSpeciesAppearance(Species.HUMAN, ch);
+        dbHelper.addCharacterAppearance(Character.ERIN, ch);
+        dbHelper.addSpeciesAppearance(Species.GOBLIN, ch);
+        dbHelper.addNationMention(Nation.MICHIGAN, ch);
+        dbHelper.addSettlementMention(Settlement.GRAND_RAPIDS, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FLOODPLAINS_STREAM, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FIRST_WANDERING_INN, ch);
+        dbHelper.addCharacterAppearance(Character.RAGS, ch);
+        dbHelper.addClassMention(Class.CHIEFTAIN, ch);
         // (appearance of a goblin called Injured Crotch)
         // (appearance of the Flooded Water Tribe)
-        dbHelper.addLandmarkAppearance(FLOODED_WATERS_CAVE, ch);
-        dbHelper.addCharacterAppearance(FLOODED_WATERS_CHIEFTAIN, ch);
-        dbHelper.addClassMention(SHAMAN, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FLOODED_WATERS_CAVE, ch);
+        dbHelper.addCharacterAppearance(Character.FLOODED_WATERS_CHIEFTAIN, ch);
+        dbHelper.addClassMention(Class.SHAMAN, ch);
     }
 
     private static void ch03(final DbHelper dbHelper) throws SQLException {
         final Chapter ch = dbHelper.fetchChapter("Chapter 1.03");
         // first appearances/mentions
-        dbHelper.addSpecies(FLATFISH);
+        dbHelper.addSpecies(Species.FLATFISH);
         // events
         final Battle flatfishBattle = new Battle("Erin defeats a flat fish", null);
         dbHelper.addBattle(flatfishBattle);
         dbHelper.addBattleChapter(flatfishBattle, ch);
-        dbHelper.addBattleCharacter(flatfishBattle, ERIN);
+        dbHelper.addBattleCharacter(flatfishBattle, Character.ERIN);
         // appearances/mentions
         // (day 3 since Erin got to Innworld)
-        dbHelper.addWorldAppearance(INNWORLD, ch);
-        dbHelper.addLandmassOceanAppearance(IZRIL, ch);
-        dbHelper.addLandmassOceanAppearance(NORTHERN_IZRIL, ch);
-        dbHelper.addLandmarkAppearance(FLOODPLAINS, ch);
-        dbHelper.addLandmarkAppearance(FIRST_WANDERING_INN, ch);
-        dbHelper.addSpeciesAppearance(HUMAN, ch);
-        dbHelper.addCharacterAppearance(ERIN, ch);
-        dbHelper.addLandmarkAppearance(AMENTUS_GROVE, ch);
-        dbHelper.addSpeciesMention(GOBLIN, ch);
-        dbHelper.addSpeciesMention(HOLLOWSTONE_DECEIVER, ch);
-        dbHelper.addLandmarkAppearance(FLOODPLAINS_STREAM, ch);
-        dbHelper.addSkillMention(BASIC_CLEANING, ch);
-        dbHelper.addSpeciesAppearance(FLATFISH, ch);
-        dbHelper.addSkillMention(BASIC_COOKING, ch);
+        dbHelper.addWorldAppearance(World.INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.NORTHERN_IZRIL, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FLOODPLAINS, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FIRST_WANDERING_INN, ch);
+        dbHelper.addSpeciesAppearance(Species.HUMAN, ch);
+        dbHelper.addCharacterAppearance(Character.ERIN, ch);
+        dbHelper.addLandmarkAppearance(Landmark.AMENTUS_GROVE, ch);
+        dbHelper.addSpeciesMention(Species.GOBLIN, ch);
+        dbHelper.addSpeciesMention(Species.HOLLOWSTONE_DECEIVER, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FLOODPLAINS_STREAM, ch);
+        dbHelper.addSkillMention(Skill.BASIC_CLEANING, ch);
+        dbHelper.addSpeciesAppearance(Species.FLATFISH, ch);
+        dbHelper.addSkillMention(Skill.BASIC_COOKING, ch);
         // (chess is mentioned)
     }
 
     private static void ch04(final DbHelper dbHelper) throws SQLException {
         final Chapter ch = dbHelper.fetchChapter("Chapter 1.04");
         // first appearances/mentions
-        dbHelper.addLandmark(PISCES_HIDEOUT);
+        dbHelper.addLandmark(Landmark.PISCES_HIDEOUT);
         // events
         // (Erin destroys the preservation runes)
         final Battle sevenGoblins2 = new Battle("Erin defeats a goblin sneaking through the inn", null);
         dbHelper.addBattle(sevenGoblins2);
         dbHelper.addBattleChapter(sevenGoblins2, ch);
-        dbHelper.addBattleCharacter(sevenGoblins2, ERIN);
+        dbHelper.addBattleCharacter(sevenGoblins2, Character.ERIN);
         // appearances/mentions
         // (day 4 since Erin got to Innworld)
-        dbHelper.addWorldAppearance(INNWORLD, ch);
-        dbHelper.addLandmassOceanAppearance(IZRIL, ch);
-        dbHelper.addLandmassOceanAppearance(NORTHERN_IZRIL, ch);
-        dbHelper.addLandmarkAppearance(FLOODPLAINS, ch);
-        dbHelper.addLandmarkAppearance(FIRST_WANDERING_INN, ch);
-        dbHelper.addSpeciesAppearance(HUMAN, ch);
-        dbHelper.addCharacterAppearance(ERIN, ch);
-        dbHelper.addSpeciesAppearance(GOBLIN, ch);
+        dbHelper.addWorldAppearance(World.INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.NORTHERN_IZRIL, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FLOODPLAINS, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FIRST_WANDERING_INN, ch);
+        dbHelper.addSpeciesAppearance(Species.HUMAN, ch);
+        dbHelper.addCharacterAppearance(Character.ERIN, ch);
+        dbHelper.addSpeciesAppearance(Species.GOBLIN, ch);
         // (appearance of Injured Crotch, indirectly)
-        dbHelper.addCharacterAppearance(RAGS, ch);
-        dbHelper.addCharacterAppearance(PISCES, ch);
-        dbHelper.addLandmarkMention(PISCES_HIDEOUT, ch);
+        dbHelper.addCharacterAppearance(Character.RAGS, ch);
+        dbHelper.addCharacterAppearance(Character.PISCES, ch);
+        dbHelper.addLandmarkMention(Landmark.PISCES_HIDEOUT, ch);
     }
 
     private static void ch05(final DbHelper dbHelper) throws SQLException {
         final Chapter ch = dbHelper.fetchChapter("Chapter 1.05");
         // first appearances/mentions
-        dbHelper.addSpecies(ACID_FLY);
-        dbHelper.addClass(GUARDSWOMAN);
-        dbHelper.addSpecies(RAZORBEAK);
-        dbHelper.addSpecies(ANTINIUM);
+        dbHelper.addSpecies(Species.ACID_FLY);
+        dbHelper.addClass(Class.GUARDSWOMAN);
+        dbHelper.addSpecies(Species.RAZORBEAK);
+        dbHelper.addSpecies(Species.ANTINIUM);
         // events
         // (Erin makes Pasta)
         // appearances/mentions
         // (day 5 since Erin got to Innworld)
-        dbHelper.addWorldAppearance(INNWORLD, ch);
-        dbHelper.addLandmassOceanAppearance(IZRIL, ch);
-        dbHelper.addLandmassOceanAppearance(NORTHERN_IZRIL, ch);
-        dbHelper.addLandmarkAppearance(FLOODPLAINS, ch);
-        dbHelper.addLandmarkAppearance(FIRST_WANDERING_INN, ch);
-        dbHelper.addSpeciesAppearance(HUMAN, ch);
-        dbHelper.addCharacterAppearance(ERIN, ch);
-        dbHelper.addSpeciesMention(GOBLIN, ch);
-        dbHelper.addSpeciesAppearance(FLATFISH, ch);
-        dbHelper.addSpeciesAppearance(ACID_FLY, ch);
-        dbHelper.addLandmarkAppearance(FLOODPLAINS_STREAM, ch);
-        dbHelper.addSkillMention(BASIC_COOKING, ch);
-        dbHelper.addNationAppearance(LISCOR_NATION, ch);
-        dbHelper.addSettlementAppearance(LISCOR, ch);
+        dbHelper.addWorldAppearance(World.INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.NORTHERN_IZRIL, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FLOODPLAINS, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FIRST_WANDERING_INN, ch);
+        dbHelper.addSpeciesAppearance(Species.HUMAN, ch);
+        dbHelper.addCharacterAppearance(Character.ERIN, ch);
+        dbHelper.addSpeciesMention(Species.GOBLIN, ch);
+        dbHelper.addSpeciesAppearance(Species.FLATFISH, ch);
+        dbHelper.addSpeciesAppearance(Species.ACID_FLY, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FLOODPLAINS_STREAM, ch);
+        dbHelper.addSkillMention(Skill.BASIC_COOKING, ch);
+        dbHelper.addNationAppearance(Nation.LISCOR, ch);
+        dbHelper.addSettlementAppearance(Settlement.LISCOR, ch);
         // (appearance of unnamed guard)
-        dbHelper.addClassMention(GUARDSWOMAN, ch);
-        dbHelper.addCharacterAppearance(BEILMARK, ch);
+        dbHelper.addClassMention(Class.GUARDSWOMAN, ch);
+        dbHelper.addCharacterAppearance(Character.BEILMARK, ch);
         // (Beilmark is a [Guardwoman])
-        dbHelper.addCharacterMention(RELC, ch);
-        dbHelper.addCharacterMention(ZEVARA, ch);
-        dbHelper.addSpeciesAppearance(RAZORBEAK, ch);
-        dbHelper.addSpeciesAppearance(ANTINIUM, ch);
+        dbHelper.addCharacterMention(Character.RELC, ch);
+        dbHelper.addCharacterMention(Character.ZEVARA, ch);
+        dbHelper.addSpeciesAppearance(Species.RAZORBEAK, ch);
+        dbHelper.addSpeciesAppearance(Species.ANTINIUM, ch);
         // note that Klbkch is Centenium?
-        dbHelper.addCharacterAppearance(KLBKCH, ch);
-        dbHelper.addCharacterSpecies(KLBKCH, ANTINIUM, ch);
+        dbHelper.addCharacterAppearance(Character.KLBKCH, ch);
+        dbHelper.addCharacterSpecies(Character.KLBKCH, Species.ANTINIUM, ch);
     }
 
     private static void ch06(final DbHelper dbHelper) throws SQLException {
         final Chapter ch = dbHelper.fetchChapter("Chapter 1.06");
         // first appearances/mentions
-        dbHelper.addSpecies(DRAKE);
-        dbHelper.addSkill(TELEPORTATION);
-        dbHelper.addClass(CHEF);
-        dbHelper.addClass(GUARDSMAN);
-        dbHelper.addClass(SPEARMASTER);
-        dbHelper.addClass(SWORDSLAYER);
-        dbHelper.addClass(WARRIOR);
-        dbHelper.addClass(SURVIVOR);
-        dbHelper.addClass(LORD);
-        dbHelper.addClass(LADY);
-        dbHelper.addClass(GOOD_PERSON);
-        dbHelper.addLandmassOcean(SOUTHERN_IZRIL);
-        dbHelper.addNation(PALLASS_NATION);
-        dbHelper.addSettlement(PALLASS);
-        dbHelper.addLandmark(BLOODFIELDS);
-        dbHelper.addSkill(BASIC_CRAFTING);
-        dbHelper.addClassSkill(INNKEEPER, BASIC_CRAFTING);
+        dbHelper.addSpecies(Species.DRAKE);
+        dbHelper.addSkill(Skill.TELEPORTATION);
+        dbHelper.addClass(Class.CHEF);
+        dbHelper.addClass(Class.GUARDSMAN);
+        dbHelper.addClass(Class.SPEARMASTER);
+        dbHelper.addClass(Class.SWORDSLAYER);
+        dbHelper.addClass(Class.WARRIOR);
+        dbHelper.addClass(Class.SURVIVOR);
+        dbHelper.addClass(Class.LORD);
+        dbHelper.addClass(Class.LADY);
+        dbHelper.addClass(Class.GOOD_PERSON);
+        dbHelper.addLandmassOcean(LandmassOcean.SOUTHERN_IZRIL);
+        dbHelper.addNation(Nation.PALLASS);
+        dbHelper.addSettlement(Settlement.PALLASS);
+        dbHelper.addLandmark(Landmark.BLOODFIELDS);
+        dbHelper.addSkill(Skill.BASIC_CRAFTING);
+        dbHelper.addClassSkill(Class.INNKEEPER, Skill.BASIC_CRAFTING);
         // events
-        final LevelUp lvErin = new LevelUp(ERIN, ch, 5, INNKEEPER, false, false);
+        final LevelUp lvErin = new LevelUp(Character.ERIN, ch, 5, Class.INNKEEPER, false, false);
         dbHelper.addLevelUp(lvErin);
-        dbHelper.addLevelUpSkill(lvErin, BASIC_CRAFTING);
+        dbHelper.addLevelUpSkill(lvErin, Skill.BASIC_CRAFTING);
         // appearances/mentions
         // (still day 5 since Erin got to Innworld)
-        dbHelper.addWorldAppearance(INNWORLD, ch);
-        dbHelper.addLandmassOceanAppearance(IZRIL, ch);
-        dbHelper.addLandmassOceanAppearance(NORTHERN_IZRIL, ch);
-        dbHelper.addLandmarkAppearance(FLOODPLAINS, ch);
-        dbHelper.addLandmarkAppearance(FIRST_WANDERING_INN, ch);
-        dbHelper.addSpeciesAppearance(ANTINIUM, ch);
-        dbHelper.addCharacterAppearance(KLBKCH, ch);
-        dbHelper.addSpeciesAppearance(HUMAN, ch);
-        dbHelper.addCharacterAppearance(ERIN, ch);
-        dbHelper.addSpeciesMention(DRAGON, ch);
-        dbHelper.addSpeciesAppearance(DRAKE, ch);
-        dbHelper.addCharacterAppearance(RELC, ch);
-        dbHelper.addCharacterSpecies(RELC, DRAKE, ch);
+        dbHelper.addWorldAppearance(World.INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.NORTHERN_IZRIL, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FLOODPLAINS, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FIRST_WANDERING_INN, ch);
+        dbHelper.addSpeciesAppearance(Species.ANTINIUM, ch);
+        dbHelper.addCharacterAppearance(Character.KLBKCH, ch);
+        dbHelper.addSpeciesAppearance(Species.HUMAN, ch);
+        dbHelper.addCharacterAppearance(Character.ERIN, ch);
+        dbHelper.addSpeciesMention(Species.DRAGON, ch);
+        dbHelper.addSpeciesAppearance(Species.DRAKE, ch);
+        dbHelper.addCharacterAppearance(Character.RELC, ch);
+        dbHelper.addCharacterSpecies(Character.RELC, Species.DRAKE, ch);
         // mention of subspecies Oldblood
         // appearance of Liscors Watch
-        dbHelper.addCharacterMention(ZEVARA, ch);
-        dbHelper.addNationMention(MICHIGAN, ch);
-        dbHelper.addSkillMention(TELEPORTATION, ch);
+        dbHelper.addCharacterMention(Character.ZEVARA, ch);
+        dbHelper.addNationMention(Nation.MICHIGAN, ch);
+        dbHelper.addSkillMention(Skill.TELEPORTATION, ch);
         // mention of Mage Guild
-        dbHelper.addSpeciesMention(GOBLIN, ch);
-        dbHelper.addSpeciesMention(RAZORBEAK, ch);
-        dbHelper.addSpeciesMention(HOLLOWSTONE_DECEIVER, ch);
+        dbHelper.addSpeciesMention(Species.GOBLIN, ch);
+        dbHelper.addSpeciesMention(Species.RAZORBEAK, ch);
+        dbHelper.addSpeciesMention(Species.HOLLOWSTONE_DECEIVER, ch);
         // Klbkch's names Klbkch and Klb are revealed
-        dbHelper.addCharacterFirstName(RELC, ch, "Relc");
-        dbHelper.addClassMention(CHEF, ch);
-        dbHelper.addClassMention(INNKEEPER, ch);
+        dbHelper.addCharacterFirstName(Character.RELC, ch, "Relc");
+        dbHelper.addClassMention(Class.CHEF, ch);
+        dbHelper.addClassMention(Class.INNKEEPER, ch);
         // Relc is [Spearmaster], Klbkch is [Swordslayer], both are [Guardsman]
-        dbHelper.addClassMention(GUARDSMAN, ch);
-        dbHelper.addClassMention(SPEARMASTER, ch);
-        dbHelper.addClassMention(SWORDSLAYER, ch);
-        dbHelper.addClassMention(WARRIOR, ch);
-        dbHelper.addClassMention(SURVIVOR, ch);
-        dbHelper.addClassMention(LORD, ch);
-        dbHelper.addClassMention(LADY, ch);
-        dbHelper.addClassMention(GOOD_PERSON, ch);
-        dbHelper.addLandmassOceanMention(SOUTHERN_IZRIL, ch);
-        dbHelper.addNationMention(PALLASS_NATION, ch);
-        dbHelper.addSettlementMention(PALLASS, ch);
-        dbHelper.addLandmarkMention(BLOODFIELDS, ch);
-        dbHelper.addSkillMention(BASIC_CRAFTING, ch);
+        dbHelper.addClassMention(Class.GUARDSMAN, ch);
+        dbHelper.addClassMention(Class.SPEARMASTER, ch);
+        dbHelper.addClassMention(Class.SWORDSLAYER, ch);
+        dbHelper.addClassMention(Class.WARRIOR, ch);
+        dbHelper.addClassMention(Class.SURVIVOR, ch);
+        dbHelper.addClassMention(Class.LORD, ch);
+        dbHelper.addClassMention(Class.LADY, ch);
+        dbHelper.addClassMention(Class.GOOD_PERSON, ch);
+        dbHelper.addLandmassOceanMention(LandmassOcean.SOUTHERN_IZRIL, ch);
+        dbHelper.addNationMention(Nation.PALLASS, ch);
+        dbHelper.addSettlementMention(Settlement.PALLASS, ch);
+        dbHelper.addLandmarkMention(Landmark.BLOODFIELDS, ch);
+        dbHelper.addSkillMention(Skill.BASIC_CRAFTING, ch);
     }
 
     private static void ch07(final DbHelper dbHelper) throws SQLException {
