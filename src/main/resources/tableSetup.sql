@@ -21,8 +21,6 @@ CREATE TYPE settlement_type AS ENUM (
   'Town',
   'Village'
 );
-COMMIT;
-BEGIN;
 CREATE TABLE volume (
   id        SERIAL,
   name      TEXT      UNIQUE NOT NULL,

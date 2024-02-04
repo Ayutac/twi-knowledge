@@ -62,8 +62,6 @@ DROP VIEW book_with_volume;
 DROP TABLE chapter;
 DROP TABLE book;
 DROP TABLE volume;
-COMMIT;
-BEGIN;
 DROP TYPE settlement_type;
 DROP TYPE nation_type;
 DROP TYPE landmass_ocean_type;
