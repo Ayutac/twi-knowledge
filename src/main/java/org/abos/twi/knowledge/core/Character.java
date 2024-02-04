@@ -8,6 +8,8 @@ public record Character(String wikiLink) implements Named {
 
     public static final String AZKERASH = "Az’kerash";
 
+    public static final String BEILMARK = "Beilmark";
+
     public static final String ERIN = "Erin Solstice";
 
     public static final String FLOODED_WATERS_CHIEFTAIN = "Goblin Chieftain";
@@ -16,9 +18,13 @@ public record Character(String wikiLink) implements Named {
 
     public static final String PISCES = "Pisces Jealnet";
 
+    public static final String KLBKCH = "Klbkch";
+
     public static final String QUARASS = "Quarass";
 
     public static final String RAGS = "Rags";
+
+    public static final String RELC = "Relc Grasstongue";
 
     public static final String TERIARCH = "Teriarch";
 

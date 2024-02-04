@@ -9,6 +9,8 @@ public record Class(String name, Chapter since, String wikiLink) implements Name
 
     public static final String CHIEFTAIN = "Chieftain";
 
+    public static final String GUARDWOMAN = "Guardwoman";
+
     public static final String HERO = "Hero";
 
     public static final String INNKEEPER = "Innkeeper";

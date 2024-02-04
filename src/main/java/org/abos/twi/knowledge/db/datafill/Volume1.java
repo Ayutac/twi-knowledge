@@ -91,6 +91,12 @@ public final class Volume1 {
 
     public static final Species FLATFISH = new Species(Species.FLATFISH, false, null);
 
+    public static final Species ACID_FLY = new Species(Species.ACID_FLY, false, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName("Acid Flies"));
+
+    public static final Species RAZORBEAK = new Species(Species.RAZORBEAK, false, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Species.RAZORBEAK + "s"));
+
+    public static final Species ANTINIUM = new Species(Species.ANTINIUM, true, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Species.ANTINIUM));
+
     public static final Character ERIN = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.ERIN));
 
     public static final Character TERIARCH = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.TERIARCH));
@@ -106,6 +112,12 @@ public final class Volume1 {
     public static final Character PISCES = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.PISCES));
 
     public static final Character FLOODED_WATERS_CHIEFTAIN = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.FLOODED_WATERS_CHIEFTAIN));
+
+    public static final Character BEILMARK = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.BEILMARK));
+
+    public static final Character RELC = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.RELC));
+
+    public static final Character KLBKCH = new Character(WikiHelper.WIKI_URL + WikiHelper.sanitizePageName(Character.KLBKCH));
 
     private Volume1() {
         /* No instantiation. */
@@ -402,7 +414,39 @@ public final class Volume1 {
     }
 
     private static void ch05(final DbHelper dbHelper) throws SQLException {
-
+        final Chapter ch = dbHelper.fetchChapter("Chapter 1.05");
+        // first appearances/mentions
+        dbHelper.addSpecies(ACID_FLY);
+        final Class guardswoman = new Class(Class.GUARDWOMAN, ch, WikiHelper.WIKI_URL + WikiHelper.sanitizePageName("Watch"));
+        dbHelper.addClass(guardswoman);
+        dbHelper.addSpecies(RAZORBEAK);
+        dbHelper.addSpecies(ANTINIUM);
+        // events
+        // (Erin makes Pasta)
+        // appearances/mentions
+        // (day 5 since Erin got to Innworld)
+        dbHelper.addWorldAppearance(INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(NORTHERN_IZRIL, ch);
+        dbHelper.addLandmarkAppearance(FLOODPLAINS, ch);
+        dbHelper.addLandmarkAppearance(FIRST_WANDERING_INN, ch);
+        dbHelper.addSpeciesAppearance(HUMAN, ch);
+        dbHelper.addCharacterAppearance(ERIN, ch);
+        dbHelper.addSpeciesMention(GOBLIN, ch);
+        dbHelper.addSpeciesAppearance(FLATFISH, ch);
+        dbHelper.addSpeciesAppearance(ACID_FLY, ch);
+        dbHelper.addLandmarkAppearance(FLOODPLAINS_STREAM, ch);
+        // (mention and use of [Basic Cooking])
+        dbHelper.addNationAppearance(LISCOR_NATION, ch);
+        dbHelper.addSettlementAppearance(LISCOR, ch);
+        // (appearance of unnamed guard)
+        // (mention of class [Guardwoman])
+        dbHelper.addCharacterAppearance(BEILMARK, ch);
+        // (Beilmark is a [Guardwoman])
+        dbHelper.addCharacterMention(RELC, ch);
+        dbHelper.addSpeciesAppearance(RAZORBEAK, ch);
+        dbHelper.addSpeciesAppearance(ANTINIUM, ch);
+        dbHelper.addCharacterAppearance(KLBKCH, ch);
     }
 
     private static void ch06(final DbHelper dbHelper) throws SQLException {
