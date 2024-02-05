@@ -1,4 +1,4 @@
-package org.abos.twi.knowledge.gui.dialog;
+package org.abos.twi.knowledge.gui.fx.dialog;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,8 +11,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.abos.twi.knowledge.core.publication.Chapter;
 import org.abos.twi.knowledge.db.SQLFunction;
-import org.abos.twi.knowledge.gui.converter.NamedConverter;
-import org.abos.twi.knowledge.gui.suggestion.NamedSuggestion;
+import org.abos.twi.knowledge.gui.fx.converter.NamedConverter;
+import org.abos.twi.knowledge.gui.fx.suggestion.NamedSuggestion;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.util.List;

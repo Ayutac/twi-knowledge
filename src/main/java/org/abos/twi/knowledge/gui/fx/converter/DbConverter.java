@@ -1,4 +1,4 @@
-package org.abos.twi.knowledge.gui.converter;
+package org.abos.twi.knowledge.gui.fx.converter;
 
 import javafx.util.StringConverter;
 import org.abos.twi.knowledge.db.SQLFunction;

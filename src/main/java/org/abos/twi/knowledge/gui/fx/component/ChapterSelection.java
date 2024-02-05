@@ -1,4 +1,4 @@
-package org.abos.twi.knowledge.gui.component;
+package org.abos.twi.knowledge.gui.fx.component;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -8,7 +8,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import org.abos.twi.knowledge.core.publication.Chapter;
 import org.abos.twi.knowledge.db.SQLFunction;
-import org.abos.twi.knowledge.gui.dialog.ChapterSelector;
+import org.abos.twi.knowledge.gui.fx.dialog.ChapterSelector;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package org.abos.twi.knowledge.gui;
+package org.abos.twi.knowledge.gui.fx;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -7,7 +7,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.abos.twi.knowledge.core.publication.Chapter;
 import org.abos.twi.knowledge.db.DbHelper;
-import org.abos.twi.knowledge.gui.component.ChapterSelection;
+import org.abos.twi.knowledge.gui.fx.component.ChapterSelection;
 
 import java.util.ArrayList;
 import java.util.List;

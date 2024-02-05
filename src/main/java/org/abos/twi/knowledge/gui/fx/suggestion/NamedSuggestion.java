@@ -1,4 +1,4 @@
-package org.abos.twi.knowledge.gui.suggestion;
+package org.abos.twi.knowledge.gui.fx.suggestion;
 
 import org.abos.common.Named;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
