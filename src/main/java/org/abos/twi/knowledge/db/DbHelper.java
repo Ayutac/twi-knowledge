@@ -4,6 +4,8 @@ import org.abos.common.LogUtil;
 import org.abos.common.Named;
 import org.abos.common.StringUtil;
 import org.abos.twi.knowledge.core.CharacterNameType;
+import org.abos.twi.knowledge.core.ClassUpgrade;
+import org.abos.twi.knowledge.core.SkillUpgrade;
 import org.abos.twi.knowledge.core.Species;
 import org.abos.twi.knowledge.core.Status;
 import org.abos.twi.knowledge.core.event.Battle;
@@ -506,8 +508,18 @@ public final class DbHelper {
         return internalFetchAll(this::internalFetchClass, SELECT_CLASS);
     }
 
-    public List<Class> fetchClasses(Chapter chapter) throws SQLException {
-        final List<Integer> ids = new LinkedList<>();
+    public void addClassMention(final Class clazz, final Chapter chapter) throws SQLException {
+        try (ConnectionStatement cs = prepareStatement("INSERT INTO mention_class VALUES (?,?);")) {
+            final Integer classId = internalFetchId(classIdMap, this::fetchClassId, clazz);
+            setInt(cs.preparedStatement(), 1, classId);
+            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, chapter);
+            setInt(cs.preparedStatement(), 2, chapterId);
+            cs.preparedStatement().execute();
+        }
+    }
+
+    private List<Integer> fetchClassIds(Chapter chapter) throws SQLException {
+        final List<Integer> result = new LinkedList<>();
         try (ConnectionStatement cs = prepareStatement("SELECT DISTINCT ids.class_id FROM (SELECT class_id FROM mention_class_ordered WHERE " + WHERE_ORDERED + ") AS ids ORDER BY class_id;")) {
             final Integer volumeId = internalFetchId(volumeIdMap, this::fetchVolumeId, chapter.volume());
             setInt(cs.preparedStatement(), 1, volumeId);
@@ -515,12 +527,16 @@ public final class DbHelper {
             setInt(cs.preparedStatement(), 3, chapter.volumeOrd());
             try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
                 while (rs.next()) {
-                    ids.add(rs.getInt(1));
+                    result.add(rs.getInt(1));
                 }
             }
         }
+        return result;
+    }
+
+    public List<Class> fetchClasses(final Chapter chapter) throws SQLException {
         final List<Class> result = new LinkedList<>();
-        for (final Integer id : ids) {
+        for (final Integer id : fetchClassIds(chapter)) {
             // this is suboptimal since we are not reusing prepared statements
             result.add(fetchClass(id));
         }
@@ -528,12 +544,14 @@ public final class DbHelper {
         return result;
     }
 
-    public void addClassMention(final Class clazz, final Chapter chapter) throws SQLException {
-        try (ConnectionStatement cs = prepareStatement("INSERT INTO mention_class VALUES (?,?);")) {
-            final Integer classId = internalFetchId(classIdMap, this::fetchClassId, clazz);
-            setInt(cs.preparedStatement(), 1, classId);
-            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, chapter);
-            setInt(cs.preparedStatement(), 2, chapterId);
+    public void addClassUpgrade(final ClassUpgrade classUpgrade) throws SQLException {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO class_upgrade VALUES (?,?,?);")) {
+            final Integer baseId = internalFetchId(classIdMap, this::fetchClassId, classUpgrade.baseClass());
+            setInt(cs.preparedStatement(), 1, baseId);
+            final Integer upgradeId = internalFetchId(classIdMap, this::fetchClassId, classUpgrade.upgradeClass());
+            setInt(cs.preparedStatement(), 2, upgradeId);
+            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, classUpgrade.chapter());
+            setInt(cs.preparedStatement(), 3, chapterId);
             cs.preparedStatement().execute();
         }
     }
@@ -546,6 +564,10 @@ public final class DbHelper {
         return internalFetchById(this::internalFetchSkill, SELECT_SKILL, skillId);
     }
 
+    public Skill fetchSkill(final String skillName) throws SQLException {
+        return internalFetchByName(this::internalFetchSkill, SELECT_SKILL, skillName);
+    }
+
     public List<Skill> fetchSkills() throws SQLException {
         return internalFetchAll(this::internalFetchSkill, SELECT_SKILL);
     }
@@ -556,6 +578,44 @@ public final class DbHelper {
             setInt(cs.preparedStatement(), 1, skillId);
             final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, chapter);
             setInt(cs.preparedStatement(), 2, chapterId);
+            cs.preparedStatement().execute();
+        }
+    }
+
+    private List<Integer> fetchSkillIds(Chapter chapter) throws SQLException {
+        final List<Integer> result = new LinkedList<>();
+        try (ConnectionStatement cs = prepareStatement("SELECT DISTINCT ids.skill_id FROM (SELECT skill_id FROM mention_skill_ordered WHERE " + WHERE_ORDERED + ") AS ids ORDER BY skill_id;")) {
+            final Integer volumeId = internalFetchId(volumeIdMap, this::fetchVolumeId, chapter.volume());
+            setInt(cs.preparedStatement(), 1, volumeId);
+            setInt(cs.preparedStatement(), 2, volumeId);
+            setInt(cs.preparedStatement(), 3, chapter.volumeOrd());
+            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
+                while (rs.next()) {
+                    result.add(rs.getInt(1));
+                }
+            }
+        }
+        return result;
+    }
+
+    public List<Skill> fetchSkills(final Chapter chapter) throws SQLException {
+        final List<Skill> result = new LinkedList<>();
+        for (final Integer id : fetchSkillIds(chapter)) {
+            // this is suboptimal since we are not reusing prepared statements
+            result.add(fetchSkill(id));
+        }
+        Collections.sort(result);
+        return result;
+    }
+
+    public void addSkillUpgrade(final SkillUpgrade skillUpgrade) throws SQLException {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO skill_upgrade VALUES (?,?,?);")) {
+            final Integer baseId = internalFetchId(skillIdMap, this::fetchClassId, skillUpgrade.baseSkill());
+            setInt(cs.preparedStatement(), 1, baseId);
+            final Integer upgradeId = internalFetchId(skillIdMap, this::fetchClassId, skillUpgrade.upgradeSkill());
+            setInt(cs.preparedStatement(), 2, upgradeId);
+            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, skillUpgrade.chapter());
+            setInt(cs.preparedStatement(), 3, chapterId);
             cs.preparedStatement().execute();
         }
     }

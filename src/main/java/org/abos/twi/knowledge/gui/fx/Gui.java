@@ -9,6 +9,7 @@ import org.abos.twi.knowledge.core.publication.Chapter;
 import org.abos.twi.knowledge.db.DbHelper;
 import org.abos.twi.knowledge.gui.fx.component.CurrentChapterSelection;
 import org.abos.twi.knowledge.gui.fx.component.tab.ClassesTab;
+import org.abos.twi.knowledge.gui.fx.component.tab.SkillsTab;
 import org.abos.twi.knowledge.gui.fx.event.ChapterSelectionEvent;
 
 import java.util.ArrayList;
@@ -31,6 +32,9 @@ public class Gui extends Application {
         final ClassesTab classesTab = new ClassesTab(dbHelper.fetchClasses(), dbHelper::fetchClass, dbHelper::fetchClasses);
         tabPane.getTabs().add(classesTab);
         chapterSelection.addEventHandler(ChapterSelectionEvent.TYPE, classesTab);
+        final SkillsTab skillsTab = new SkillsTab(dbHelper.fetchSkills(), dbHelper::fetchSkill, dbHelper::fetchSkills);
+        tabPane.getTabs().add(skillsTab);
+        chapterSelection.addEventHandler(ChapterSelectionEvent.TYPE, skillsTab);
         root.setTop(chapterSelection);
         root.setCenter(tabPane);
         stage.show();

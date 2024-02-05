@@ -83,9 +83,12 @@ CREATE VIEW mention_class_ordered AS
 CREATE TABLE class_upgrade (
   base_id     INT   NOT NULL REFERENCES class(id),
   upgrade_id  INT   NOT NULL REFERENCES class(id),
+  chapter_id  INT   NOT NULL REFERENCES chapter(id),
   CONSTRAINT different_ids CHECK (base_id != upgrade_id),
   PRIMARY KEY(base_id, upgrade_id)
 );
+CREATE VIEW class_upgrade_ordered AS
+  SELECT cu.base_id AS base_id, cu.upgrade_id AS upgrade_id, c.volume_id AS volume_id, c.volume_ord AS volume_ord FROM class_upgrade cu LEFT JOIN chapter c ON cu.chapter_id = c.id;
 CREATE TABLE skill (
   id        SERIAL,
   name      TEXT      UNIQUE NOT NULL,
@@ -98,12 +101,17 @@ CREATE TABLE mention_skill (
   chapter_id  INT   REFERENCES chapter(id),
   PRIMARY KEY(skill_id, chapter_id)
 );
+CREATE VIEW mention_skill_ordered AS
+  SELECT ms.skill_id AS skill_id, c.volume_id AS volume_id, c.volume_ord AS volume_ord FROM mention_skill ms LEFT JOIN chapter c ON ms.chapter_id = c.id;
 CREATE TABLE skill_upgrade (
   base_id     INT   NOT NULL REFERENCES skill(id),
   upgrade_id  INT   NOT NULL REFERENCES skill(id),
+  chapter_id  INT   NOT NULL REFERENCES chapter(id),
   CONSTRAINT different_ids CHECK (base_id != upgrade_id),
   PRIMARY KEY(base_id, upgrade_id)
 );
+CREATE VIEW skill_upgrade_ordered AS
+  SELECT su.base_id AS base_id, su.upgrade_id AS upgrade_id, c.volume_id AS volume_id, c.volume_ord AS volume_ord FROM skill_upgrade su LEFT JOIN chapter c ON su.chapter_id = c.id;
 CREATE TABLE class_skill (
   class_id  INT   NOT NULL REFERENCES class(id),
   skill_id  INT   NOT NULL REFERENCES skill(id),
