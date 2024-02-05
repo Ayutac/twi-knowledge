@@ -91,7 +91,7 @@ public final class DbHelper {
 
     private static final String SELECT_SETTLEMENT = "SELECT name, type, nation_id, wiki_link FROM settlement";
 
-    private static final String SELECT_SPECIES = "SELECT name, wiki_link FROM species";
+    private static final String SELECT_SPECIES = "SELECT name, can_level, wiki_link FROM species";
 
     private static final String SELECT_CHARACTER = "SELECT wiki_link FROM character";
 
@@ -832,7 +832,7 @@ public final class DbHelper {
     }
 
     private Species fetchLatestCharacterSpecies(final Character character, final Chapter until) throws SQLException {
-        final Integer speciesId;
+        final int speciesId;
         try (ConnectionStatement cs = prepareStatement("SELECT species_id FROM character_species_ordered WHERE character_id = ? AND (volume_id < ? OR (volume_id = ? AND volume_ord <= ?)) ORDER BY volume_id DESC, volume_ord DESC LIMIT 1;")) {
             final Integer characterId = fetchCharacterId(character);
             setInt(cs.preparedStatement(), 1, characterId);
@@ -951,11 +951,17 @@ public final class DbHelper {
         }
         final String middle = fetchLatestCharacterMiddleName(character, until);
         if (middle != null) {
+            if (anything) {
+                s.append(' ');
+            }
             s.append(middle);
             anything = true;
         }
         final String last = fetchLatestCharacterLastName(character, until);
         if (last != null) {
+            if (anything) {
+                s.append(' ');
+            }
             s.append(last);
             anything = true;
         }
