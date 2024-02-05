@@ -4,7 +4,7 @@ import org.abos.common.Named;
 
 import java.util.Objects;
 
-public record Skill(String name, boolean spell, String wikiLink) implements Named {
+public record Skill(String name, boolean spell, String wikiLink) implements Named, Comparable<Skill> {
 
     public static final Skill BAD_FRUIT_DETECTOR = new Skill("Bad Fruit Detector", false, null);
     public static final Skill BASIC_CLEANING = new Skill("Basic Cleaning", false, null);
@@ -23,5 +23,10 @@ public record Skill(String name, boolean spell, String wikiLink) implements Name
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public int compareTo(final Skill other) {
+        return name.compareTo(other.name);
     }
 }

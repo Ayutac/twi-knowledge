@@ -5,7 +5,7 @@ import org.abos.twi.knowledge.wiki.WikiHelper;
 
 import java.util.Objects;
 
-public record Class(String name, String wikiLink) implements Named {
+public record Class(String name, String wikiLink) implements Named, Comparable<Class> {
 
     public static final Class CHEF = new Class("Chef", WikiHelper.WIKI_URL + "Chefs");
     public static final Class CHIEFTAIN = new Class("Chieftain", WikiHelper.WIKI_URL + "Chieftains");
@@ -33,5 +33,10 @@ public record Class(String name, String wikiLink) implements Named {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public int compareTo(final Class other) {
+        return name.compareTo(other.name);
     }
 }

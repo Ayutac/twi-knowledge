@@ -52,6 +52,7 @@ import java.sql.SQLException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
@@ -60,48 +61,32 @@ import java.util.Scanner;
 public final class DbHelper {
 
     public static final String TABLE_SETUP_FILE_NAME = "tableSetup.sql";
-
     public static final String PRE_FETCH_DATA_FILL_FILE_NAME = "preFetchDataFill.sql";
-
     public static final String TABLE_TEAR_DOWN_FILE_NAME = "tableTearDown.sql";
 
     public static final String PROPERTY_URL = "postgresql_url";
-
     public static final String PROPERTY_SU_NAME = "postgresql_su_name";
-
     public static final String PROPERTY_SU_PW = "postgresql_su_pw";
 
     private static final String SELECT_VOLUME = "SELECT name, wiki_link FROM volume";
-
     private static final String SELECT_BOOK = "SELECT name, volume_ord, wiki_link, publication_link, publication_date, audible_link, audible_date, volume_id FROM book_with_volume";
-
     private static final String SELECT_CHAPTER = "SELECT name, volume_ord, book_ord, release, words, book_id, volume_id, link, wiki_link FROM chapter";
-
     private static final String SELECT_CLASS = "SELECT name, wiki_link FROM class";
-
     private static final String SELECT_SKILL = "SELECT name, spell, wiki_link FROM skill";
-
     private static final String SELECT_WORLD = "SELECT name, wiki_link FROM world";
-
     private static final String SELECT_LANDMASS_OCEAN = "SELECT name, type, world_id, wiki_link FROM landmass_ocean";
-
     private static final String SELECT_LANDMARK = "SELECT name, is_natural, landmass_ocean_id, wiki_link FROM landmark";
-
     private static final String SELECT_NATION = "SELECT name, type, landmass_ocean_id, wiki_link FROM nation";
-
     private static final String SELECT_SETTLEMENT = "SELECT name, type, nation_id, wiki_link FROM settlement";
-
     private static final String SELECT_SPECIES = "SELECT name, can_level, wiki_link FROM species";
-
     private static final String SELECT_CHARACTER = "SELECT wiki_link FROM character";
-
     private static final String SELECT_STATUS = "SELECT name FROM status";
-
     private static final String SELECT_RSK = "SELECT name FROM rsk";
-
     private static final String SELECT_FIRST_MEETING = "SELECT * FROM first_meeting WHERE character1_id=? AND character2_id=?;";
 
     private static final String INSERT_FIRST_MEETING = "INSERT INTO first_meeting_left (character1_id, character2_id, chapter_id) VALUES (?,?,?);";
+
+    private static final String WHERE_ORDERED = "(volume_id < ? OR (volume_id = ? AND volume_ord <= ?)) ORDER BY volume_id DESC, volume_ord DESC";
 
     private static final Logger LOGGER = LogManager.getLogger(DbHelper.class);
 
@@ -521,6 +506,28 @@ public final class DbHelper {
         return internalFetchAll(this::internalFetchClass, SELECT_CLASS);
     }
 
+    public List<Class> fetchClasses(Chapter chapter) throws SQLException {
+        final List<Integer> ids = new LinkedList<>();
+        try (ConnectionStatement cs = prepareStatement("SELECT DISTINCT ids.class_id FROM (SELECT class_id FROM mention_class_ordered WHERE " + WHERE_ORDERED + ") AS ids ORDER BY class_id;")) {
+            final Integer volumeId = internalFetchId(volumeIdMap, this::fetchVolumeId, chapter.volume());
+            setInt(cs.preparedStatement(), 1, volumeId);
+            setInt(cs.preparedStatement(), 2, volumeId);
+            setInt(cs.preparedStatement(), 3, chapter.volumeOrd());
+            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
+                while (rs.next()) {
+                    ids.add(rs.getInt(1));
+                }
+            }
+        }
+        final List<Class> result = new LinkedList<>();
+        for (final Integer id : ids) {
+            // this is suboptimal since we are not reusing prepared statements
+            result.add(fetchClass(id));
+        }
+        Collections.sort(result);
+        return result;
+    }
+
     public void addClassMention(final Class clazz, final Chapter chapter) throws SQLException {
         try (ConnectionStatement cs = prepareStatement("INSERT INTO mention_class VALUES (?,?);")) {
             final Integer classId = internalFetchId(classIdMap, this::fetchClassId, clazz);
@@ -833,7 +840,7 @@ public final class DbHelper {
 
     private Species fetchLatestCharacterSpecies(final Character character, final Chapter until) throws SQLException {
         final int speciesId;
-        try (ConnectionStatement cs = prepareStatement("SELECT species_id FROM character_species_ordered WHERE character_id = ? AND (volume_id < ? OR (volume_id = ? AND volume_ord <= ?)) ORDER BY volume_id DESC, volume_ord DESC LIMIT 1;")) {
+        try (ConnectionStatement cs = prepareStatement("SELECT species_id FROM character_species_ordered WHERE character_id = ? AND " + WHERE_ORDERED + " LIMIT 1;")) {
             final Integer characterId = fetchCharacterId(character);
             setInt(cs.preparedStatement(), 1, characterId);
             final Integer volumeId = internalFetchId(volumeIdMap, this::fetchVolumeId, until.volume());
@@ -893,7 +900,7 @@ public final class DbHelper {
     }
 
     private String internalFetchLatestCharacterName(final Character character, final Chapter until, final CharacterNameType type) throws SQLException {
-        try (ConnectionStatement cs = prepareStatement("SELECT name FROM " + type.name().toLowerCase() + "_name_ordered WHERE character_id = ? AND (volume_id < ? OR (volume_id = ? AND volume_ord <= ?)) ORDER BY volume_id DESC, volume_ord DESC LIMIT 1;")) {
+        try (ConnectionStatement cs = prepareStatement("SELECT name FROM " + type.name().toLowerCase() + "_name_ordered WHERE character_id = ? AND " + WHERE_ORDERED + " LIMIT 1;")) {
             final Integer characterId = fetchCharacterId(character);
             setInt(cs.preparedStatement(), 1, characterId);
             final Integer volumeId = internalFetchId(volumeIdMap, this::fetchVolumeId, until.volume());
@@ -1254,5 +1261,4 @@ public final class DbHelper {
         new Scanner(System.in).nextLine();
         dbHelper.tearDownTables();
     }
-
 }

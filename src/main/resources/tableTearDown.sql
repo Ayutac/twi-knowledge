@@ -62,6 +62,7 @@ DROP TABLE skill_upgrade;
 DROP TABLE mention_skill;
 DROP TABLE skill;
 DROP TABLE class_upgrade;
+DROP VIEW mention_class_ordered;
 DROP TABLE mention_class;
 DROP TABLE class;
 DROP VIEW book_with_volume;

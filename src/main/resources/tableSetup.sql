@@ -78,6 +78,8 @@ CREATE TABLE mention_class (
   chapter_id  INT   REFERENCES chapter(id),
   PRIMARY KEY(class_id, chapter_id)
 );
+CREATE VIEW mention_class_ordered AS
+  SELECT mc.class_id AS class_id, c.volume_id AS volume_id, c.volume_ord AS volume_ord FROM mention_class mc LEFT JOIN chapter c ON mc.chapter_id = c.id;
 CREATE TABLE class_upgrade (
   base_id     INT   NOT NULL REFERENCES class(id),
   upgrade_id  INT   NOT NULL REFERENCES class(id),
