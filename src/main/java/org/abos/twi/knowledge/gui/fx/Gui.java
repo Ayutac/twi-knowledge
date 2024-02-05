@@ -29,10 +29,10 @@ public class Gui extends Application {
         stage.setScene(new Scene(root, 640, 480));
         final CurrentChapterSelection chapterSelection = new CurrentChapterSelection(chapters, dbHelper::fetchChapter);
         final TabPane tabPane = new TabPane();
-        final ClassesTab classesTab = new ClassesTab(dbHelper.fetchClasses(), dbHelper::fetchClass, dbHelper::fetchClasses);
+        final ClassesTab classesTab = new ClassesTab(dbHelper.fetchClasses(), dbHelper);
         tabPane.getTabs().add(classesTab);
         chapterSelection.addEventHandler(ChapterSelectionEvent.TYPE, classesTab);
-        final SkillsTab skillsTab = new SkillsTab(dbHelper.fetchSkills(), dbHelper::fetchSkill, dbHelper::fetchSkills);
+        final SkillsTab skillsTab = new SkillsTab(dbHelper.fetchSkills(), dbHelper);
         tabPane.getTabs().add(skillsTab);
         chapterSelection.addEventHandler(ChapterSelectionEvent.TYPE, skillsTab);
         root.setTop(chapterSelection);

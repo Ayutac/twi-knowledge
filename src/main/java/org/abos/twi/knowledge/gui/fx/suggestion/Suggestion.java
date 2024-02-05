@@ -10,7 +10,7 @@ public abstract class Suggestion<T> implements Callback<AutoCompletionBinding.IS
 
     protected final Collection<T> collection = new ArrayList<>();
 
-    public Suggestion(Collection<T> collection) {
+    protected Suggestion(Collection<T> collection) {
         this.collection.addAll(collection);
     }
 

@@ -10,7 +10,7 @@ public abstract class DbConverter<T> extends StringConverter<T> {
 
     private final SQLFunction<String, T> fetcher;
 
-    public DbConverter(final SQLFunction<String, T> fetcher) {
+    protected DbConverter(final SQLFunction<String, T> fetcher) {
         this.fetcher = Objects.requireNonNull(fetcher);
     }
 
