@@ -58,6 +58,7 @@ DROP TABLE mention_world;
 DROP TABLE appearance_world;
 DROP TABLE world;
 DROP TABLE class_skill;
+DROP VIEW skill_upgrade_ordered;
 DROP TABLE skill_upgrade;
 DROP VIEW mention_skill_ordered;
 DROP TABLE mention_skill;
