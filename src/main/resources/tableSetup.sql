@@ -79,7 +79,7 @@ CREATE TABLE mention_class (
   PRIMARY KEY(class_id, chapter_id)
 );
 CREATE VIEW mention_class_ordered AS
-  SELECT mc.class_id AS class_id, c.volume_id AS volume_id, c.volume_ord AS volume_ord FROM mention_class mc LEFT JOIN chapter c ON mc.chapter_id = c.id;
+  SELECT mc.class_id AS class_id, c.id AS chapter_id, c.volume_id AS volume_id, c.volume_ord AS volume_ord FROM mention_class mc LEFT JOIN chapter c ON mc.chapter_id = c.id;
 CREATE TABLE class_upgrade (
   base_id     INT   NOT NULL REFERENCES class(id),
   upgrade_id  INT   NOT NULL REFERENCES class(id),
@@ -102,7 +102,7 @@ CREATE TABLE mention_skill (
   PRIMARY KEY(skill_id, chapter_id)
 );
 CREATE VIEW mention_skill_ordered AS
-  SELECT ms.skill_id AS skill_id, c.volume_id AS volume_id, c.volume_ord AS volume_ord FROM mention_skill ms LEFT JOIN chapter c ON ms.chapter_id = c.id;
+  SELECT ms.skill_id AS skill_id, c.id AS chapter_id, c.volume_id AS volume_id, c.volume_ord AS volume_ord FROM mention_skill ms LEFT JOIN chapter c ON ms.chapter_id = c.id;
 CREATE TABLE skill_upgrade (
   base_id     INT   NOT NULL REFERENCES skill(id),
   upgrade_id  INT   NOT NULL REFERENCES skill(id),

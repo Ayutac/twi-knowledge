@@ -68,6 +68,11 @@ public final class ClassesTab extends DbTab implements EventHandler<ChapterSelec
             return;
         }
         try {
+            mentions.getListView().setItems(FXCollections.observableList(
+                    dbHelper.fetchClassMentions(newClass, currentChapter).stream()
+                            .map(Chapter::name)
+                            .toList()
+            ));
             bases.getListView().setItems(FXCollections.observableList(
                     dbHelper.fetchClassUpgradesByUpgrade(newClass, currentChapter).stream()
                             .map(Class::name)

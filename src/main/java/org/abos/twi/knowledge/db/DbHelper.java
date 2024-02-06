@@ -524,6 +524,22 @@ public final class DbHelper {
         }
     }
 
+    public List<Chapter> fetchClassMentions(final Class clazz, final Chapter until) throws SQLException {
+        final List<Chapter> result = new LinkedList<>();
+        try (final ConnectionStatement cs = prepareStatement("SELECT chapter_id FROM mention_class_ordered WHERE class_id=? AND " + WHERE_ORDERED + ";")) {
+            final Integer classId = internalFetchId(classIdMap, this::fetchClassId, clazz);
+            setInt(cs.preparedStatement(), 1, classId);
+            fillWhereClause(cs.preparedStatement(), 2, until);
+            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
+                while (rs.next()) {
+                    result.add(fetchChapter(rs.getInt(1)));
+                }
+            }
+        }
+        Collections.sort(result);
+        return result;
+    }
+
     private List<Integer> fetchClassIds(Chapter until) throws SQLException {
         final List<Integer> result = new LinkedList<>();
         try (final ConnectionStatement cs = prepareStatement("SELECT DISTINCT ids.class_id FROM (SELECT class_id FROM mention_class_ordered WHERE " + WHERE_ORDERED + ") AS ids ORDER BY class_id;")) {
@@ -623,6 +639,22 @@ public final class DbHelper {
             setInt(cs.preparedStatement(), 2, chapterId);
             cs.preparedStatement().execute();
         }
+    }
+
+    public List<Chapter> fetchSkillMentions(final Skill skill, final Chapter until) throws SQLException {
+        final List<Chapter> result = new LinkedList<>();
+        try (final ConnectionStatement cs = prepareStatement("SELECT chapter_id FROM mention_skill_ordered WHERE skill_id=? AND " + WHERE_ORDERED + ";")) {
+            final Integer classId = internalFetchId(skillIdMap, this::fetchSkillId, skill);
+            setInt(cs.preparedStatement(), 1, classId);
+            fillWhereClause(cs.preparedStatement(), 2, until);
+            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
+                while (rs.next()) {
+                    result.add(fetchChapter(rs.getInt(1)));
+                }
+            }
+        }
+        Collections.sort(result);
+        return result;
     }
 
     private List<Integer> fetchSkillIds(Chapter until) throws SQLException {
