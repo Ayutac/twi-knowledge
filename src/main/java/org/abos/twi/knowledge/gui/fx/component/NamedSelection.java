@@ -8,6 +8,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import org.abos.common.Named;
 import org.abos.twi.knowledge.db.SQLFunction;
+import org.abos.twi.knowledge.gui.fx.Gui;
 import org.abos.twi.knowledge.gui.fx.dialog.NamedSelector;
 
 import java.util.Collection;
@@ -16,11 +17,9 @@ import java.util.Optional;
 
 public class NamedSelection<T extends Named> extends Pane {
 
-    private static final String UNAVAILABLE = "-unavailable-";
-
     private T selected;
 
-    private final Label label = new Label(UNAVAILABLE);
+    private final Label label = new Label(Gui.UNAVAILABLE);
 
     private final NamedSelector<T> selector;
 
@@ -50,7 +49,7 @@ public class NamedSelection<T extends Named> extends Pane {
     public void setSelected(T selected) {
         this.selected = selected;
         if (selected == null) {
-            label.setText(UNAVAILABLE);
+            label.setText(Gui.UNAVAILABLE);
         }
         else {
             label.setText(selected.getName());

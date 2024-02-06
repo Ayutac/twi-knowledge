@@ -10,12 +10,15 @@ import org.abos.twi.knowledge.db.DbHelper;
 import org.abos.twi.knowledge.gui.fx.component.CurrentChapterSelection;
 import org.abos.twi.knowledge.gui.fx.component.tab.ClassesTab;
 import org.abos.twi.knowledge.gui.fx.component.tab.SkillsTab;
+import org.abos.twi.knowledge.gui.fx.component.tab.StatsTab;
 import org.abos.twi.knowledge.gui.fx.event.ChapterSelectionEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Gui extends Application {
+
+    public static final String UNAVAILABLE = "N/A";
 
     private static DbHelper dbHelper;
 
@@ -29,6 +32,9 @@ public class Gui extends Application {
         stage.setScene(new Scene(root, 640, 480));
         final CurrentChapterSelection chapterSelection = new CurrentChapterSelection(chapters, dbHelper::fetchChapter);
         final TabPane tabPane = new TabPane();
+        final StatsTab statsTab = new StatsTab(dbHelper);
+        tabPane.getTabs().add(statsTab);
+        chapterSelection.addEventHandler(ChapterSelectionEvent.TYPE, statsTab);
         final ClassesTab classesTab = new ClassesTab(dbHelper.fetchClasses(), dbHelper);
         tabPane.getTabs().add(classesTab);
         chapterSelection.addEventHandler(ChapterSelectionEvent.TYPE, classesTab);

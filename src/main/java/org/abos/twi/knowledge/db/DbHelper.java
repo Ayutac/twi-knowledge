@@ -473,6 +473,30 @@ public final class DbHelper {
         return internalFetchAll(this::internalFetchChapter, SELECT_CHAPTER);
     }
 
+    public int fetchWordCount(final Chapter until) throws SQLException {
+        try (final ConnectionStatement cs = prepareStatement("WITH w AS (SELECT words FROM chapter WHERE " + WHERE_ORDERED + ") SELECT SUM(words) FROM w;")) {
+            fillWhereClause(cs.preparedStatement(), 1, until);
+            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        }
+        return 0;
+    }
+
+    public int fetchWordAvg(final Chapter until) throws SQLException {
+        try (final ConnectionStatement cs = prepareStatement("WITH w AS (SELECT words FROM chapter WHERE " + WHERE_ORDERED + ") SELECT AVG(words) FROM w;")) {
+            fillWhereClause(cs.preparedStatement(), 1, until);
+            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
+                if (rs.next()) {
+                    return (int)Math.round(rs.getDouble(1));
+                }
+            }
+        }
+        return 0;
+    }
+
     public void addClass(final Class clazz) throws SQLException {
         try (final ConnectionStatement cs = prepareStatement("INSERT INTO class (name, wiki_link) VALUES (?,?);")) {
             setString(cs.preparedStatement(), 1, clazz.name());
