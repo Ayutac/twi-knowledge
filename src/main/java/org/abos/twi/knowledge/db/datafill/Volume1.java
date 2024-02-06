@@ -100,22 +100,6 @@ public final class Volume1 {
 
     private static void ch00(final DbHelper dbHelper) throws SQLException {
         final Chapter ch = dbHelper.fetchChapter("Chapter 1.00");
-        // first appearances/mentions
-        dbHelper.addWorld(World.INNWORLD);
-        dbHelper.addWorld(World.EARTH);
-        dbHelper.addLandmassOcean(LandmassOcean.IZRIL);
-        dbHelper.addLandmassOcean(LandmassOcean.NORTHERN_IZRIL);
-        dbHelper.addLandmark(Landmark.FLOODPLAINS);
-        dbHelper.addLandmark(Landmark.HIGH_PASSES);
-        dbHelper.addLandmark(Landmark.FIRST_WANDERING_INN);
-        dbHelper.addSpecies(Species.HUMAN);
-        dbHelper.addSpecies(Species.GOBLIN);
-        dbHelper.addSpecies(Species.DRAGON);
-        dbHelper.addClass(Class.INNKEEPER);
-        dbHelper.addSkill(Skill.BASIC_CLEANING);
-        dbHelper.addClassSkill(Class.INNKEEPER, Skill.BASIC_CLEANING, ch);
-        dbHelper.addSkill(Skill.BASIC_COOKING);
-        dbHelper.addClassSkill(Class.INNKEEPER, Skill.BASIC_COOKING, ch);
         // events
         dbHelper.addInnworldArrival(new InnworldArrival(Character.ERIN, ch));
         dbHelper.addCharacterStatus(new CharacterStatus(new Status(Status.ALIVE), Character.ERIN, ch));
@@ -131,6 +115,8 @@ public final class Volume1 {
         dbHelper.addCharacterLastName(Character.ERIN, ch, "Solstice");
         dbHelper.addCharacterSpecies(Character.ERIN, Species.HUMAN, ch);
         dbHelper.addCharacterSpecies(Character.TERIARCH, Species.DRAGON, ch);
+        dbHelper.addClassSkill(Class.INNKEEPER, Skill.BASIC_CLEANING, ch);
+        dbHelper.addClassSkill(Class.INNKEEPER, Skill.BASIC_COOKING, ch);
         // appearances/mentions
         dbHelper.addWorldAppearance(World.INNWORLD, ch);
         dbHelper.addLandmassOceanAppearance(LandmassOcean.IZRIL, ch);
@@ -152,24 +138,6 @@ public final class Volume1 {
 
     private static void ch01(final DbHelper dbHelper) throws SQLException {
         final Chapter ch = dbHelper.fetchChapter("Chapter 1.01");
-        // first appearances/mentions
-        dbHelper.addLandmassOcean(LandmassOcean.BLUE_MOON);
-        dbHelper.addLandmassOcean(LandmassOcean.GREEN_MOON);
-        dbHelper.addLandmassOcean(LandmassOcean.NORTH_AMERICA);
-        dbHelper.addNation(Nation.USA);
-        dbHelper.addSettlement(Settlement.CHICAGO);
-        dbHelper.addNation(Nation.LISCOR);
-        dbHelper.addSettlement(Settlement.LISCOR);
-        dbHelper.addLandmark(Landmark.AMENTUS_GROVE);
-        dbHelper.addSpecies(Species.HOLLOWSTONE_DECEIVER);
-        dbHelper.addLandmark(Landmark.TERIARCHS_OLD_HIDEOUT);
-        dbHelper.addLandmark(Landmark.TERIARCHS_NEW_HIDEOUT);
-        dbHelper.addSpecies(Species.DEMON);
-        dbHelper.addSpecies(Species.DJINNI);
-        dbHelper.addClass(Class.KNIGHT);
-        dbHelper.addClass(Class.HERO);
-        dbHelper.addNation(Nation.FIVE_FAMILIES_TERRITORY);
-        dbHelper.addSettlement(Settlement.CELUM);
         // events
         final Battle rockCrabBattle = new Battle("Erin gets surprised by a Rock Crab", null);
         dbHelper.addBattle(rockCrabBattle);
@@ -217,15 +185,6 @@ public final class Volume1 {
 
     private static void ch02(final DbHelper dbHelper) throws SQLException {
         final Chapter ch = dbHelper.fetchChapter("Chapter 1.02");
-        // first appearances/mentions
-        dbHelper.addNation(Nation.MICHIGAN);
-        dbHelper.addSettlement(Settlement.GRAND_RAPIDS);
-        dbHelper.addLandmark(Landmark.FLOODPLAINS_STREAM);
-        dbHelper.addLandmark(Landmark.FLOODED_WATERS_CAVE);
-        dbHelper.addClass(Class.CHIEFTAIN);
-        dbHelper.addClass(Class.SHAMAN);
-        dbHelper.addCharacterSpecies(Character.RAGS, Species.GOBLIN, ch);
-        dbHelper.addCharacterSpecies(Character.FLOODED_WATERS_CHIEFTAIN, Species.GOBLIN, ch);
         // events
         // (Erin eats Amentus fruits)
         final Battle rockCrabBattle2 = new Battle("Erin defeats the Rock Crab", null);
@@ -242,6 +201,8 @@ public final class Volume1 {
         // misc
         dbHelper.addCharacterAge(Character.ERIN, 20, ch);
         dbHelper.addCharacterAge(Character.RAGS, 1, ch);
+        dbHelper.addCharacterSpecies(Character.RAGS, Species.GOBLIN, ch);
+        dbHelper.addCharacterSpecies(Character.FLOODED_WATERS_CHIEFTAIN, Species.GOBLIN, ch);
         // appearances/mentions
         dbHelper.addWorldAppearance(World.INNWORLD, ch);
         dbHelper.addLandmassOceanAppearance(LandmassOcean.IZRIL, ch);
@@ -266,8 +227,6 @@ public final class Volume1 {
 
     private static void ch03(final DbHelper dbHelper) throws SQLException {
         final Chapter ch = dbHelper.fetchChapter("Chapter 1.03");
-        // first appearances/mentions
-        dbHelper.addSpecies(Species.FLATFISH);
         // events
         final Battle flatfishBattle = new Battle("Erin defeats a flat fish", null);
         dbHelper.addBattle(flatfishBattle);
@@ -294,8 +253,6 @@ public final class Volume1 {
 
     private static void ch04(final DbHelper dbHelper) throws SQLException {
         final Chapter ch = dbHelper.fetchChapter("Chapter 1.04");
-        // first appearances/mentions
-        dbHelper.addLandmark(Landmark.PISCES_HIDEOUT);
         // events
         // (Erin destroys the preservation runes)
         final Battle sevenGoblins2 = new Battle("Erin defeats a goblin sneaking through the inn", null);
@@ -320,11 +277,6 @@ public final class Volume1 {
 
     private static void ch05(final DbHelper dbHelper) throws SQLException {
         final Chapter ch = dbHelper.fetchChapter("Chapter 1.05");
-        // first appearances/mentions
-        dbHelper.addSpecies(Species.ACID_FLY);
-        dbHelper.addClass(Class.GUARDSWOMAN);
-        dbHelper.addSpecies(Species.RAZORBEAK);
-        dbHelper.addSpecies(Species.ANTINIUM);
         // events
         // (Erin makes Pasta)
         // appearances/mentions
@@ -358,29 +310,13 @@ public final class Volume1 {
 
     private static void ch06(final DbHelper dbHelper) throws SQLException {
         final Chapter ch = dbHelper.fetchChapter("Chapter 1.06");
-        // first appearances/mentions
-        dbHelper.addSpecies(Species.DRAKE);
-        dbHelper.addSkill(Skill.TELEPORTATION);
-        dbHelper.addClass(Class.CHEF);
-        dbHelper.addClass(Class.GUARDSMAN);
-        dbHelper.addClass(Class.SPEARMASTER);
-        dbHelper.addClass(Class.SWORDSLAYER);
-        dbHelper.addClass(Class.WARRIOR);
-        dbHelper.addClass(Class.SURVIVOR);
-        dbHelper.addClass(Class.LORD);
-        dbHelper.addClass(Class.LADY);
-        dbHelper.addClass(Class.GOOD_PERSON);
-        dbHelper.addLandmassOcean(LandmassOcean.SOUTHERN_IZRIL);
-        dbHelper.addNation(Nation.PALLASS);
-        dbHelper.addSettlement(Settlement.PALLASS);
-        dbHelper.addLandmark(Landmark.BLOODFIELDS);
-        dbHelper.addSkill(Skill.BASIC_CRAFTING);
-        dbHelper.addClassSkill(Class.INNKEEPER, Skill.BASIC_CRAFTING, ch);
         // events
         final LevelUp lvErin = new LevelUp(Character.ERIN, ch, 5, Class.INNKEEPER, false, false);
         dbHelper.addLevelUp(lvErin);
         dbHelper.addLevelUpSkill(lvErin, Skill.BASIC_CRAFTING);
         // (healing potion is used)
+        // misc
+        dbHelper.addClassSkill(Class.INNKEEPER, Skill.BASIC_CRAFTING, ch);
         // appearances/mentions
         // (still day 5 since Erin got to Innworld)
         dbHelper.addWorldAppearance(World.INNWORLD, ch);
@@ -428,12 +364,6 @@ public final class Volume1 {
 
     private static void ch07(final DbHelper dbHelper) throws SQLException {
         final Chapter ch = dbHelper.fetchChapter("Chapter 1.07");
-        // first appearances/mentions
-        dbHelper.addClass(Class.GUARD);
-        dbHelper.addClass(Class.GATHERER);
-        dbHelper.addSkill(Skill.DETECT_POISON);
-        dbHelper.addClassSkill(Class.GATHERER, Skill.DETECT_POISON, ch);
-        dbHelper.addSkill(Skill.BAD_FRUIT_DETECTOR);
         // events
         // (Erin crafts a basket out of grass)
         final Battle razorbeak = new Battle("Erin fights a Razorbeak for its eggs", null);
@@ -444,6 +374,8 @@ public final class Volume1 {
         dbHelper.addBattleChapter(PISCES_FIGHT, ch);
         dbHelper.addBattleCharacter(PISCES_FIGHT, Character.ERIN);
         dbHelper.addBattleCharacter(PISCES_FIGHT, Character.PISCES);
+        // misc
+        dbHelper.addClassSkill(Class.GATHERER, Skill.DETECT_POISON, ch);
         // appearances/mentions
         // (day 6 since Erin got to Innworld)
         dbHelper.addWorldAppearance(World.INNWORLD, ch);

@@ -29,6 +29,7 @@ import org.abos.twi.knowledge.core.location.SettlementType;
 import org.abos.twi.knowledge.core.Skill;
 import org.abos.twi.knowledge.core.publication.Volume;
 import org.abos.twi.knowledge.core.location.World;
+import org.abos.twi.knowledge.db.datafill.StaticFields;
 import org.abos.twi.knowledge.db.datafill.Volume1;
 import org.abos.twi.knowledge.db.datafill.Volume2;
 import org.abos.twi.knowledge.wiki.WikiHelper;
@@ -1472,18 +1473,19 @@ public final class DbHelper {
         }
     }
 
-    public void initialize(final List<Volume> volumes, final List<Book> books, final List<Chapter> chapters, final List<Character> characters) throws SQLException, IOException {
+    public void initialize(final List<Volume> volumes, final List<Book> books, final List<Chapter> chapters, final List<Character> characters) throws SQLException, IOException, IllegalAccessException {
         setupTables();
         preFetchDataFill();
         addVolumes(volumes);
         addBooks(books);
         addChapters(chapters);
         addCharacters(characters);
+        StaticFields.fillDb(this);
         Volume1.fillDb(this);
         Volume2.fillDb(this);
     }
 
-    public static void main(String[] args) throws IOException, SQLException {
+    public static void main(String[] args) throws IOException, SQLException, IllegalAccessException {
         final WikiHelper wikiHelper = new WikiHelper();
         final DbHelper dbHelper = new DbHelper();
         try {dbHelper.tearDownTables();}
