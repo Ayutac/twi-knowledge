@@ -524,10 +524,10 @@ public final class DbHelper {
         }
     }
 
-    private List<Integer> fetchClassIds(Chapter chapter) throws SQLException {
+    private List<Integer> fetchClassIds(Chapter until) throws SQLException {
         final List<Integer> result = new LinkedList<>();
         try (final ConnectionStatement cs = prepareStatement("SELECT DISTINCT ids.class_id FROM (SELECT class_id FROM mention_class_ordered WHERE " + WHERE_ORDERED + ") AS ids ORDER BY class_id;")) {
-            fillWhereClause(cs.preparedStatement(), 1, chapter);
+            fillWhereClause(cs.preparedStatement(), 1, until);
             try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
                 while (rs.next()) {
                     result.add(rs.getInt(1));
@@ -625,10 +625,10 @@ public final class DbHelper {
         }
     }
 
-    private List<Integer> fetchSkillIds(Chapter chapter) throws SQLException {
+    private List<Integer> fetchSkillIds(Chapter until) throws SQLException {
         final List<Integer> result = new LinkedList<>();
         try (final ConnectionStatement cs = prepareStatement("SELECT DISTINCT ids.skill_id FROM (SELECT skill_id FROM mention_skill_ordered WHERE " + WHERE_ORDERED + ") AS ids ORDER BY skill_id;")) {
-            fillWhereClause(cs.preparedStatement(), 1, chapter);
+            fillWhereClause(cs.preparedStatement(), 1, until);
             try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
                 while (rs.next()) {
                     result.add(rs.getInt(1));
