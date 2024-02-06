@@ -52,10 +52,9 @@ public final class ClassesTab extends DbTab implements EventHandler<ChapterSelec
 
     @Override
     public void handle(final ChapterSelectionEvent chapterSelectionEvent) {
-        final Chapter chapter = chapterSelectionEvent.getChapter();
-        currentChapter = chapter;
+        currentChapter = chapterSelectionEvent.getChapter();
         try {
-            classesSelection.setCollection(dbHelper.fetchClasses(chapter));
+            classesSelection.setCollection(dbHelper.fetchClasses(currentChapter));
         } catch (SQLException ex) {
             throw new IllegalStateException(ex);
         }
