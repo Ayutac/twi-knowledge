@@ -61,6 +61,10 @@ public class NamedSelection<T extends Named> extends Pane {
         if (!collection.contains(getSelected())) {
             setSelected(null);
         }
+        else {
+            // triggers the chapter update
+            setSelected(getSelected());
+        }
         selector.setCollection(collection);
     }
 
