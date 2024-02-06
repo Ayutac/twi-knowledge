@@ -1,11 +1,14 @@
 package org.abos.twi.knowledge.gui.fx.component.tab;
 
 import javafx.scene.control.Tab;
+import org.abos.twi.knowledge.core.publication.Chapter;
 import org.abos.twi.knowledge.db.DbHelper;
 
 import java.util.Objects;
 
 public abstract class DbTab extends Tab {
+
+    protected Chapter currentChapter;
 
     protected final DbHelper dbHelper;
 

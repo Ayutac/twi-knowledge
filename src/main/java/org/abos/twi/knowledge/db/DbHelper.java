@@ -566,7 +566,9 @@ public final class DbHelper {
             setInt(cs.preparedStatement(), 1, baseId);
             fillWhereClause(cs.preparedStatement(), 2, until);
             try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
-                ids.add(rs.getInt(1));
+                while (rs.next()) {
+                    ids.add(rs.getInt(1));
+                }
             }
         }
         final List<Class> result = new LinkedList<>();
@@ -584,7 +586,9 @@ public final class DbHelper {
             setInt(cs.preparedStatement(), 1, upgradeId);
             fillWhereClause(cs.preparedStatement(), 2, until);
             try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
-                ids.add(rs.getInt(1));
+                while (rs.next()) {
+                    ids.add(rs.getInt(1));
+                }
             }
         }
         final List<Class> result = new LinkedList<>();
@@ -663,7 +667,9 @@ public final class DbHelper {
             setInt(cs.preparedStatement(), 1, baseId);
             fillWhereClause(cs.preparedStatement(), 2, until);
             try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
-                ids.add(rs.getInt(1));
+                while (rs.next()) {
+                    ids.add(rs.getInt(1));
+                }
             }
         }
         final List<Skill> result = new LinkedList<>();
@@ -681,7 +687,9 @@ public final class DbHelper {
             setInt(cs.preparedStatement(), 1, baseId);
             fillWhereClause(cs.preparedStatement(), 2, until);
             try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
-                ids.add(rs.getInt(1));
+                while (rs.next()) {
+                    ids.add(rs.getInt(1));
+                }
             }
         }
         final List<Skill> result = new LinkedList<>();

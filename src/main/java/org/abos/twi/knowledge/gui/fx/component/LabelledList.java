@@ -6,13 +6,20 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
 
-public class LabelledList extends VBox {
+public final class LabelledList extends VBox {
 
-    public LabelledList(String header, ListView<String> listView) {
-        super(new Label(header), listView);
+    private final ListView<String> listView;
+
+    public LabelledList(final String header) {
+        getChildren().add(new Label(header));
+        listView = new ListView<>();
+        getChildren().add(listView);
         setSpacing(10d);
         setAlignment(Pos.CENTER);
         setPadding(new Insets(5));
     }
 
+    public ListView<String> getListView() {
+        return listView;
+    }
 }
