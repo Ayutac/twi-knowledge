@@ -410,7 +410,24 @@ public final class Volume1 {
     }
 
     private static void ch08(final DbHelper dbHelper) throws SQLException {
-
+        final Chapter ch = dbHelper.fetchChapter("Chapter 1.08");
+        // events
+        dbHelper.addBattleChapter(PISCES_FIGHT, ch);
+        // (Pisces eats Amentus and Pasta)
+        // misc
+        dbHelper.addCharacterSpecies(Character.PISCES, Species.HUMAN, ch);
+        // appearances/mentions
+        // (still day 6 since Erin got to Innworld)
+        dbHelper.addWorldAppearance(World.INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.NORTHERN_IZRIL, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FLOODPLAINS, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FIRST_WANDERING_INN, ch);
+        dbHelper.addSpeciesAppearance(Species.HUMAN, ch);
+        dbHelper.addCharacterAppearance(Character.PISCES, ch);
+        dbHelper.addCharacterAppearance(Character.ERIN, ch);
+        dbHelper.addClassMention(Class.INNKEEPER, ch);
+        dbHelper.addSkillMention(Skill.TELEPORTATION, ch);
     }
 
     private static void ch09(final DbHelper dbHelper) throws SQLException {
