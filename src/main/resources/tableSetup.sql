@@ -113,10 +113,13 @@ CREATE TABLE skill_upgrade (
 CREATE VIEW skill_upgrade_ordered AS
   SELECT su.base_id AS base_id, su.upgrade_id AS upgrade_id, c.volume_id AS volume_id, c.volume_ord AS volume_ord FROM skill_upgrade su LEFT JOIN chapter c ON su.chapter_id = c.id;
 CREATE TABLE class_skill (
-  class_id  INT   NOT NULL REFERENCES class(id),
-  skill_id  INT   NOT NULL REFERENCES skill(id),
+  class_id    INT   NOT NULL REFERENCES class(id),
+  skill_id    INT   NOT NULL REFERENCES skill(id),
+  chapter_id  INT   NOT NULL REFERENCES chapter(id),
   PRIMARY KEY(class_id, skill_id)
 );
+CREATE VIEW class_skill_ordered AS
+  SELECT cs.class_id AS class_id, cs.skill_id as skill_id, c.volume_id AS volume_id, c.volume_ord AS volume_ord FROM class_skill cs LEFT JOIN chapter c ON cs.chapter_id = c.id;
 CREATE TABLE world (
   id        SERIAL,
   name      TEXT      UNIQUE NOT NULL,

@@ -6,7 +6,9 @@ import javafx.event.EventHandler;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.abos.twi.knowledge.core.Character;
 import org.abos.twi.knowledge.core.Class;
+import org.abos.twi.knowledge.core.Skill;
 import org.abos.twi.knowledge.core.publication.Chapter;
 import org.abos.twi.knowledge.db.DbHelper;
 import org.abos.twi.knowledge.gui.fx.component.CurrentClassSelection;
@@ -15,16 +17,19 @@ import org.abos.twi.knowledge.gui.fx.event.ChapterSelectionEvent;
 import org.abos.twi.knowledge.gui.fx.event.ClassSelectionEvent;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public final class ClassesTab extends DbTab implements EventHandler<ChapterSelectionEvent> {
 
+    private final List<Character> characters = new ArrayList<>();
+
     private final CurrentClassSelection classesSelection;
-    private final LabelledList characters;
-    private final LabelledList skills;
-    private final LabelledList mentions;
-    private final LabelledList bases;
-    private final LabelledList upgrades;
+    private final LabelledList charactersList;
+    private final LabelledList skillsList;
+    private final LabelledList mentionsList;
+    private final LabelledList basesList;
+    private final LabelledList upgradesList;
 
     public ClassesTab(final List<Class> initialClasses, final DbHelper dbHelper) {
         super(dbHelper);
@@ -33,14 +38,14 @@ public final class ClassesTab extends DbTab implements EventHandler<ChapterSelec
         final BorderPane borderPane = new BorderPane();
         classesSelection = new CurrentClassSelection(initialClasses, dbHelper::fetchClass);
         borderPane.setTop(classesSelection);
-        characters = new LabelledList("Characters");
-        skills = new LabelledList("Skills");
-        mentions = new LabelledList("mentioned in");
-        final HBox main1 = new HBox(characters, skills, mentions);
-        bases = new LabelledList("comes from");
-        upgrades = new LabelledList("can become");
+        charactersList = new LabelledList("Characters");
+        skillsList = new LabelledList("Skills");
+        mentionsList = new LabelledList("mentioned in");
+        final HBox main1 = new HBox(charactersList, skillsList, mentionsList);
+        basesList = new LabelledList("comes from");
+        upgradesList = new LabelledList("can become");
         classesSelection.addEventHandler(ClassSelectionEvent.TYPE, this::updateListViews);
-        final HBox main2 = new HBox(bases, upgrades);
+        final HBox main2 = new HBox(basesList, upgradesList);
         borderPane.setCenter(new VBox(main1, main2));
         setContent(borderPane);
     }
@@ -58,27 +63,34 @@ public final class ClassesTab extends DbTab implements EventHandler<ChapterSelec
 
     private void updateListViews(final ClassSelectionEvent classSelectionEvent) {
         final Class newClass = classSelectionEvent.getClazz();
+        characters.clear();
         if (newClass == null) {
             final ObservableList<String> emptyList = FXCollections.emptyObservableList();
-            characters.getListView().setItems(emptyList);
-            skills.getListView().setItems(emptyList);
-            mentions.getListView().setItems(emptyList);
-            bases.getListView().setItems(emptyList);
-            upgrades.getListView().setItems(emptyList);
+            charactersList.getListView().setItems(emptyList);
+            skillsList.getListView().setItems(emptyList);
+            mentionsList.getListView().setItems(emptyList);
+            basesList.getListView().setItems(emptyList);
+            upgradesList.getListView().setItems(emptyList);
             return;
         }
         try {
-            mentions.getListView().setItems(FXCollections.observableList(
+            // TODO add characters that have this class
+            skillsList.getListView().setItems(FXCollections.observableList(
+                    dbHelper.fetchClassSkillsByClass(newClass, currentChapter).stream()
+                            .map(Skill::name)
+                            .toList()
+            ));
+            mentionsList.getListView().setItems(FXCollections.observableList(
                     dbHelper.fetchClassMentions(newClass, currentChapter).stream()
                             .map(Chapter::name)
                             .toList()
             ));
-            bases.getListView().setItems(FXCollections.observableList(
+            basesList.getListView().setItems(FXCollections.observableList(
                     dbHelper.fetchClassUpgradesByUpgrade(newClass, currentChapter).stream()
                             .map(Class::name)
                             .toList()
             ));
-            upgrades.getListView().setItems(FXCollections.observableList(
+            upgradesList.getListView().setItems(FXCollections.observableList(
                     dbHelper.fetchClassUpgradesByBase(newClass, currentChapter).stream()
                             .map(Class::name)
                             .toList()

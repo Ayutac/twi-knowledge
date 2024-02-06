@@ -732,14 +732,50 @@ public final class DbHelper {
         return result;
     }
 
-    public void addClassSkill(final Class clazz, final Skill skill) throws  SQLException {
-        try (final ConnectionStatement cs = prepareStatement("INSERT INTO class_skill VALUES (?,?);")) {
+    public void addClassSkill(final Class clazz, final Skill skill, final Chapter chapter) throws  SQLException {
+        try (final ConnectionStatement cs = prepareStatement("INSERT INTO class_skill VALUES (?,?,?);")) {
             final Integer classId = internalFetchId(classIdMap, this::fetchClassId, clazz);
             setInt(cs.preparedStatement(), 1, classId);
             final Integer skillId = internalFetchId(skillIdMap, this::fetchSkillId, skill);
             setInt(cs.preparedStatement(), 2, skillId);
+            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, chapter);
+            setInt(cs.preparedStatement(), 3, chapterId);
             cs.preparedStatement().execute();
         }
+    }
+
+    public List<Skill> fetchClassSkillsByClass(final Class clazz, final Chapter until) throws SQLException {
+        final List<Skill> result = new LinkedList<>();
+        try (final ConnectionStatement cs = prepareStatement("SELECT skill_id FROM class_skill_ordered WHERE class_id=? AND " + WHERE_ORDERED + ";")) {
+            final Integer classId = internalFetchId(classIdMap, this::fetchClassId, clazz);
+            setInt(cs.preparedStatement(), 1, classId);
+            fillWhereClause(cs.preparedStatement(), 2, until);
+            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
+                while (rs.next()) {
+                    // this is suboptimal since we are not reusing prepared statements
+                    result.add(fetchSkill(rs.getInt(1)));
+                }
+            }
+        }
+        Collections.sort(result);
+        return result;
+    }
+
+    public List<Class> fetchClassSkillsBySkill(final Skill skill, final Chapter until) throws SQLException {
+        final List<Class> result = new LinkedList<>();
+        try (final ConnectionStatement cs = prepareStatement("SELECT class_id FROM class_skill_ordered WHERE skill_id=? AND " + WHERE_ORDERED + ";")) {
+            final Integer skillId = internalFetchId(skillIdMap, this::fetchSkillId, skill);
+            setInt(cs.preparedStatement(), 1, skillId);
+            fillWhereClause(cs.preparedStatement(), 2, until);
+            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
+                while (rs.next()) {
+                    // this is suboptimal since we are not reusing prepared statements
+                    result.add(fetchClass(rs.getInt(1)));
+                }
+            }
+        }
+        Collections.sort(result);
+        return result;
     }
 
     public void addWorld(final World world) throws SQLException {

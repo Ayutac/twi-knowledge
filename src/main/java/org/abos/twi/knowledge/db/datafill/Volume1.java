@@ -113,9 +113,9 @@ public final class Volume1 {
         dbHelper.addSpecies(Species.DRAGON);
         dbHelper.addClass(Class.INNKEEPER);
         dbHelper.addSkill(Skill.BASIC_CLEANING);
-        dbHelper.addClassSkill(Class.INNKEEPER, Skill.BASIC_CLEANING);
+        dbHelper.addClassSkill(Class.INNKEEPER, Skill.BASIC_CLEANING, ch);
         dbHelper.addSkill(Skill.BASIC_COOKING);
-        dbHelper.addClassSkill(Class.INNKEEPER, Skill.BASIC_COOKING);
+        dbHelper.addClassSkill(Class.INNKEEPER, Skill.BASIC_COOKING, ch);
         // events
         dbHelper.addInnworldArrival(new InnworldArrival(Character.ERIN, ch));
         dbHelper.addCharacterStatus(new CharacterStatus(new Status(Status.ALIVE), Character.ERIN, ch));
@@ -375,7 +375,7 @@ public final class Volume1 {
         dbHelper.addSettlement(Settlement.PALLASS);
         dbHelper.addLandmark(Landmark.BLOODFIELDS);
         dbHelper.addSkill(Skill.BASIC_CRAFTING);
-        dbHelper.addClassSkill(Class.INNKEEPER, Skill.BASIC_CRAFTING);
+        dbHelper.addClassSkill(Class.INNKEEPER, Skill.BASIC_CRAFTING, ch);
         // events
         final LevelUp lvErin = new LevelUp(Character.ERIN, ch, 5, Class.INNKEEPER, false, false);
         dbHelper.addLevelUp(lvErin);
@@ -432,7 +432,7 @@ public final class Volume1 {
         dbHelper.addClass(Class.GUARD);
         dbHelper.addClass(Class.GATHERER);
         dbHelper.addSkill(Skill.DETECT_POISON);
-        dbHelper.addClassSkill(Class.GATHERER, Skill.DETECT_POISON);
+        dbHelper.addClassSkill(Class.GATHERER, Skill.DETECT_POISON, ch);
         dbHelper.addSkill(Skill.BAD_FRUIT_DETECTOR);
         // events
         // (Erin crafts a basket out of grass)
