@@ -279,6 +279,7 @@ public final class Volume1 {
         final Chapter ch = dbHelper.fetchChapter("Chapter 1.05");
         // events
         // (Erin makes Pasta)
+        dbHelper.addInnArrival(new InnArrival(Character.KLBKCH, ch));
         // appearances/mentions
         // (day 5 since Erin got to Innworld)
         dbHelper.addWorldAppearance(World.INNWORLD, ch);
@@ -311,6 +312,7 @@ public final class Volume1 {
     private static void ch06(final DbHelper dbHelper) throws SQLException {
         final Chapter ch = dbHelper.fetchChapter("Chapter 1.06");
         // events
+        dbHelper.addInnArrival(new InnArrival(Character.RELC, ch));
         final LevelUp lvErin = new LevelUp(Character.ERIN, ch, 5, Class.INNKEEPER, false, false);
         dbHelper.addLevelUp(lvErin);
         dbHelper.addLevelUpSkill(lvErin, Skill.BASIC_CRAFTING);
@@ -370,6 +372,7 @@ public final class Volume1 {
         dbHelper.addBattle(razorbeak);
         dbHelper.addBattleChapter(razorbeak, ch);
         dbHelper.addBattleCharacter(razorbeak, Character.ERIN);
+        dbHelper.addInnArrival(new InnArrival(Character.PISCES, ch));
         dbHelper.addBattle(PISCES_FIGHT);
         dbHelper.addBattleChapter(PISCES_FIGHT, ch);
         dbHelper.addBattleCharacter(PISCES_FIGHT, Character.ERIN);
@@ -490,6 +493,7 @@ public final class Volume1 {
         dbHelper.addSkillMention(Skill.FLASH_STEP, ch);
         dbHelper.addSkillMention(Skill.DANGERSENSE, ch);
         // (Relc has [Dangersense])
+        dbHelper.addCharacterNickName(Character.KLBKCH, ch, "The Slayer");
     }
 
     private static void ch10(final DbHelper dbHelper) throws SQLException {
@@ -540,7 +544,154 @@ public final class Volume1 {
     }
 
     private static void theGreatRitual(final DbHelper dbHelper) throws SQLException {
-
+        final Chapter ch = dbHelper.fetchChapter("Interlude – The Great Ritual");
+        // events
+        // (the Great Ritual)
+        dbHelper.addInnworldArrival(new InnworldArrival(Character.CHOLE, ch));
+        dbHelper.addInnworldArrival(new InnworldArrival(Character.CYNTHIA, ch));
+        dbHelper.addInnworldArrival(new InnworldArrival(Character.EDDY, ch));
+        dbHelper.addInnworldArrival(new InnworldArrival(Character.EMILY, ch));
+//        dbHelper.addInnworldArrival(new InnworldArrival(Character.KATY, ch));
+        dbHelper.addInnworldArrival(new InnworldArrival(Character.KEITH, ch));
+        dbHelper.addInnworldArrival(new InnworldArrival(Character.MARIAN_US, ch));
+        dbHelper.addInnworldArrival(new InnworldArrival(Character.RED, ch));
+//        dbHelper.addInnworldArrival(new InnworldArrival(Character.REYANNE, ch));
+        dbHelper.addInnworldArrival(new InnworldArrival(Character.RICHARD, ch));
+//        dbHelper.addInnworldArrival(new InnworldArrival(Character.RON, ch));
+//        dbHelper.addInnworldArrival(new InnworldArrival(Character.STACY, ch));
+        dbHelper.addInnworldArrival(new InnworldArrival(Character.TOM, ch));
+        dbHelper.addInnworldArrival(new InnworldArrival(Character.VINCENT, ch));
+        dbHelper.addInnworldArrival(new InnworldArrival(Character.KEVIN, ch));
+        dbHelper.addInnworldArrival(new InnworldArrival(Character.TROYDEL, ch));
+        dbHelper.addInnworldArrival(new InnworldArrival(Character.GALINA, ch));
+        dbHelper.addInnworldArrival(new InnworldArrival(Character.ROSE, ch));
+        dbHelper.addInnworldArrival(new InnworldArrival(Character.JOSEPH, ch));
+        dbHelper.addInnworldArrival(new InnworldArrival(Character.LEON, ch));
+        dbHelper.addInnworldArrival(new InnworldArrival(Character.RYOKA, ch));
+        dbHelper.addInnworldArrival(new InnworldArrival(Character.TREY, ch));
+        dbHelper.addInnworldArrival(new InnworldArrival(Character.TERES, ch));
+        dbHelper.addInnworldArrival(new InnworldArrival(Character.LILY, ch));
+        dbHelper.addInnworldArrival(new InnworldArrival(Character.CARA, ch));
+        dbHelper.addInnworldArrival(new InnworldArrival(Character.LAKEN, ch));
+        // misc
+        dbHelper.addClassUpgrade(Class.MAGE, Class.HIGH_MAGE, ch);
+        dbHelper.addCharacterNickName(Character.OTHIUS, ch, "Blighted King");
+        dbHelper.addCharacterNickName(Character.CORETINE, ch, "Blighted Queen");
+        dbHelper.addCharacterSpecies(Character.CHOLE, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.CYNTHIA, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.EDDY, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.EMILY, Species.HUMAN, ch);
+//        dbHelper.addCharacterSpecies(Character.KATY, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.KEITH, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.MARIAN_US, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.RED, Species.HUMAN, ch);
+//        dbHelper.addCharacterSpecies(Character.REYANNE, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.RICHARD, Species.HUMAN, ch);
+//        dbHelper.addCharacterSpecies(Character.RON, Species.HUMAN, ch);
+//        dbHelper.addCharacterSpecies(Character.STACY, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.TOM, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.VINCENT, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.KEVIN, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.JOSEPH, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.GALINA, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.ROSE, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.TROYDEL, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.LEON, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.RYOKA, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.TREY, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.TERES, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.LILY, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.CARA, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.LAKEN, Species.HUMAN, ch);
+        // appearances/mentions
+        // (still day 7 since Erin got to Innworld)
+        dbHelper.addWorldAppearance(World.INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.NORTHERN_IZRIL, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FLOODPLAINS, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FIRST_WANDERING_INN, ch);
+        dbHelper.addSpeciesAppearance(Species.HUMAN, ch);
+        dbHelper.addCharacterAppearance(Character.ERIN, ch);
+        dbHelper.addSpeciesAppearance(Species.GOBLIN, ch);
+        dbHelper.addCharacterAppearance(Character.RAGS, ch);
+        dbHelper.addClassMention(Class.NECROMANCER, ch);
+        dbHelper.addLandmarkMention(Landmark.PISCES_HIDEOUT, ch);
+        dbHelper.addCharacterAppearance(Character.PISCES, ch);
+        dbHelper.addSpeciesMention(Species.DRAKE, ch);
+        dbHelper.addCharacterMention(Character.RELC, ch);
+        dbHelper.addSpeciesMention(Species.ANTINIUM, ch);
+        dbHelper.addCharacterMention(Character.KLBKCH, ch);
+        dbHelper.addClassMention(Class.MAGE, ch);
+        dbHelper.addClassMention(Class.SORCERER, ch);
+        dbHelper.addSpeciesMention(Species.DRAGON, ch);
+        // (getting to day 8)
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.RHIR, ch);
+        dbHelper.addNationAppearance(Nation.BLIGHTED_KINGDOM, ch);
+        dbHelper.addSettlementAppearance(Settlement.PARANFER, ch);
+        dbHelper.addSpeciesAppearance(Species.HALF_ELF, ch);
+        dbHelper.addSpeciesAppearance(Species.GARUDA, ch);
+        dbHelper.addSpeciesAppearance(Species.DULLAHAN, ch);
+        dbHelper.addLandmassOceanMention(LandmassOcean.BLUE_MOON, ch);
+        dbHelper.addLandmassOceanMention(LandmassOcean.GREEN_MOON, ch);
+        dbHelper.addClassMention(Class.HIGH_MAGE, ch);
+        dbHelper.addClassMention(Class.SCHOLAR, ch);
+        // (Othius is a [King], Cortine a [Queen], Nereshal a "[Mage]")
+        dbHelper.addClassMention(Class.KING, ch);
+        dbHelper.addCharacterAppearance(Character.OTHIUS, ch);
+        dbHelper.addCharacterAppearance(Character.CORETINE, ch);
+        dbHelper.addCharacterAppearance(Character.NERESHAL, ch);
+        dbHelper.addClassMention(Class.LORD, ch);
+        dbHelper.addCharacterAppearance(Character.HAYVON, ch);
+        dbHelper.addClassMention(Class.QUEEN, ch);
+        dbHelper.addClassMention(Class.HERO, ch);
+        dbHelper.addCharacterAppearance(Character.CHOLE, ch);
+        dbHelper.addCharacterAppearance(Character.CYNTHIA, ch);
+        dbHelper.addCharacterAppearance(Character.EDDY, ch);
+        dbHelper.addCharacterAppearance(Character.EMILY, ch);
+//        dbHelper.addCharacterAppearance(Character.KATY, ch);
+        dbHelper.addCharacterAppearance(Character.KEITH, ch);
+        dbHelper.addCharacterAppearance(Character.MARIAN_US, ch);
+        dbHelper.addCharacterAppearance(Character.RED, ch);
+//        dbHelper.addCharacterAppearance(Character.REYANNE, ch);
+        dbHelper.addCharacterAppearance(Character.RICHARD, ch);
+//        dbHelper.addCharacterAppearance(Character.RON, ch);
+//        dbHelper.addCharacterAppearance(Character.STACY, ch);
+        dbHelper.addCharacterAppearance(Character.TOM, ch);
+        dbHelper.addCharacterAppearance(Character.VINCENT, ch);
+        dbHelper.addSpeciesMention(Species.GOBLIN, ch);
+        dbHelper.addClassMention(Class.SNEAK_THIEF, ch);
+        dbHelper.addClassMention(Class.SWORDSMAN, ch);
+        dbHelper.addClassMention(Class.BANDIT, ch);
+        dbHelper.addClassMention(Class.ROGUE, ch);
+        dbHelper.addCharacterAppearance(Character.KEVIN, ch);
+        dbHelper.addCharacterAppearance(Character.JOSEPH, ch);
+        dbHelper.addCharacterAppearance(Character.GALINA, ch);
+        dbHelper.addCharacterAppearance(Character.ROSE, ch);
+        dbHelper.addCharacterAppearance(Character.TROYDEL, ch);
+        dbHelper.addCharacterAppearance(Character.LEON, ch);
+        dbHelper.addSettlementMention(Settlement.INVRISIL, ch);
+        dbHelper.addSettlementAppearance(Settlement.CELUM, ch);
+        // (appearance of one of Celum's Runner Guild's receptionists)
+        dbHelper.addClassMention(Class.RECEPTIONIST, ch);
+        dbHelper.addCharacterAppearance(Character.RYOKA, ch);
+        dbHelper.addWorldAppearance(World.EARTH, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.GREAT_BRITAIN, ch);
+        dbHelper.addNationAppearance(Nation.UK, ch);
+        dbHelper.addSettlementAppearance(Settlement.LONDON, ch);
+        dbHelper.addCharacterAppearance(Character.TREY, ch);
+        dbHelper.addCharacterAppearance(Character.TERES, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.CHANDRAR, ch);
+        dbHelper.addNationAppearance(Nation.REIM, ch);
+        dbHelper.addSettlementAppearance(Settlement.REIM, ch);
+        dbHelper.addCharacterAppearance(Character.FLOS, ch);
+        dbHelper.addCharacterAppearance(Character.ORTHENON, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.TERANDRIA, ch);
+        dbHelper.addNationAppearance(Nation.KALIV, ch);
+        dbHelper.addCharacterAppearance(Character.LILY, ch);
+        dbHelper.addNationAppearance(Nation.NOELICTUS, ch);
+        dbHelper.addCharacterAppearance(Character.CARA, ch);
+        dbHelper.addCharacterAppearance(Character.LAKEN, ch);
+        dbHelper.addCharacterAppearance(Character.DURENE, ch);
     }
 
     private static void ch11(final DbHelper dbHelper) throws SQLException {
