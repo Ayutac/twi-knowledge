@@ -10,8 +10,12 @@ public record Skill(String name, boolean spell, String wikiLink) implements Name
     public static final Skill BASIC_CLEANING = new Skill("Basic Cleaning", false, null);
     public static final Skill BASIC_COOKING = new Skill("Basic Cooking", false, null);
     public static final Skill BASIC_CRAFTING = new Skill("Basic Crafting", false, null);
+    public static final Skill DANGERSENSE = new Skill("Dangersense", false, null);
+    public static final Skill DETECT_GUILT = new Skill("Detect Guilt", false, null);
     public static final Skill DETECT_POISON = new Skill("Detect Poison", false, null);
 
+    public static final Skill FIREBALL = new Skill("Fireball", true, null);
+    public static final Skill FLASH_STEP = new Skill("Flash Step", true, null);
     public static final Skill TELEPORTATION = new Skill("Teleportation", true, null);
 
     public Skill(final String name, final boolean spell, final String wikiLink) {

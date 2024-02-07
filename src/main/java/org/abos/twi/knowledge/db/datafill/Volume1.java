@@ -416,6 +416,7 @@ public final class Volume1 {
         // (Pisces eats Amentus and Pasta)
         // misc
         dbHelper.addCharacterSpecies(Character.PISCES, Species.HUMAN, ch);
+        dbHelper.addCharacterFirstName(Character.PISCES, ch, "Pisces");
         // appearances/mentions
         // (still day 6 since Erin got to Innworld)
         dbHelper.addWorldAppearance(World.INNWORLD, ch);
@@ -431,7 +432,59 @@ public final class Volume1 {
     }
 
     private static void ch09(final DbHelper dbHelper) throws SQLException {
-
+        final Chapter ch = dbHelper.fetchChapter("Chapter 1.09");
+        // events
+        final Battle pisces = new Battle("Relc and Klbkch apprehend Pisces", null);
+        dbHelper.addBattle(pisces);
+        dbHelper.addBattleCharacter(pisces, Character.PISCES);
+        dbHelper.addBattleCharacter(pisces, Character.RELC);
+        dbHelper.addBattleCharacter(pisces, Character.KLBKCH);
+        dbHelper.addBattleChapter(pisces, ch);
+        // misc
+        dbHelper.addClassSkill(Class.GUARDSMAN, Skill.DETECT_GUILT, ch);
+        dbHelper.addClassSkill(Class.GUARDSMAN, Skill.DANGERSENSE, ch);
+        // implicitly:
+        dbHelper.addClassSkill(Class.GUARD, Skill.DETECT_GUILT, ch);
+        dbHelper.addClassSkill(Class.GUARDSWOMAN, Skill.DETECT_GUILT, ch);
+        dbHelper.addClassSkill(Class.GUARD, Skill.DANGERSENSE, ch);
+        dbHelper.addClassSkill(Class.GUARDSWOMAN, Skill.DANGERSENSE, ch);
+        // (Pisces is a [Necromancer])
+        // appearances/mentions
+        // (day 7 since Erin got to Innworld)
+        dbHelper.addWorldAppearance(World.INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.NORTHERN_IZRIL, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FLOODPLAINS, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FIRST_WANDERING_INN, ch);
+        dbHelper.addSpeciesAppearance(Species.HUMAN, ch);
+        dbHelper.addCharacterAppearance(Character.ERIN, ch);
+        dbHelper.addCharacterAppearance(Character.PISCES, ch);
+        dbHelper.addClassMention(Class.NECROMANCER, ch);
+        dbHelper.addClassMention(Class.INNKEEPER, ch);
+        dbHelper.addLandmassOceanMention(LandmassOcean.SOUTHERN_IZRIL, ch);
+        dbHelper.addNationMention(Nation.PALLASS, ch);
+        dbHelper.addSettlementMention(Settlement.PALLASS, ch);
+        dbHelper.addClassMention(Class.MAGE, ch);
+        dbHelper.addClassMention(Class.SORCERER, ch);
+        dbHelper.addClassMention(Class.WARLOCK, ch);
+        dbHelper.addClassMention(Class.WITCH, ch);
+        dbHelper.addClassMention(Class.WIZARD, ch);
+        dbHelper.addSpeciesAppearance(Species.DRAKE, ch);
+        dbHelper.addCharacterAppearance(Character.RELC, ch);
+        dbHelper.addSpeciesAppearance(Species.ANTINIUM, ch);
+        dbHelper.addCharacterAppearance(Character.KLBKCH, ch);
+        // appearance/mention of the watch
+        dbHelper.addSkillMention(Skill.BASIC_CRAFTING, ch);
+        dbHelper.addSettlementMention(Settlement.LISCOR, ch);
+        dbHelper.addClassMention(Class.GUARDSMAN, ch);
+        dbHelper.addClassMention(Class.GUARD, ch);
+        dbHelper.addSkillMention(Skill.DETECT_GUILT, ch);
+        // (Klbkch has [Detect Guilt])
+        dbHelper.addCharacterMention(Character.ZEVARA, ch);
+        dbHelper.addSkillMention(Skill.FIREBALL, ch);
+        dbHelper.addSkillMention(Skill.FLASH_STEP, ch);
+        dbHelper.addSkillMention(Skill.DANGERSENSE, ch);
+        // (Relc has [Dangersense])
     }
 
     private static void ch10(final DbHelper dbHelper) throws SQLException {
