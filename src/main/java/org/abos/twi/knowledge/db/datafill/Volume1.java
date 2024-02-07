@@ -443,6 +443,8 @@ public final class Volume1 {
         // misc
         dbHelper.addClassSkill(Class.GUARDSMAN, Skill.DETECT_GUILT, ch);
         dbHelper.addClassSkill(Class.GUARDSMAN, Skill.DANGERSENSE, ch);
+        dbHelper.addClassSkill(Class.MAGE, Skill.FIREBALL, ch);
+        dbHelper.addClassSkill(Class.MAGE, Skill.FLASH_STEP, ch);
         // implicitly:
         dbHelper.addClassSkill(Class.GUARD, Skill.DETECT_GUILT, ch);
         dbHelper.addClassSkill(Class.GUARDSWOMAN, Skill.DETECT_GUILT, ch);
