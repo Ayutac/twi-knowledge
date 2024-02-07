@@ -14,6 +14,9 @@ public record Skill(String name, boolean spell, String wikiLink) implements Name
     public static final Skill DETECT_GUILT = new Skill("Detect Guilt", false, null);
     public static final Skill DETECT_POISON = new Skill("Detect Poison", false, null);
 
+    public static final Skill APPRAISAL = new Skill("Appraisal", true, null);
+    public static final Skill BARRIER_OF_AIR = new Skill("Barrier of Air", true, null);
+    public static final Skill DETECT_TRUTH = new Skill("Detect Truth", false, null);
     public static final Skill FIREBALL = new Skill("Fireball", true, null);
     public static final Skill FLASH_STEP = new Skill("Flash Step", true, null);
     public static final Skill TELEPORTATION = new Skill("Teleportation", true, null);

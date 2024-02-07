@@ -17,6 +17,7 @@ CREATE TYPE nation_type AS ENUM (
   'City state'
 );
 CREATE TYPE settlement_type AS ENUM (
+  'Castle',
   'City',
   'Town',
   'Village'

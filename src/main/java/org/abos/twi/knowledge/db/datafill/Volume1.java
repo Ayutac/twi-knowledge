@@ -429,6 +429,9 @@ public final class Volume1 {
         dbHelper.addCharacterAppearance(Character.ERIN, ch);
         dbHelper.addClassMention(Class.INNKEEPER, ch);
         dbHelper.addSkillMention(Skill.TELEPORTATION, ch);
+        dbHelper.addLandmassOceanMention(LandmassOcean.WISTRAM_ISLE, ch);
+        dbHelper.addNationMention(Nation.WISTRAM, ch);
+        dbHelper.addSettlementMention(Settlement.WISTRAM, ch);
     }
 
     private static void ch09(final DbHelper dbHelper) throws SQLException {
@@ -490,7 +493,50 @@ public final class Volume1 {
     }
 
     private static void ch10(final DbHelper dbHelper) throws SQLException {
-
+        final Chapter ch = dbHelper.fetchChapter("Chapter 1.10");
+        // events
+        final Battle pisces2 = new Battle("Relc and Klbkch apprehend Pisces again.", null);
+        dbHelper.addBattle(pisces2);
+        dbHelper.addBattleChapter(pisces2, ch);
+        dbHelper.addBattleCharacter(pisces2, Character.PISCES);
+        dbHelper.addBattleCharacter(pisces2, Character.RELC);
+        dbHelper.addBattleCharacter(pisces2, Character.KLBKCH);
+        // misc
+        dbHelper.addClassSkill(Class.MAGE, Skill.BARRIER_OF_AIR, ch);
+        dbHelper.addClassSkill(Class.MAGE, Skill.APPRAISAL, ch);
+        dbHelper.addClassSkill(Class.MAGE, Skill.DETECT_TRUTH, ch);
+        // appearances/mentions
+        // (still day 7 since Erin got to Innworld)
+        dbHelper.addWorldAppearance(World.INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.NORTHERN_IZRIL, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FLOODPLAINS, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FIRST_WANDERING_INN, ch);
+        dbHelper.addSpeciesAppearance(Species.HUMAN, ch);
+        dbHelper.addCharacterAppearance(Character.ERIN, ch);
+        dbHelper.addClassMention(Class.INNKEEPER, ch);
+        dbHelper.addCharacterAppearance(Character.PISCES, ch);
+        dbHelper.addClassMention(Class.MAGE, ch);
+        dbHelper.addClassMention(Class.NECROMANCER, ch);
+        dbHelper.addLandmassOceanMention(LandmassOcean.TERANDRIA, ch);
+        dbHelper.addCharacterNickName(Character.AZKERASH, ch, "Necromancer of Terandria");
+        dbHelper.addCharacterNickName(Character.AZKERASH, ch, "Az’kerash");
+        dbHelper.addSpeciesAppearance(Species.DRAKE, ch);
+        dbHelper.addCharacterAppearance(Character.RELC, ch);
+        dbHelper.addSpeciesAppearance(Species.ANTINIUM, ch);
+        dbHelper.addCharacterAppearance(Character.KLBKCH, ch);
+        dbHelper.addSkillMention(Skill.BARRIER_OF_AIR, ch);
+        dbHelper.addLandmassOceanMention(LandmassOcean.WISTRAM_ISLE, ch);
+        dbHelper.addNationMention(Nation.WISTRAM, ch);
+        dbHelper.addSettlementMention(Settlement.WISTRAM, ch);
+        // (mention of Wistram Graduate)
+        dbHelper.addClassMention(Class.GUARDSMAN, ch);
+        dbHelper.addCharacterMention(Character.ZEL, ch);
+        dbHelper.addCharacterNickName(Character.ZEL, ch, "The Tidebreaker");
+        dbHelper.addCharacterMention(Character.GEWILENA, ch);
+        dbHelper.addSkillMention(Skill.APPRAISAL, ch);
+        dbHelper.addCharacterMention(Character.ZEVARA, ch);
+        dbHelper.addSkillMention(Skill.DETECT_TRUTH, ch);
     }
 
     private static void theGreatRitual(final DbHelper dbHelper) throws SQLException {

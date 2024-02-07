@@ -11,6 +11,7 @@ public record Character(String wikiLink) implements Named {
     public static final Character BEILMARK = new Character(WikiHelper.WIKI_URL + "Beilmark");
     public static final Character ERIN = new Character(WikiHelper.WIKI_URL + "Erin_Solstice");
     public static final Character FLOODED_WATERS_CHIEFTAIN = new Character(WikiHelper.WIKI_URL + "Goblin_Chieftain");
+    public static final Character GEWILENA = new Character(WikiHelper.WIKI_URL + "Gewilena");
     public static final Character KLBKCH = new Character(WikiHelper.WIKI_URL + "Klbkch");
     public static final Character MAGNOLIA = new Character(WikiHelper.WIKI_URL + "Magnolia_Reinhart");
     public static final Character NANETTE = new Character(WikiHelper.WIKI_URL + "Nanette_Weishart");
@@ -19,6 +20,7 @@ public record Character(String wikiLink) implements Named {
     public static final Character RAGS = new Character(WikiHelper.WIKI_URL + "Rags");
     public static final Character RELC = new Character(WikiHelper.WIKI_URL + "Relc_Grasstongue");
     public static final Character TERIARCH = new Character(WikiHelper.WIKI_URL + "Teriarch");
+    public static final Character ZEL = new Character(WikiHelper.WIKI_URL + "Zel_Shivertail");
     public static final Character ZEVARA = new Character(WikiHelper.WIKI_URL + "Zevara_Sunderscale");
 
     public Character(final String wikiLink) {

@@ -12,6 +12,7 @@ public record Settlement(String name, SettlementType settlementType, Nation nati
     public static final Settlement LISCOR = new Settlement(Nation.LISCOR.name(), SettlementType.CITY, Nation.LISCOR, Nation.LISCOR.wikiLink());
     public static final Settlement CELUM = new Settlement("Celum", SettlementType.CITY, Nation.FIVE_FAMILIES_TERRITORY, WikiHelper.WIKI_URL + "Celum");
     public static final Settlement PALLASS = new Settlement(Nation.PALLASS.name(), SettlementType.CITY, Nation.PALLASS, Nation.PALLASS.wikiLink());
+    public static final Settlement WISTRAM = new Settlement("Wistram Academy", SettlementType.CASTLE, Nation.WISTRAM, Nation.WISTRAM.wikiLink());
 
     public Settlement(final String name, final SettlementType settlementType, final Nation nation, final String wikiLink) {
         this.name = Objects.requireNonNull(name);
