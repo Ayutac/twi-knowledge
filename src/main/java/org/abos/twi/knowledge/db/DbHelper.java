@@ -31,6 +31,7 @@ import org.abos.twi.knowledge.core.publication.Volume;
 import org.abos.twi.knowledge.core.location.World;
 import org.abos.twi.knowledge.db.datafill.StaticFields;
 import org.abos.twi.knowledge.db.datafill.Volume1;
+import org.abos.twi.knowledge.db.datafill.Volume10;
 import org.abos.twi.knowledge.db.datafill.Volume2;
 import org.abos.twi.knowledge.wiki.WikiHelper;
 import org.apache.commons.collections4.BidiMap;
@@ -1483,6 +1484,7 @@ public final class DbHelper {
         StaticFields.fillDb(this);
         Volume1.fillDb(this);
         Volume2.fillDb(this);
+        Volume10.fillDb(this);
     }
 
     public static void main(String[] args) throws IOException, SQLException, IllegalAccessException {

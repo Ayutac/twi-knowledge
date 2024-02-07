@@ -13,6 +13,7 @@ public record Character(String wikiLink) implements Named {
     public static final Character FLOODED_WATERS_CHIEFTAIN = new Character(WikiHelper.WIKI_URL + "Goblin_Chieftain");
     public static final Character KLBKCH = new Character(WikiHelper.WIKI_URL + "Klbkch");
     public static final Character MAGNOLIA = new Character(WikiHelper.WIKI_URL + "Magnolia_Reinhart");
+    public static final Character NANETTE = new Character(WikiHelper.WIKI_URL + "Nanette_Weishart");
     public static final Character PISCES = new Character(WikiHelper.WIKI_URL + "Pisces_Jealnet");
     public static final Character QUARASS = new Character(WikiHelper.WIKI_URL + "Quarass");
     public static final Character RAGS = new Character(WikiHelper.WIKI_URL + "Rags");
