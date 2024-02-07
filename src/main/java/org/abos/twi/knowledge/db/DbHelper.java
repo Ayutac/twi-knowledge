@@ -1290,8 +1290,8 @@ public final class DbHelper {
     }
 
     private void internalMaybeAddFirstMeeting(final FirstMeeting firstMeeting, ConnectionStatement selectCs, ConnectionStatement insertCs) throws SQLException {
-        final Integer character1Id = internalFetchId(characterIdMap, this::fetchChapterId, firstMeeting.character1());
-        final Integer character2Id = internalFetchId(characterIdMap, this::fetchChapterId, firstMeeting.character2());
+        final Integer character1Id = fetchCharacterId(firstMeeting.character1());
+        final Integer character2Id = fetchCharacterId(firstMeeting.character2());
         final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, firstMeeting.chapter());
         setInt(selectCs.preparedStatement(), 1, character1Id);
         setInt(selectCs.preparedStatement(), 2, character2Id);

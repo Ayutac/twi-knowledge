@@ -280,6 +280,7 @@ public final class Volume1 {
         // events
         // (Erin makes Pasta)
         dbHelper.addInnArrival(new InnArrival(Character.KLBKCH, ch));
+        dbHelper.maybeAddFirstMeeting(new FirstMeeting(Character.ERIN, Character.KLBKCH, ch));
         // appearances/mentions
         // (day 5 since Erin got to Innworld)
         dbHelper.addWorldAppearance(World.INNWORLD, ch);
@@ -313,6 +314,7 @@ public final class Volume1 {
         final Chapter ch = dbHelper.fetchChapter("Chapter 1.06");
         // events
         dbHelper.addInnArrival(new InnArrival(Character.RELC, ch));
+        dbHelper.maybeAddFirstMeeting(new FirstMeeting(Character.ERIN, Character.RELC, ch));
         final LevelUp lvErin = new LevelUp(Character.ERIN, ch, 5, Class.INNKEEPER, false, false);
         dbHelper.addLevelUp(lvErin);
         dbHelper.addLevelUpSkill(lvErin, Skill.BASIC_CRAFTING);
@@ -373,6 +375,7 @@ public final class Volume1 {
         dbHelper.addBattleChapter(razorbeak, ch);
         dbHelper.addBattleCharacter(razorbeak, Character.ERIN);
         dbHelper.addInnArrival(new InnArrival(Character.PISCES, ch));
+        dbHelper.maybeAddFirstMeeting(new FirstMeeting(Character.ERIN, Character.PISCES, ch));
         dbHelper.addBattle(PISCES_FIGHT);
         dbHelper.addBattleChapter(PISCES_FIGHT, ch);
         dbHelper.addBattleCharacter(PISCES_FIGHT, Character.ERIN);
@@ -440,6 +443,8 @@ public final class Volume1 {
     private static void ch09(final DbHelper dbHelper) throws SQLException {
         final Chapter ch = dbHelper.fetchChapter("Chapter 1.09");
         // events
+        dbHelper.maybeAddFirstMeeting(new FirstMeeting(Character.PISCES, Character.KLBKCH, ch));
+        dbHelper.maybeAddFirstMeeting(new FirstMeeting(Character.PISCES, Character.RELC, ch));
         final Battle pisces = new Battle("Relc and Klbkch apprehend Pisces", null);
         dbHelper.addBattle(pisces);
         dbHelper.addBattleCharacter(pisces, Character.PISCES);
@@ -561,6 +566,9 @@ public final class Volume1 {
 //        dbHelper.addInnworldArrival(new InnworldArrival(Character.STACY, ch));
         dbHelper.addInnworldArrival(new InnworldArrival(Character.TOM, ch));
         dbHelper.addInnworldArrival(new InnworldArrival(Character.VINCENT, ch));
+        dbHelper.maybeAddFirstMeetings(FirstMeeting.generateMeetings(
+                new Character[]{Character.CHOLE, Character.CYNTHIA, Character.EDDY, Character.EMILY, Character.KEITH, Character.MARIAN_US, Character.RED, Character.RICHARD, Character.TOM, Character.VINCENT},
+                new Character[]{Character.OTHIUS, Character.CORETINE, Character.NERESHAL, Character.HAYVON}, ch));
         dbHelper.addInnworldArrival(new InnworldArrival(Character.KEVIN, ch));
         dbHelper.addInnworldArrival(new InnworldArrival(Character.TROYDEL, ch));
         dbHelper.addInnworldArrival(new InnworldArrival(Character.GALINA, ch));
@@ -570,6 +578,9 @@ public final class Volume1 {
         dbHelper.addInnworldArrival(new InnworldArrival(Character.RYOKA, ch));
         dbHelper.addInnworldArrival(new InnworldArrival(Character.TREY, ch));
         dbHelper.addInnworldArrival(new InnworldArrival(Character.TERES, ch));
+        dbHelper.maybeAddFirstMeetings(FirstMeeting.generateMeetings(
+                new Character[]{Character.TERES, Character.TREY},
+                new Character[]{Character.FLOS, Character.ORTHENON}, ch));
         dbHelper.addInnworldArrival(new InnworldArrival(Character.LILY, ch));
         dbHelper.addInnworldArrival(new InnworldArrival(Character.CARA, ch));
         dbHelper.addInnworldArrival(new InnworldArrival(Character.LAKEN, ch));
@@ -695,7 +706,64 @@ public final class Volume1 {
     }
 
     private static void ch11(final DbHelper dbHelper) throws SQLException {
-
+        final Chapter ch = dbHelper.fetchChapter("Chapter 1.11");
+        // events
+        // (Erin meets an unnamed guard and unnamed hunter)
+        dbHelper.maybeAddFirstMeeting(new FirstMeeting(Character.ERIN, Character.DRASSI, ch));
+        dbHelper.maybeAddFirstMeeting(new FirstMeeting(Character.ERIN, Character.SELYS, ch));
+        // misc
+        dbHelper.addCharacterSpecies(Character.DRASSI, Species.DRAKE, ch);
+        dbHelper.addCharacterFirstName(Character.DRASSI, ch, "Drassi");
+        dbHelper.addCharacterSpecies(Character.SELYS, Species.DRAKE, ch);
+        dbHelper.addCharacterFirstName(Character.SELYS, ch, "Selys");
+        // appearances/mentions
+        // (still day 8 since Erin got to Innworld)
+        dbHelper.addWorldAppearance(World.INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.NORTHERN_IZRIL, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FLOODPLAINS, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FIRST_WANDERING_INN, ch);
+        dbHelper.addSpeciesAppearance(Species.HUMAN, ch);
+        dbHelper.addCharacterAppearance(Character.ERIN, ch);
+        dbHelper.addClassMention(Class.NECROMANCER, ch);
+        dbHelper.addSpeciesMention(Species.HOLLOWSTONE_DECEIVER, ch);
+        dbHelper.addClassMention(Class.INNKEEPER, ch);
+        dbHelper.addCharacterMention(Character.ARTHUR, ch);
+        dbHelper.addCharacterMention(Character.RELC, ch);
+        dbHelper.addSpeciesMention(Species.ANTINIUM, ch);
+        dbHelper.addCharacterMention(Character.KLBKCH, ch);
+        dbHelper.addSpeciesAppearance(Species.GOBLIN, ch);
+        dbHelper.addSpeciesMention(Species.HORSE, ch);
+        dbHelper.addSpeciesMention(Species.COCKROACH, ch);
+        // (appearance of yellow drake guard)
+        dbHelper.addNationAppearance(Nation.LISCOR, ch);
+        dbHelper.addSettlementAppearance(Settlement.LISCOR, ch);
+        dbHelper.addClassMention(Class.GUARD, ch);
+        dbHelper.addClassMention(Class.TRADER, ch);
+        dbHelper.addClassMention(Class.HUNTER, ch);
+        // (appearance of hunter Gnoll)
+        dbHelper.addSpeciesAppearance(Species.GNOLL, ch);
+        dbHelper.addSpeciesAppearance(Species.CORUSDEER, ch);
+        dbHelper.addSkillMention(Skill.BROADER_SHOULDERS, ch);
+        dbHelper.addClassMention(Class.GUARDSMAN, ch);
+        dbHelper.addClassMention(Class.BUTCHER, ch);
+        dbHelper.addSpeciesMention(Species.ACID_FLY, ch);
+        dbHelper.addCharacterAppearance(Character.DRASSI, ch);
+        // (appearance of silverfang tribe)
+        dbHelper.addCharacterMention(Character.HAWK, ch);
+        // (appearance of Mister Drells)
+        dbHelper.addLandmassOceanMention(LandmassOcean.EUROPE, ch);
+        // (appearance of [Driver] Drake)
+        dbHelper.addClassMention(Class.DRIVER, ch);
+        dbHelper.addClassMention(Class.BARMAID, ch);
+        dbHelper.addLandmarkAppearance(Landmark.LISCORS_MAGES_GUILD, ch);
+        dbHelper.addSpeciesMention(Species.SHIELD_SPIDER, ch);
+        dbHelper.addClassMention(Class.ALCHEMIST, ch);
+        // (appearance of Liscor Plaza and City Hall or Watch Barracks)
+        // (appearance of Liscor playground)
+        dbHelper.addLandmarkAppearance(Landmark.LISCORS_ADVENTURERS_GUILD, ch);
+        dbHelper.addCharacterAppearance(Character.SELYS, ch);
+        // (appearance of unnamed Gnoll who bullies Erin)
     }
 
     private static void ch12(final DbHelper dbHelper) throws SQLException {

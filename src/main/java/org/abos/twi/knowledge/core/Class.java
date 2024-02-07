@@ -7,9 +7,13 @@ import java.util.Objects;
 
 public record Class(String name, String wikiLink) implements Named, Comparable<Class> {
 
+    public static final Class ALCHEMIST = new Class("Alchemist", WikiHelper.WIKI_URL + "Alchemists");
     public static final Class BANDIT = new Class("Bandit", WikiHelper.WIKI_URL + "Bandits");
+    public static final Class BARMAID = new Class("Barmaid", WikiHelper.WIKI_URL + "Barmaids");
+    public static final Class BUTCHER = new Class("Butcher", WikiHelper.WIKI_URL + "Butchers");
     public static final Class CHEF = new Class("Chef", WikiHelper.WIKI_URL + "Chefs");
     public static final Class CHIEFTAIN = new Class("Chieftain", WikiHelper.WIKI_URL + "Chieftains");
+    public static final Class DRIVER = new Class("Driver", WikiHelper.WIKI_URL + "Drivers");
     public static final Class GATHERER = new Class("Gatherer", WikiHelper.WIKI_URL + "Gatherers");
     public static final Class GOOD_PERSON = new Class("Good Person", null);
     public static final Class HERO = new Class("Hero", WikiHelper.WIKI_URL + "Heroes");
@@ -23,6 +27,7 @@ public record Class(String name, String wikiLink) implements Named, Comparable<C
     public static final Class GUARD = new Class("Guard", WikiHelper.WIKI_URL + "Watch");
     public static final Class GUARDSMAN = new Class("Guardsman", WikiHelper.WIKI_URL + "Watch");
     public static final Class GUARDSWOMAN = new Class("Guardwoman", WikiHelper.WIKI_URL + "Watch");
+    public static final Class HUNTER = new Class("Hunter", WikiHelper.WIKI_URL + "Hunters");
     public static final Class HIGH_MAGE = new Class("High Mage", WikiHelper.WIKI_URL + "High_Mages");
     public static final Class QUEEN = new Class("Queen", WikiHelper.WIKI_URL + "Queens");
     public static final Class RECEPTIONIST = new Class("Receptionist", WikiHelper.WIKI_URL + "Receptionists");
@@ -35,6 +40,7 @@ public record Class(String name, String wikiLink) implements Named, Comparable<C
     public static final Class SURVIVOR = new Class("Survivor", WikiHelper.WIKI_URL + "Survivors");
     public static final Class SWORDSMAN = new Class("Swordsman", WikiHelper.WIKI_URL + "Swordsmen");
     public static final Class SWORDSLAYER = new Class("Swordslayer", WikiHelper.WIKI_URL + "Swordslayers");
+    public static final Class TRADER = new Class("Trader", WikiHelper.WIKI_URL + "Traders");
     public static final Class WARLOCK = new Class("Warlock", WikiHelper.WIKI_URL + "Warlocks");
     public static final Class WARRIOR = new Class("Warrior", WikiHelper.WIKI_URL + "Warriors");
     public static final Class WITCH = new Class("Witch", WikiHelper.WIKI_URL + "Witches");

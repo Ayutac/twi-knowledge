@@ -12,6 +12,7 @@ public record Settlement(String name, SettlementType settlementType, Nation nati
     public static final Settlement LONDON = new Settlement("London", SettlementType.CITY, Nation.UK, null);
     public static final Settlement LISCOR = new Settlement(Nation.LISCOR.name(), SettlementType.CITY, Nation.LISCOR, Nation.LISCOR.wikiLink());
     public static final Settlement CELUM = new Settlement("Celum", SettlementType.CITY, Nation.FIVE_FAMILIES_TERRITORY, WikiHelper.WIKI_URL + "Celum");
+    public static final Settlement ESTHELM = new Settlement("Esthelm", SettlementType.CITY, Nation.FIVE_FAMILIES_TERRITORY, WikiHelper.WIKI_URL + "Esthelm");
     public static final Settlement INVRISIL = new Settlement("Invrisil", SettlementType.CITY, Nation.FIVE_FAMILIES_TERRITORY, WikiHelper.WIKI_URL + "Invrisil");
     public static final Settlement PALLASS = new Settlement(Nation.PALLASS.name(), SettlementType.CITY, Nation.PALLASS, Nation.PALLASS.wikiLink());
     public static final Settlement PARANFER = new Settlement("Paranfer", SettlementType.CITY, Nation.BLIGHTED_KINGDOM, WikiHelper.WIKI_URL + "Paranfer");
