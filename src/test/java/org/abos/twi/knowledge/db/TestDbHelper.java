@@ -5,6 +5,7 @@ import org.abos.twi.knowledge.core.Character;
 import org.abos.twi.knowledge.core.publication.Book;
 import org.abos.twi.knowledge.core.publication.Chapter;
 import org.abos.twi.knowledge.core.publication.Volume;
+import org.abos.twi.knowledge.db.datafill.StaticFields;
 import org.abos.twi.knowledge.db.datafill.Volume1;
 import org.abos.twi.knowledge.wiki.WikiHelper;
 import org.junit.jupiter.api.AfterEach;
@@ -107,11 +108,12 @@ public final class TestDbHelper {
      * Test for {@link DbHelper#buildLatestCharacterName(Character, Chapter)}.
      */
     @Test
-    public void testBuildLatestCharacterName() throws SQLException {
+    public void testBuildLatestCharacterName() throws SQLException, IllegalAccessException {
         dbHelper.addVolumes(VOLUMES);
         dbHelper.addBooks(BOOKS);
         dbHelper.addChapters(CHAPTERS);
         dbHelper.addCharacters(CHARACTERS);
+        StaticFields.fillDb(dbHelper);
         Volume1.fillDb(dbHelper);
         Assertions.assertEquals("the Goblin", dbHelper.buildLatestCharacterName(Character.RAGS, dbHelper.fetchChapter("Chapter 1.07")));
         Assertions.assertEquals("the Dragon", dbHelper.buildLatestCharacterName(Character.TERIARCH, dbHelper.fetchChapter("Chapter 1.07")));
