@@ -57,7 +57,10 @@ import java.time.LocalTime;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 public final class DbHelper {
 
@@ -1181,42 +1184,37 @@ public final class DbHelper {
         return internalFetchLatestCharacterName(character, until, CharacterNameType.NICK);
     }
 
-    public String buildLatestCharacterName(final Character character, final Chapter until) throws SQLException {
+    private String internalBuildCharacterName(final String firstName, final String middleName, final String lastName, final String nickName, final String speciesName) {
         final StringBuilder s = new StringBuilder();
         boolean anything = false;
-        final String first = fetchLatestCharacterFirstName(character, until);
-        if (first != null) {
-            s.append(first);
+        if (firstName != null) {
+            s.append(firstName);
             anything = true;
         }
-        final String middle = fetchLatestCharacterMiddleName(character, until);
-        if (middle != null) {
+        if (middleName != null) {
             if (anything) {
                 s.append(' ');
             }
-            s.append(middle);
+            s.append(middleName);
             anything = true;
         }
-        final String last = fetchLatestCharacterLastName(character, until);
-        if (last != null) {
+        if (lastName != null) {
             if (anything) {
                 s.append(' ');
             }
-            s.append(last);
+            s.append(lastName);
             anything = true;
         }
         if (!anything) {
-            final String nick = fetchLatestCharacterNickName(character, until);
-            if (nick != null) {
-                s.append(nick);
+            if (nickName != null) {
+                s.append(nickName);
                 anything = true;
             }
         }
         if (!anything) {
-            final Species species = fetchLatestCharacterSpecies(character, until);
-            if (species != null) {
+            if (speciesName != null) {
                 s.append("the ");
-                s.append(species.name());
+                s.append(speciesName);
                 anything = true;
             }
         }
@@ -1226,22 +1224,142 @@ public final class DbHelper {
         return s.toString();
     }
 
+    public String buildLatestCharacterName(final Character character, final Chapter until) throws SQLException {
+        final String first = fetchLatestCharacterFirstName(character, until);
+        final String middle = fetchLatestCharacterMiddleName(character, until);
+        final String last = fetchLatestCharacterLastName(character, until);
+        final String nick = (first == null && middle == null && last == null) ? fetchLatestCharacterNickName(character, until) : null;
+        final String speciesName;
+        if (first == null && middle == null && last == null && nick == null) {
+            final Species species = fetchLatestCharacterSpecies(character, until);
+            if (species != null) {
+                speciesName = species.name();
+            }
+            else {
+                speciesName = null;
+            }
+        }
+        else {
+            speciesName = null;
+        }
+        return internalBuildCharacterName(first, middle, last, nick, speciesName);
+    }
+
+    private record NameOrdered(String name, int characterId, int volumeId, int volumeOrd) {
+        /* Nothing to add. */
+    }
+
+    private static String nameNullSafe(NameOrdered nameOrdered) {
+        if (nameOrdered == null) {
+            return null;
+        }
+        return nameOrdered.name;
+    }
+
+    private static void fillNameMap(Chapter until, int volumeId, List<NameOrdered> names, Map<Integer, NameOrdered> nameMap) {
+        for (final NameOrdered nameOrdered : names) {
+            // if hit is after until, ignore
+            if (nameOrdered.volumeId > volumeId || (nameOrdered.volumeId == volumeId && nameOrdered.volumeOrd > until.volumeOrd())) {
+                continue;
+            }
+            // if no hit for that character yet, add
+            if (!nameMap.containsKey(nameOrdered.characterId)) {
+                nameMap.put(nameOrdered.characterId, nameOrdered);
+            }
+            // else check which one is more recent (if both are the same, the first in the list will be taken)
+            else {
+                final NameOrdered mappedOne = nameMap.get(nameOrdered.characterId);
+                if (mappedOne.volumeId > nameOrdered.volumeId || (mappedOne.volumeId == nameOrdered.volumeId && mappedOne.volumeOrd > nameOrdered.volumeOrd)) {
+                    nameMap.put(nameOrdered.characterId, nameOrdered);
+                }
+            }
+        }
+    }
+
     public List<CharacterNamed> fetchCharacters(final Chapter until) throws SQLException {
-        final List<CharacterNamed> result = new LinkedList<>();
+        // fetch relevant characters
+        final List<Integer> ids = new LinkedList<>();
         System.out.println(LocalTime.now());
         try (final ConnectionStatement cs = prepareStatement("WITH ch AS (SELECT character_id FROM appearance_mention_character_ordered WHERE " + WHERE_ORDERED + ") SELECT DISTINCT character_id FROM ch ORDER BY character_id;")) {
             fillWhereClause(cs.preparedStatement(), 1, until);
             try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
                 while (rs.next()) {
-                    System.out.println(LocalTime.now());
-                    final int characterId = rs.getInt(1);
-                    if (!characterIdMap.containsValue(characterId)) {
-                        characterIdMap.put(fetchCharacter(characterId), characterId);
-                    }
-                    final Character character = characterIdMap.getKey(characterId);
-                    result.add(new CharacterNamed(character, buildLatestCharacterName(character, until)));
+                    ids.add(rs.getInt(1));
                 }
             }
+        }
+        System.out.println(LocalTime.now());
+
+        // fetch relevant names
+        final String selectString = "SELECT * FROM %s WHERE character_id IN (%s);";
+        final String inSet = ids.stream().map(n -> Integer.toString(n)).collect(Collectors.joining(","));
+        System.out.println(LocalTime.now());
+        final List<NameOrdered> firstNames = new LinkedList<>();
+        try (final ConnectionStatement cs = prepareStatement(String.format(selectString, CharacterNameType.FIRST.name().toLowerCase() + "_name_ordered", inSet));
+             final ResultSet rs = cs.preparedStatement().executeQuery()) {
+            while (rs.next()) {
+                firstNames.add(new NameOrdered(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getInt(4)));
+            }
+        }
+        System.out.println(LocalTime.now());
+        final List<NameOrdered> middleNames = new LinkedList<>();
+        try (final ConnectionStatement cs = prepareStatement(String.format(selectString, CharacterNameType.MIDDLE.name().toLowerCase() + "_name_ordered", inSet));
+             final ResultSet rs = cs.preparedStatement().executeQuery()) {
+            while (rs.next()) {
+                middleNames.add(new NameOrdered(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getInt(4)));
+            }
+        }
+        System.out.println(LocalTime.now());
+        final List<NameOrdered> lastNames = new LinkedList<>();
+        try (final ConnectionStatement cs = prepareStatement(String.format(selectString, CharacterNameType.LAST.name().toLowerCase() + "_name_ordered", inSet));
+             final ResultSet rs = cs.preparedStatement().executeQuery()) {
+            while (rs.next()) {
+                lastNames.add(new NameOrdered(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getInt(4)));
+            }
+        }
+        System.out.println(LocalTime.now());
+        final List<NameOrdered> nickNames = new LinkedList<>();
+        try (final ConnectionStatement cs = prepareStatement(String.format(selectString, CharacterNameType.NICK.name().toLowerCase() + "_name_ordered", inSet));
+             final ResultSet rs = cs.preparedStatement().executeQuery()) {
+            while (rs.next()) {
+                nickNames.add(new NameOrdered(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getInt(4)));
+            }
+        }
+        System.out.println(LocalTime.now());
+        // TODO species Name
+
+        // get most recent names
+        final Map<Integer, NameOrdered> firstNameMap = new TreeMap<>();
+        final Map<Integer, NameOrdered> middleNameMap = new TreeMap<>();
+        final Map<Integer, NameOrdered> lastNameMap = new TreeMap<>();
+        final Map<Integer, NameOrdered> nickNameMap = new TreeMap<>();
+        final Map<Integer, NameOrdered> speciesNameMap = new TreeMap<>();
+        if (!volumeIdMap.containsKey(until.volume())) {
+            volumeIdMap.put(until.volume(), fetchVolumeId(until.volume().name()));
+        }
+        final int volumeId = volumeIdMap.get(until.volume());
+        fillNameMap(until, volumeId, firstNames, firstNameMap);
+        fillNameMap(until, volumeId, middleNames, middleNameMap);
+        fillNameMap(until, volumeId, lastNames, lastNameMap);
+        fillNameMap(until, volumeId, nickNames, nickNameMap);
+        // TODO species Name
+        System.out.println(LocalTime.now());
+
+        // save results
+        final List<CharacterNamed> result = new LinkedList<>();
+        for (final Integer characterId : ids) {
+            // TODO fetch all missing characters at once
+            if (!characterIdMap.containsValue(characterId)) {
+                characterIdMap.put(fetchCharacter(characterId), characterId);
+            }
+            final Character character = characterIdMap.getKey(characterId);
+            result.add(new CharacterNamed(character, internalBuildCharacterName(
+                    nameNullSafe(firstNameMap.get(characterId)),
+                    nameNullSafe(middleNameMap.get(characterId)),
+                    nameNullSafe(lastNameMap.get(characterId)),
+                    nameNullSafe(nickNameMap.get(characterId)),
+                    nameNullSafe(speciesNameMap.get(characterId))
+            )));
         }
         System.out.println(LocalTime.now());
         Collections.sort(result);

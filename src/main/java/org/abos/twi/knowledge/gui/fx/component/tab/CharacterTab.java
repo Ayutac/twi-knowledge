@@ -27,7 +27,6 @@ public final class CharacterTab extends DbTab implements EventHandler<ChapterSel
     public void handle(final ChapterSelectionEvent chapterSelectionEvent) {
         currentChapter = chapterSelectionEvent.getChapter();
         try {
-            System.out.println("Updating the characters");
             characterSelection.setCollection(dbHelper.fetchCharacters(currentChapter));
         } catch (SQLException ex) {
             throw new IllegalStateException(ex);
