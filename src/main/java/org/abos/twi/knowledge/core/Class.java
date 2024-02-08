@@ -33,6 +33,7 @@ public record Class(String name, String wikiLink) implements Named, Comparable<C
     public static final Class RECEPTIONIST = new Class("Receptionist", WikiHelper.WIKI_URL + "Receptionists");
     public static final Class ROGUE = new Class("Rogue", WikiHelper.WIKI_URL + "Rogues");
     public static final Class SCHOLAR = new Class("Scholar", WikiHelper.WIKI_URL + "Scholars");
+    public static final Class SERGEANT = new Class("Sergeant", WikiHelper.WIKI_URL + "Sergeant");
     public static final Class SHAMAN = new Class("Shaman", WikiHelper.WIKI_URL + "Shamans");
     public static final Class SNEAK_THIEF = new Class("Sneak Thief", WikiHelper.WIKI_URL + "Thieves");
     public static final Class SPEARMASTER = new Class("Spearmaster", WikiHelper.WIKI_URL + "Spearmasters");

@@ -710,9 +710,9 @@ public final class DbHelper {
 
     public void addSkillUpgrade(final Skill base, final Skill upgrade, final Chapter chapter) throws SQLException {
         try (final ConnectionStatement cs = prepareStatement("INSERT INTO skill_upgrade VALUES (?,?,?);")) {
-            final Integer baseId = internalFetchId(skillIdMap, this::fetchClassId, base);
+            final Integer baseId = internalFetchId(skillIdMap, this::fetchSkillId, base);
             setInt(cs.preparedStatement(), 1, baseId);
-            final Integer upgradeId = internalFetchId(skillIdMap, this::fetchClassId, upgrade);
+            final Integer upgradeId = internalFetchId(skillIdMap, this::fetchSkillId, upgrade);
             setInt(cs.preparedStatement(), 2, upgradeId);
             final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, chapter);
             setInt(cs.preparedStatement(), 3, chapterId);

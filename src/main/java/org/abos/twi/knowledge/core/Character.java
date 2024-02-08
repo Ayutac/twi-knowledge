@@ -10,6 +10,7 @@ public record Character(String wikiLink) implements Named {
     public static final Character ARTHUR = new Character(WikiHelper.WIKI_URL + "King_Arthur");
     public static final Character AZKERASH = new Character(WikiHelper.WIKI_URL + "Az’kerash");
     public static final Character BEILMARK = new Character(WikiHelper.WIKI_URL + "Beilmark");
+    public static final Character BELSC = new Character(WikiHelper.WIKI_URL + "Belsc");
     public static final Character CARA = new Character(WikiHelper.WIKI_URL + "Cara_O'Sullivan");
     public static final Character CORETINE = new Character(WikiHelper.WIKI_URL + "Coretine");
     public static final Character CHOLE = new Character(WikiHelper.WIKI_URL + "Chole");
@@ -31,9 +32,11 @@ public record Character(String wikiLink) implements Named {
     public static final Character KEITH = new Character(WikiHelper.WIKI_URL + "Keith");
     public static final Character KEVIN = new Character(WikiHelper.WIKI_URL + "Kevin_Hall");
     public static final Character KLBKCH = new Character(WikiHelper.WIKI_URL + "Klbkch");
+    public static final Character KRSHIA = new Character(WikiHelper.WIKI_URL + "Krshia_Silverfang");
     public static final Character LAKEN = new Character(WikiHelper.WIKI_URL + "Laken_Godart");
     public static final Character LEON = new Character(WikiHelper.WIKI_URL + "Leon");
     public static final Character LILY = new Character(WikiHelper.WIKI_URL + "Lillian_Woods");
+    public static final Character LISM = new Character(WikiHelper.WIKI_URL + "Lism_Swifttail");
     public static final Character MAGNOLIA = new Character(WikiHelper.WIKI_URL + "Magnolia_Reinhart");
     public static final Character MARIAN_US = new Character(WikiHelper.WIKI_URL + "Marian_(The_Americans)");
     public static final Character NANETTE = new Character(WikiHelper.WIKI_URL + "Nanette_Weishart");
@@ -54,6 +57,7 @@ public record Character(String wikiLink) implements Named {
     public static final Character STACY = new Character(WikiHelper.WIKI_URL + "Stacy");
     public static final Character TERES = new Character(WikiHelper.WIKI_URL + "Teresa_Atwood");
     public static final Character TERIARCH = new Character(WikiHelper.WIKI_URL + "Teriarch");
+    public static final Character TKRN = new Character(WikiHelper.WIKI_URL + "Tkrn");
     public static final Character TOM = new Character(WikiHelper.WIKI_URL + "Thomas_Trautmann");
     public static final Character TREY = new Character(WikiHelper.WIKI_URL + "Trey_Atwood");
     public static final Character TROYDEL = new Character(WikiHelper.WIKI_URL + "Troydel");
