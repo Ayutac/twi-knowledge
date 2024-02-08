@@ -3,8 +3,12 @@ package org.abos.twi.knowledge.gui.fx.component.tab;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import org.abos.twi.knowledge.db.DbHelper;
 import org.abos.twi.knowledge.gui.fx.Gui;
 import org.abos.twi.knowledge.gui.fx.event.ChapterSelectionEvent;
@@ -24,6 +28,12 @@ public class StatsTab extends DbTab implements EventHandler<ChapterSelectionEven
         setClosable(false);
         final GridPane gridPane = new GridPane();
         gridPane.setPadding(new Insets(5));
+        final ColumnConstraints keyCol = new ColumnConstraints();
+        keyCol.setPercentWidth(50d);
+        final ColumnConstraints valueCol = new ColumnConstraints();
+        valueCol.setPercentWidth(50d);
+        gridPane.getColumnConstraints().addAll(keyCol, valueCol);
+
         final Label ccLabel = new Label("Current chapter: ");
         GridPane.setHalignment(ccLabel, HPos.RIGHT);
         gridPane.add(ccLabel, 0, 0);
