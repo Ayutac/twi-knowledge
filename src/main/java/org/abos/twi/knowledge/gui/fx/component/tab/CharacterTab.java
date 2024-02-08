@@ -9,7 +9,7 @@ import org.abos.twi.knowledge.gui.fx.event.ChapterSelectionEvent;
 import java.sql.SQLException;
 import java.util.List;
 
-public class CharacterTab extends DbTab implements EventHandler<ChapterSelectionEvent> {
+public final class CharacterTab extends DbTab implements EventHandler<ChapterSelectionEvent> {
 
     private final CurrentCharacterSelection characterSelection;
 

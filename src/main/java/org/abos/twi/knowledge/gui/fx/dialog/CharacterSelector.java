@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class CharacterSelector extends Dialog<CharacterNamed> {
+public final class CharacterSelector extends Dialog<CharacterNamed> {
 
     private final List<CharacterNamed> selection = new ArrayList<>();
     private final ComboBox<CharacterNamed> input;
