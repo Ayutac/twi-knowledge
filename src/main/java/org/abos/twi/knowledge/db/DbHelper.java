@@ -4,6 +4,7 @@ import org.abos.common.LogUtil;
 import org.abos.common.Named;
 import org.abos.common.StringUtil;
 import org.abos.twi.knowledge.core.CharacterNameType;
+import org.abos.twi.knowledge.gui.CharacterNamed;
 import org.abos.twi.knowledge.core.Species;
 import org.abos.twi.knowledge.core.Status;
 import org.abos.twi.knowledge.core.event.Battle;
@@ -54,6 +55,7 @@ import java.sql.SQLException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -1225,6 +1227,28 @@ public final class DbHelper {
             s.append("the creature");
         }
         return s.toString();
+    }
+
+    public List<CharacterNamed> fetchCharacters(final Chapter until) throws SQLException {
+        final List<CharacterNamed> result = new LinkedList<>();
+        System.out.println(LocalTime.now());
+        try (final ConnectionStatement cs = prepareStatement("WITH ch AS (SELECT character_id FROM appearance_mention_character_ordered WHERE " + WHERE_ORDERED + ") SELECT DISTINCT character_id FROM ch ORDER BY character_id;")) {
+            fillWhereClause(cs.preparedStatement(), 1, until);
+            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
+                while (rs.next()) {
+                    System.out.println(LocalTime.now());
+                    final int characterId = rs.getInt(1);
+                    if (!characterIdMap.containsValue(characterId)) {
+                        characterIdMap.put(fetchCharacter(characterId), characterId);
+                    }
+                    final Character character = characterIdMap.getKey(characterId);
+                    result.add(new CharacterNamed(character, buildLatestCharacterName(character, until)));
+                }
+            }
+        }
+        System.out.println(LocalTime.now());
+        Collections.sort(result);
+        return result;
     }
 
     private Integer fetchStatusId(final String statusName) throws SQLException {

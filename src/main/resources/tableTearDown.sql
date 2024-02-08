@@ -27,6 +27,7 @@ DROP VIEW middle_name_ordered;
 DROP TABLE middle_name;
 DROP VIEW first_name_ordered;
 DROP TABLE first_name;
+DROP VIEW appearance_mention_character_ordered;
 DROP VIEW appearance_mention_character;
 DROP TABLE mention_character;
 DROP TABLE appearance_character;

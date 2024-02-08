@@ -265,6 +265,8 @@ CREATE TABLE mention_character (
 );
 CREATE VIEW appearance_mention_character AS
   (SELECT * FROM appearance_character) UNION (SELECT * FROM mention_character);
+CREATE VIEW appearance_mention_character_ordered AS
+  SELECT amc.character_id AS character_id, c.volume_id AS volume_id, c.volume_ord AS volume_ord FROM appearance_mention_character amc LEFT JOIN chapter c ON amc.chapter_id = c.id;
 CREATE TABLE first_name (
   name          TEXT      NOT NULL,
   character_id  INT       NOT NULL  REFERENCES character(id),
