@@ -31,7 +31,7 @@ public final class NamedSelector<T extends Named> extends Dialog<T> {
         this.selection.addAll(selection);
         setTitle("Select " + StringUtil.toCapitalized(name));
         final Label label = new Label("Select " + StringUtil.toCapitalized(name) + ":");
-        final TextField input = new javafx.scene.control.TextField();
+        final TextField input = new TextField();
         converter = new NamedConverter<>(fetcher);
         suggestionProvider = new NamedSuggestion<>(selection);
         TextFields.bindAutoCompletion(input, suggestionProvider, converter);
