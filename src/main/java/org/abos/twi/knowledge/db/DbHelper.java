@@ -1288,7 +1288,6 @@ public final class DbHelper {
                 }
             }
         }
-        System.out.println(LocalTime.now());
 
         // fetch relevant names
         final String selectString = "SELECT * FROM %s WHERE character_id IN (%s);";
@@ -1325,7 +1324,6 @@ public final class DbHelper {
                 nickNames.add(new NameOrdered(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getInt(4)));
             }
         }
-        System.out.println(LocalTime.now());
         // TODO species Name
 
         // get most recent names
@@ -1343,15 +1341,21 @@ public final class DbHelper {
         fillNameMap(until, volumeId, lastNames, lastNameMap);
         fillNameMap(until, volumeId, nickNames, nickNameMap);
         // TODO species Name
-        System.out.println(LocalTime.now());
+
+        // fetch all unknown characters at once
+        try (final ConnectionStatement cs = prepareStatement("SELECT id, wiki_link FROM character WHERE id IN (" + ids.stream()
+                .filter(id -> !characterIdMap.containsValue(id))
+                .map(id -> Integer.toString(id))
+                .collect(Collectors.joining(",")) + ");");
+             final ResultSet rs = cs.preparedStatement().executeQuery()) {
+            while (rs.next()) {
+                characterIdMap.put(new Character(rs.getString(2)), rs.getInt(1));
+            }
+        }
 
         // save results
         final List<CharacterNamed> result = new LinkedList<>();
         for (final Integer characterId : ids) {
-            // TODO fetch all missing characters at once
-            if (!characterIdMap.containsValue(characterId)) {
-                characterIdMap.put(fetchCharacter(characterId), characterId);
-            }
             final Character character = characterIdMap.getKey(characterId);
             result.add(new CharacterNamed(character, internalBuildCharacterName(
                     nameNullSafe(firstNameMap.get(characterId)),
@@ -1361,7 +1365,6 @@ public final class DbHelper {
                     nameNullSafe(speciesNameMap.get(characterId))
             )));
         }
-        System.out.println(LocalTime.now());
         Collections.sort(result);
         return result;
     }
