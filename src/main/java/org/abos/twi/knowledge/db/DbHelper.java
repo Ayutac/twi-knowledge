@@ -3,8 +3,11 @@ package org.abos.twi.knowledge.db;
 import org.abos.common.LogUtil;
 import org.abos.common.Named;
 import org.abos.common.StringUtil;
+import org.abos.twi.knowledge.core.Character;
 import org.abos.twi.knowledge.core.CharacterNameType;
-import org.abos.twi.knowledge.gui.CharacterNamed;
+import org.abos.twi.knowledge.core.Class;
+import org.abos.twi.knowledge.core.Rsk;
+import org.abos.twi.knowledge.core.Skill;
 import org.abos.twi.knowledge.core.Species;
 import org.abos.twi.knowledge.core.Status;
 import org.abos.twi.knowledge.core.event.Battle;
@@ -15,33 +18,28 @@ import org.abos.twi.knowledge.core.event.InnworldArrival;
 import org.abos.twi.knowledge.core.event.LevelUp;
 import org.abos.twi.knowledge.core.event.Solstice;
 import org.abos.twi.knowledge.core.event.War;
-import org.abos.twi.knowledge.core.publication.Book;
-import org.abos.twi.knowledge.core.publication.Chapter;
-import org.abos.twi.knowledge.core.Character;
-import org.abos.twi.knowledge.core.Class;
 import org.abos.twi.knowledge.core.location.Landmark;
 import org.abos.twi.knowledge.core.location.LandmassOcean;
 import org.abos.twi.knowledge.core.location.LandmassOceanType;
 import org.abos.twi.knowledge.core.location.Nation;
 import org.abos.twi.knowledge.core.location.NationType;
-import org.abos.twi.knowledge.core.Rsk;
 import org.abos.twi.knowledge.core.location.Settlement;
 import org.abos.twi.knowledge.core.location.SettlementType;
-import org.abos.twi.knowledge.core.Skill;
-import org.abos.twi.knowledge.core.publication.Volume;
 import org.abos.twi.knowledge.core.location.World;
+import org.abos.twi.knowledge.core.publication.Book;
+import org.abos.twi.knowledge.core.publication.Chapter;
+import org.abos.twi.knowledge.core.publication.Volume;
 import org.abos.twi.knowledge.db.datafill.StaticFields;
 import org.abos.twi.knowledge.db.datafill.Volume1;
 import org.abos.twi.knowledge.db.datafill.Volume10;
 import org.abos.twi.knowledge.db.datafill.Volume2;
+import org.abos.twi.knowledge.gui.CharacterNamed;
 import org.abos.twi.knowledge.wiki.WikiHelper;
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.postgresql.PGProperty;
-import org.postgresql.jdbc.PgConnection;
-import org.postgresql.util.HostSpec;
+import org.postgresql.ds.PGConnectionPoolDataSource;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,7 +57,6 @@ import java.time.LocalTime;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Properties;
 import java.util.Scanner;
 
 public final class DbHelper {
@@ -95,10 +92,6 @@ public final class DbHelper {
     private static final Logger LOGGER = LogManager.getLogger(DbHelper.class);
 
     private static final String LOG_SQL_MSG = "SQL about to be executed: {}";
-
-    private final HostSpec[] specs = new HostSpec[1];
-
-    private final Properties suInfo = new Properties();
 
     private final BidiMap<Volume, Integer> volumeIdMap = new DualHashBidiMap<>();
 
@@ -136,6 +129,8 @@ public final class DbHelper {
 
     private final BidiMap<LevelUp, Integer> levelUpIdMap = new DualHashBidiMap<>();
 
+    private final PGConnectionPoolDataSource ds;
+
     public DbHelper() throws IllegalStateException {
         final String url = System.getProperty(PROPERTY_URL);
         if (url == null) {
@@ -157,14 +152,16 @@ public final class DbHelper {
             port = 5432;
             dbName = "knowledge";
         }
-        specs[0] = new HostSpec(host, port);
-        suInfo.put(PGProperty.PG_DBNAME.getName(), dbName);
-        suInfo.put(PGProperty.USER.getName(), System.getProperty(PROPERTY_SU_NAME));
-        suInfo.put(PGProperty.PASSWORD.getName(), System.getProperty(PROPERTY_SU_PW));
+        ds = new PGConnectionPoolDataSource();
+        ds.setServerNames(new String[] {host});
+        ds.setPortNumbers(new int[] {port});
+        ds.setDatabaseName(dbName);
+        ds.setUser(System.getProperty(PROPERTY_SU_NAME));
+        ds.setPassword(System.getProperty(PROPERTY_SU_PW));
     }
 
     private Connection getConnection() throws SQLException {
-        return new PgConnection(specs, suInfo, specs[0].getLocalSocketAddress());
+        return ds.getConnection();
     }
 
     private ConnectionStatement prepareStatement(final String sql) throws SQLException {
