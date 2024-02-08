@@ -61,7 +61,7 @@ public class NamedSelection<T extends Named> extends Pane {
             setSelected(null);
         }
         else {
-            // triggers the chapter update
+            // triggers the update
             setSelected(getSelected());
         }
         selector.setCollection(collection);
