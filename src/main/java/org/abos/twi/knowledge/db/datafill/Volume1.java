@@ -1,5 +1,6 @@
 package org.abos.twi.knowledge.db.datafill;
 
+import org.abos.common.LogUtil;
 import org.abos.twi.knowledge.core.Character;
 import org.abos.twi.knowledge.core.Class;
 import org.abos.twi.knowledge.core.Skill;
@@ -18,10 +19,16 @@ import org.abos.twi.knowledge.core.location.Settlement;
 import org.abos.twi.knowledge.core.location.World;
 import org.abos.twi.knowledge.core.publication.Chapter;
 import org.abos.twi.knowledge.db.DbHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
+import java.time.Duration;
+import java.time.Instant;
 
 public final class Volume1 {
+
+    private static final Logger LOGGER = LogManager.getLogger(Volume1.class);
 
     public static final Battle PISCES_FIGHT = new Battle("Erin vs. Pisces", null);
 
@@ -30,6 +37,8 @@ public final class Volume1 {
     }
 
     public static void fillDb(final DbHelper dbHelper) throws SQLException {
+        LOGGER.info("Volume 1 data filling...");
+        final Instant start = Instant.now();
         ch00(dbHelper);
         ch01(dbHelper);
         ch02(dbHelper);
@@ -96,6 +105,8 @@ public final class Volume1 {
         ch61(dbHelper);
         ch62(dbHelper);
         ch63(dbHelper);
+        final Duration time = Duration.between(start, Instant.now());
+        LOGGER.info(LogUtil.LOG_TIME_MSG, "Volume 1 data filling", time.toMinutes(), time.toSecondsPart());
     }
 
     private static void ch00(final DbHelper dbHelper) throws SQLException {
