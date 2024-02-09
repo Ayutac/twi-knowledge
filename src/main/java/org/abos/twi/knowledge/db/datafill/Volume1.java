@@ -776,7 +776,9 @@ public final class Volume1 {
         // (appearance of Liscor playground)
         dbHelper.addLandmarkAppearance(Landmark.LISCORS_ADVENTURERS_GUILD, ch);
         dbHelper.addCharacterAppearance(Character.SELYS, ch);
+        dbHelper.addSettlementMention(Settlement.ESTHELM, ch);
         // (appearance of unnamed Gnoll who bullies Erin)
+        dbHelper.addSpeciesMention(Species.BEASTKIN, ch);
     }
 
     private static void ch12(final DbHelper dbHelper) throws SQLException {
