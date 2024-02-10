@@ -31,6 +31,7 @@ public final class Volume1 {
     private static final Logger LOGGER = LogManager.getLogger(Volume1.class);
 
     public static final Battle PISCES_FIGHT = new Battle("Erin vs. Pisces", null);
+    private static final Battle CHIEFTAIN_BATTLE = new Battle("Erin vs. Goblin Chieftain", null);
 
     private Volume1() {
         /* No instantiation. */
@@ -848,7 +849,33 @@ public final class Volume1 {
     }
 
     private static void ch13(final DbHelper dbHelper) throws SQLException {
-
+        final Chapter ch = dbHelper.fetchChapter("Chapter 1.13");
+        // events
+        dbHelper.maybeAddFirstMeeting(new FirstMeeting(Character.ERIN, Character.FLOODED_WATERS_CHIEFTAIN, ch));
+        dbHelper.addBattle(CHIEFTAIN_BATTLE);
+        dbHelper.addBattleChapter(CHIEFTAIN_BATTLE, ch);
+        dbHelper.addBattleCharacter(CHIEFTAIN_BATTLE, Character.ERIN);
+        dbHelper.addBattleCharacter(CHIEFTAIN_BATTLE, Character.FLOODED_WATERS_CHIEFTAIN);
+        dbHelper.addInnArrival(new InnArrival(Character.FLOODED_WATERS_CHIEFTAIN, ch));
+        // misc
+        // appearances/mentions
+        // (day 9 since Erin got to Innworld)
+        dbHelper.addWorldAppearance(World.INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.NORTHERN_IZRIL, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FLOODPLAINS, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FIRST_WANDERING_INN, ch);
+        dbHelper.addSpeciesAppearance(Species.HUMAN, ch);
+        dbHelper.addCharacterAppearance(Character.ERIN, ch);
+        dbHelper.addCharacterMention(Character.PISCES, ch);
+        dbHelper.addSpeciesAppearance(Species.DRAKE, ch);
+        dbHelper.addCharacterAppearance(Character.RELC, ch);
+        dbHelper.addClassMention(Class.GUARDSMAN, ch);
+        dbHelper.addSpeciesAppearance(Species.GOBLIN, ch);
+        // (appearance of Rags' parents)
+        dbHelper.addSpeciesAppearance(Species.ACID_FLY, ch);
+        dbHelper.addCharacterAppearance(Character.RAGS, ch);
+        // chess is mentioned
     }
 
     private static void ch14(final DbHelper dbHelper) throws SQLException {
