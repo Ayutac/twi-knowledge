@@ -5,6 +5,7 @@ import org.abos.twi.knowledge.core.Character;
 import org.abos.twi.knowledge.core.Class;
 import org.abos.twi.knowledge.core.Skill;
 import org.abos.twi.knowledge.core.Species;
+import org.abos.twi.knowledge.core.event.LevelUp;
 import org.abos.twi.knowledge.core.location.Landmark;
 import org.abos.twi.knowledge.core.location.LandmassOcean;
 import org.abos.twi.knowledge.core.location.Nation;
@@ -37,9 +38,23 @@ public final class Volume10 {
 
     private static void ch00l(final DbHelper dbHelper) throws SQLException {
         final Chapter ch = dbHelper.fetchChapter("Chapter 10.00 L");
+        // events
+        final LevelUp lvlUp = new LevelUp(Character.LYONETTE, ch, 30, Class.PRINCESS_OF_THE_INN, true, false);
+        dbHelper.addLevelUp(lvlUp);
+        dbHelper.addLevelUpSkill(lvlUp, Skill.REMEMBER_MY_DEFINING_MOMENT);
+        dbHelper.addLevelUpSkill(lvlUp, Skill.STAFF_FLURRY_OF_EFFICIENCY);
+        dbHelper.addLevelUpSkill(lvlUp, Skill.CONJURE_PREPARED_DISH);
+        dbHelper.addLevelUpSkill(lvlUp, Skill.CONCEAL_REPUTATION);
+        dbHelper.addLevelUpSkill(lvlUp, Skill.SHARED_AUTHORITY_THE_WANDERING_INN);
         // misc
         dbHelper.addClassSkill(Class.SCRIBBLER, Skill.FAST_SCRAWL, ch);
         dbHelper.addCharacterAge(Character.NANETTE, 13, ch);
+        dbHelper.addClassSkill(Class.QUEEN, Skill.PERFECTION_IS_OVERRATED, ch);
+        dbHelper.addClassSkill(Class.PRINCESS_OF_THE_INN, Skill.REMEMBER_MY_DEFINING_MOMENT, ch);
+        dbHelper.addClassSkill(Class.PRINCESS_OF_THE_INN, Skill.STAFF_FLURRY_OF_EFFICIENCY, ch);
+        dbHelper.addClassSkill(Class.PRINCESS_OF_THE_INN, Skill.CONJURE_PREPARED_DISH, ch);
+        dbHelper.addClassSkill(Class.PRINCESS_OF_THE_INN, Skill.CONCEAL_REPUTATION, ch);
+        dbHelper.addClassSkill(Class.PRINCESS_OF_THE_INN, Skill.SHARED_AUTHORITY_THE_WANDERING_INN, ch);
         // (Hethon is mentioned to be 14)
         // (Sammiel is mentioned to be 10)
         dbHelper.addCharacterLastName(Character.ROSE, ch, "Cinevoy");
