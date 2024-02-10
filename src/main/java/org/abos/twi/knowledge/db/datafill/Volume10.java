@@ -59,7 +59,6 @@ public final class Volume10 {
         // (Sammiel is mentioned to be 10)
         dbHelper.addCharacterLastName(Character.ROSE, ch, "Cinevoy");
         dbHelper.addClassUpgrade(Class.LORD, Class.SUAVE_LORD, ch);
-        dbHelper.addClassSkill(Class.QUEEN, Skill.PERFECTION_IS_OVERRATED, ch);
         // appearances/mentions
         // (Lyonette is Lv 30 in [Princess of the Inn])
         // (been a month or so since the end of vol 8, final month of winter)
