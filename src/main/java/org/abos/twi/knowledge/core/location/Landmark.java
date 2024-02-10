@@ -14,9 +14,10 @@ public record Landmark(String name, boolean natural, LandmassOcean landmassOcean
     public static final Landmark FLOODPLAINS = new Landmark("Floodplains", true, LandmassOcean.NORTHERN_IZRIL, WikiHelper.WIKI_URL + "Floodplains");
     public static final Landmark FLOODPLAINS_STREAM = new Landmark("Stream in the Floodplains", true, LandmassOcean.NORTHERN_IZRIL, null);
     public static final Landmark HIGH_PASSES = new Landmark("High Passes", true, LandmassOcean.IZRIL, WikiHelper.WIKI_URL + "High_Passes");
-    public static final Landmark LISCORS_ADVENTURERS_GUILD = new Landmark("Liscor's Adventurer's Guild", true, LandmassOcean.NORTHERN_IZRIL, null);
-    public static final Landmark LISCORS_MAGES_GUILD = new Landmark("Liscor's Mage's Guild", true, LandmassOcean.NORTHERN_IZRIL, null);
-    public static final Landmark LISCORS_MARKET_STREET = new Landmark("Liscor's Market Street", true, LandmassOcean.NORTHERN_IZRIL, null);
+    public static final Landmark INVRISILS_ADVENTURE_ROOM = new Landmark("Invrisil's Adventure Room", false, LandmassOcean.NORTHERN_IZRIL, null);
+    public static final Landmark LISCORS_ADVENTURERS_GUILD = new Landmark("Liscor's Adventurer's Guild", false, LandmassOcean.NORTHERN_IZRIL, null);
+    public static final Landmark LISCORS_MAGES_GUILD = new Landmark("Liscor's Mage's Guild", false, LandmassOcean.NORTHERN_IZRIL, null);
+    public static final Landmark LISCORS_MARKET_STREET = new Landmark("Liscor's Market Street", false, LandmassOcean.NORTHERN_IZRIL, null);
     public static final Landmark PISCES_HIDEOUT = new Landmark("Pisces' hideout", true, LandmassOcean.NORTHERN_IZRIL, null);
     public static final Landmark TERIARCHS_NEW_HIDEOUT = new Landmark("Teriarch's new hideout", true, LandmassOcean.NORTHERN_IZRIL, null);
     public static final Landmark TERIARCHS_OLD_HIDEOUT = new Landmark("Teriarch's old hideout", true, LandmassOcean.NORTHERN_IZRIL, null);

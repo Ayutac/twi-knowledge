@@ -11,6 +11,7 @@ public record LandmassOcean(String name, LandmassOceanType type, World world, St
     public static final LandmassOcean GREEN_MOON = new LandmassOcean("Green Moon", LandmassOceanType.MOON, World.INNWORLD, null);
     public static final LandmassOcean NORTH_AMERICA = new LandmassOcean("North America", LandmassOceanType.CONTINENT, World.EARTH, null);
     public static final LandmassOcean EUROPE = new LandmassOcean("Europe", LandmassOceanType.CONTINENT, World.EARTH, null);
+    public static final LandmassOcean BALEROS = new LandmassOcean("Baleros", LandmassOceanType.CONTINENT, World.INNWORLD, WikiHelper.WIKI_URL + "Baleros");
     public static final LandmassOcean CHANDRAR = new LandmassOcean("Chandrar", LandmassOceanType.CONTINENT, World.INNWORLD, WikiHelper.WIKI_URL + "Chandrar");
     public static final LandmassOcean IZRIL = new LandmassOcean("Izril", LandmassOceanType.CONTINENT, World.INNWORLD, WikiHelper.WIKI_URL + "Izril");
     public static final LandmassOcean RHIR = new LandmassOcean("Rhir", LandmassOceanType.CONTINENT, World.INNWORLD, WikiHelper.WIKI_URL + "Rhir");

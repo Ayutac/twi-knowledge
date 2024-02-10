@@ -10,13 +10,22 @@ public record Nation(String name, NationType nationType, LandmassOcean landmassO
     public static final Nation USA = new Nation("USA", NationType.REPUBLIC, LandmassOcean.NORTH_AMERICA, null);
     public static final Nation UK = new Nation("UK", NationType.REPUBLIC, LandmassOcean.GREAT_BRITAIN, null);
     public static final Nation MICHIGAN = new Nation("Michigan", NationType.REPUBLIC, LandmassOcean.NORTH_AMERICA, null);
+    public static final Nation ACTELIOS_SALASH = new Nation("A’ctelios Salash", NationType.KINGDOM, LandmassOcean.CHANDRAR, WikiHelper.WIKI_URL + "A’ctelios_Salash");
+    public static final Nation BALEROS_UNCLAIMED = new Nation("Unclaimed Territory in Baleros", NationType.OLIGARCHY, LandmassOcean.BALEROS, null);
     public static final Nation BLIGHTED_KINGDOM = new Nation("Blighted Kingdom", NationType.KINGDOM, LandmassOcean.RHIR, WikiHelper.WIKI_URL + "Blighted_Kingdom");
+    public static final Nation ERRIBATHE = new Nation("Erribathe", NationType.KINGDOM, LandmassOcean.TERANDRIA, WikiHelper.WIKI_URL + "Erribathe");
     public static final Nation FIVE_FAMILIES_TERRITORY = new Nation("Five Families Territory", NationType.OLIGARCHY, LandmassOcean.NORTHERN_IZRIL, WikiHelper.WIKI_URL + "Five_Families");
+    public static final Nation GOLAEN = new Nation("Golaen", NationType.KINGDOM, LandmassOcean.TERANDRIA, WikiHelper.WIKI_URL + "Golaen");
+    public static final Nation KAAZ = new Nation("Kaaz", NationType.KINGDOM, LandmassOcean.TERANDRIA, WikiHelper.WIKI_URL + "Kaaz");
     public static final Nation KALIV = new Nation("Kaliv", NationType.KINGDOM, LandmassOcean.TERANDRIA, WikiHelper.WIKI_URL + "Kaliv");
     public static final Nation LISCOR = new Nation("Liscor", NationType.CITY_STATE, LandmassOcean.NORTHERN_IZRIL, WikiHelper.WIKI_URL + "Liscor");
     public static final Nation NOELICTUS = new Nation("Noelictus", NationType.KINGDOM, LandmassOcean.TERANDRIA, WikiHelper.WIKI_URL + "Noelictus");
+    public static final Nation PAETH = new Nation("Paeth", NationType.CITY_STATE, LandmassOcean.BALEROS, WikiHelper.WIKI_URL + "Paeth");
     public static final Nation PALLASS = new Nation("Pallass", NationType.WALLED_CITY, LandmassOcean.SOUTHERN_IZRIL, WikiHelper.WIKI_URL + "Pallass");
+    public static final Nation PHEISLANT = new Nation("Pheislant", NationType.KINGDOM, LandmassOcean.TERANDRIA, WikiHelper.WIKI_URL + "Pheislant");
     public static final Nation REIM = new Nation("Reim", NationType.KINGDOM, LandmassOcean.CHANDRAR, WikiHelper.WIKI_URL + "Reim");
+    public static final Nation TAIMAGUROS = new Nation("Taimaguros", NationType.KINGDOM, LandmassOcean.TERANDRIA, WikiHelper.WIKI_URL + "Taimaguros");
+    public static final Nation UNSEEN_EMPIRE = new Nation("Unseen Empire", NationType.EMPIRE, LandmassOcean.NORTHERN_IZRIL, WikiHelper.WIKI_URL + "Unseen_Empire");
     public static final Nation WISTRAM = new Nation("Wistram", NationType.CITY_STATE, LandmassOcean.WISTRAM_ISLE, WikiHelper.WIKI_URL + "Wistram_Academy");
 
     public Nation(final String name, final NationType nationType, final LandmassOcean landmassOcean, final String wikiLink) {
