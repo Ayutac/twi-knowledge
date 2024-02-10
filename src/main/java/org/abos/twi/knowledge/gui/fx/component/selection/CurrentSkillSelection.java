@@ -1,4 +1,4 @@
-package org.abos.twi.knowledge.gui.fx.component;
+package org.abos.twi.knowledge.gui.fx.component.selection;
 
 import org.abos.twi.knowledge.core.Skill;
 import org.abos.twi.knowledge.db.SQLFunction;

@@ -7,7 +7,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.abos.twi.knowledge.core.publication.Chapter;
 import org.abos.twi.knowledge.db.DbHelper;
-import org.abos.twi.knowledge.gui.fx.component.CurrentChapterSelection;
+import org.abos.twi.knowledge.gui.fx.component.selection.CurrentChapterSelection;
 import org.abos.twi.knowledge.gui.fx.component.tab.CharacterTab;
 import org.abos.twi.knowledge.gui.fx.component.tab.ClassesTab;
 import org.abos.twi.knowledge.gui.fx.component.tab.SkillsTab;

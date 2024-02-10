@@ -1,4 +1,4 @@
-package org.abos.twi.knowledge.gui.fx.component;
+package org.abos.twi.knowledge.gui.fx.component.selection;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -6,28 +6,29 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import org.abos.common.Named;
-import org.abos.twi.knowledge.db.SQLFunction;
+import org.abos.twi.knowledge.gui.CharacterNamed;
 import org.abos.twi.knowledge.gui.fx.Gui;
-import org.abos.twi.knowledge.gui.fx.dialog.NamedSelector;
+import org.abos.twi.knowledge.gui.fx.dialog.CharacterSelector;
+import org.abos.twi.knowledge.gui.fx.event.CharacterSelectionEvent;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public class NamedSelection<T extends Named> extends Pane {
+public final class CurrentCharacterSelection extends Pane {
 
-    private T selected;
+    private CharacterNamed selected;
 
     private final Label label = new Label(Gui.UNAVAILABLE);
 
-    private final NamedSelector<T> selector;
+    private final CharacterSelector selector;
 
-    public NamedSelection(final String name, final String description, final List<T> selection, final SQLFunction<String, T> fetcher) {
-        selector = new NamedSelector<>(name, selection, fetcher);
+
+    public CurrentCharacterSelection(List<CharacterNamed> selection) {
+        selector = new CharacterSelector(selection);
         final Button button = new Button("Select");
         button.setOnAction(event -> forceSelection());
-        final HBox hbox = description == null ? new HBox(label, button) : new HBox(new Label(description), label, button);
+        final HBox hbox = new HBox(label, button);
         hbox.setSpacing(10d);
         hbox.setAlignment(Pos.CENTER);
         hbox.setPadding(new Insets(5));
@@ -35,18 +36,18 @@ public class NamedSelection<T extends Named> extends Pane {
     }
 
     public void forceSelection() {
-        Optional<T> newSelected = Optional.empty();
+        Optional<CharacterNamed> newSelected = Optional.empty();
         while (newSelected.isEmpty()) {
             newSelected = selector.showAndWait();
         }
         setSelected(newSelected.get());
     }
 
-    public T getSelected() {
+    public CharacterNamed getSelected() {
         return selected;
     }
 
-    public void setSelected(T selected) {
+    public void setSelected(final CharacterNamed selected) {
         this.selected = selected;
         if (selected == null) {
             label.setText(Gui.UNAVAILABLE);
@@ -54,17 +55,17 @@ public class NamedSelection<T extends Named> extends Pane {
         else {
             label.setText(selected.getName());
         }
+        this.fireEvent(new CharacterSelectionEvent(selected));
     }
 
-    public void setCollection(Collection<T> collection) {
+    public void setCollection(Collection<CharacterNamed> collection) {
         if (!collection.contains(getSelected())) {
             setSelected(null);
         }
         else {
-            // triggers the update
+            // triggers the character update
             setSelected(getSelected());
         }
         selector.setCollection(collection);
     }
-
 }

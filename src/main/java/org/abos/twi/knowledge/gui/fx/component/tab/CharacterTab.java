@@ -3,7 +3,7 @@ package org.abos.twi.knowledge.gui.fx.component.tab;
 import javafx.event.EventHandler;
 import javafx.scene.layout.BorderPane;
 import org.abos.twi.knowledge.db.DbHelper;
-import org.abos.twi.knowledge.gui.fx.component.CurrentCharacterSelection;
+import org.abos.twi.knowledge.gui.fx.component.selection.CurrentCharacterSelection;
 import org.abos.twi.knowledge.gui.fx.event.ChapterSelectionEvent;
 
 import java.sql.SQLException;

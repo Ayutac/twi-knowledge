@@ -11,7 +11,7 @@ import org.abos.twi.knowledge.core.Class;
 import org.abos.twi.knowledge.core.Skill;
 import org.abos.twi.knowledge.core.publication.Chapter;
 import org.abos.twi.knowledge.db.DbHelper;
-import org.abos.twi.knowledge.gui.fx.component.CurrentClassSelection;
+import org.abos.twi.knowledge.gui.fx.component.selection.CurrentClassSelection;
 import org.abos.twi.knowledge.gui.fx.component.LabelledList;
 import org.abos.twi.knowledge.gui.fx.event.ChapterSelectionEvent;
 import org.abos.twi.knowledge.gui.fx.event.ClassSelectionEvent;
