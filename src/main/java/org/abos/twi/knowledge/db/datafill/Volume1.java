@@ -875,6 +875,7 @@ public final class Volume1 {
         // (appearance of Rags' parents)
         dbHelper.addSpeciesAppearance(Species.ACID_FLY, ch);
         dbHelper.addCharacterAppearance(Character.RAGS, ch);
+        dbHelper.addCharacterAppearance(Character.FLOODED_WATERS_CHIEFTAIN, ch);
         // chess is mentioned
     }
 
