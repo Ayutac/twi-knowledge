@@ -334,6 +334,21 @@ public final class DbHelper {
         return result;
     }
 
+
+
+    public int internalFetchCountInChapter(final String tableName, final Chapter chapter) throws SQLException {
+        try (final ConnectionStatement cs = prepareStatement("SELECT COUNT(*) FROM " + tableName + " WHERE chapter_id=?;")) {
+            final Integer chapterId = internalFetchId(chapterIdMap, this::fetchChapterId, chapter);
+            setInt(cs.preparedStatement(), 1, chapterId);
+            try (final ResultSet rs = cs.preparedStatement().executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        }
+        return 0;
+    }
+
     private <T extends Named> void internalAddAppearance(final T obj, final Chapter chapter, final String tableName, final BidiMap<T, Integer> cachedId, final SQLFunction<String, Integer> fetcher, final boolean mention) throws SQLException {
         try (final ConnectionStatement cs = prepareStatement("INSERT INTO " + (mention ? "mention" : "appearance") + "_" + tableName + " VALUES (?,?);")) {
             final Integer objectId = internalFetchId(cachedId, fetcher, obj);
@@ -568,6 +583,10 @@ public final class DbHelper {
         return result;
     }
 
+    public int fetchClassMentionCount(final Chapter chapter) throws SQLException {
+        return internalFetchCountInChapter("mention_class", chapter);
+    }
+
     private List<Integer> fetchClassIds(Chapter until) throws SQLException {
         final List<Integer> result = new LinkedList<>();
         try (final ConnectionStatement cs = prepareStatement("SELECT DISTINCT ids.class_id FROM (SELECT class_id FROM mention_class_ordered WHERE " + WHERE_ORDERED + ") AS ids ORDER BY class_id;")) {
@@ -667,6 +686,10 @@ public final class DbHelper {
             setInt(cs.preparedStatement(), 2, chapterId);
             cs.preparedStatement().execute();
         }
+    }
+
+    public int fetchSkillMentionCount(final Chapter chapter) throws SQLException {
+        return internalFetchCountInChapter("mention_skill", chapter);
     }
 
     public List<Chapter> fetchSkillMentions(final Skill skill, final Chapter until) throws SQLException {
@@ -1011,8 +1034,16 @@ public final class DbHelper {
         internalAddAppearance(species, chapter, "species", speciesIdMap, this::fetchSpeciesId, false);
     }
 
+    public int fetchCharacterAppearanceCount(final Chapter chapter) throws SQLException {
+        return internalFetchCountInChapter("appearance_character", chapter);
+    }
+
     public void addSpeciesMention(final Species species, final Chapter chapter) throws SQLException {
         internalAddAppearance(species, chapter, "species", speciesIdMap, this::fetchSpeciesId, true);
+    }
+
+    public int fetchCharacterMentionCount(final Chapter chapter) throws SQLException {
+        return internalFetchCountInChapter("mention_character", chapter);
     }
 
     public void addCharacter(final Character character, final PreparedStatement pStmt) throws SQLException {
