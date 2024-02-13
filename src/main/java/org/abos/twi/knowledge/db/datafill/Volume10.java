@@ -32,6 +32,7 @@ public final class Volume10 {
         LOGGER.info("Volume 10 data filling...");
         final Instant start = Instant.now();
         ch00l(dbHelper);
+        ch01l(dbHelper);
         final Duration time = Duration.between(start, Instant.now());
         LOGGER.info(LogUtil.LOG_TIME_MSG, "Volume 10 data filling", time.toMinutes(), time.toSecondsPart());
     }
@@ -315,6 +316,166 @@ public final class Volume10 {
         dbHelper.addCharacterAppearance(Character.ASGRA, ch);
         dbHelper.addCharacterMention(Character.SALISS, ch);
         // (mention of Kyetne (f), Loxlet (m), Isni (f))
+    }
+
+    private static void ch01l(final DbHelper dbHelper) throws SQLException {
+        final Chapter ch = dbHelper.fetchChapter("Chapter 10.01 L");
+        // events
+        // misc
+        // appearances/mentions
+        // (2 day after end of Volume 9)
+        dbHelper.addWorldAppearance(World.INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.NORTHERN_IZRIL, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FLOODPLAINS, ch);
+        dbHelper.addLandmarkAppearance(Landmark.THIRD_WANDERING_INN, ch);
+        dbHelper.addSpeciesAppearance(Species.GOBLIN, ch);
+        dbHelper.addCharacterAppearance(Character.CALESCENT, ch);
+        dbHelper.addSpeciesMention(Species.VAMPIRE, ch);
+        dbHelper.addCharacterMention(Character.FIERRE, ch);
+        dbHelper.addSpeciesMention(Species.UNDEAD, ch);
+        // (mention of Plain's Eye, Redfang Tribe, Free Antinium, House Veltras, Ullsinoi, Liscor’s Council, Watch, Earthers of the Wandering Inn)
+        // (mention of the Ironwood wand)
+        dbHelper.addClassMention(Class.SPICE_CHEF, ch);
+        dbHelper.addClassMention(Class.MATHEMATICIAN, ch);
+        dbHelper.addClassMention(Class.KNIGHT, ch);
+        dbHelper.addClassMention(Class.ALCHEMIST, ch);
+        dbHelper.addClassMention(Class.FLOOR_BOSS, ch);
+        dbHelper.addClassMention(Class.BARMAID, ch);
+        dbHelper.addClassMention(Class.SWORDMASTER, ch);
+        dbHelper.addClassMention(Class.PRINCESS, ch);
+        dbHelper.addClassMention(Class.SHAMAN, ch);
+        dbHelper.addClassMention(Class.GRANDMASTER, ch);
+        dbHelper.addClassMention(Class.THUG, ch);
+        dbHelper.addClassMention(Class.LADY, ch);
+        dbHelper.addClassMention(Class.NECROMANCER, ch);
+        dbHelper.addClassMention(Class.SHEPHERD, ch);
+        dbHelper.addClassMention(Class.FARMHAND, ch);
+        dbHelper.addClassMention(Class.INNKEEPER, ch);
+        dbHelper.addClassMention(Class.FARMER, ch);
+        dbHelper.addClassMention(Class.AEGISCASTER, ch);
+        dbHelper.addClassMention(Class.FISHER, ch);
+        dbHelper.addClassMention(Class.DRIVER, ch);
+        dbHelper.addClassMention(Class.GRAVEKEEPER, ch);
+        dbHelper.addClassMention(Class.WITCH, ch);
+        dbHelper.addClassMention(Class.RECEPTIONIST, ch);
+        dbHelper.addClassMention(Class.LANDLORD, ch);
+        dbHelper.addClassMention(Class.FINANCIER, ch);
+        dbHelper.addClassMention(Class.COUNCILWOMAN, ch);
+        dbHelper.addClassMention(Class.LORD, ch);
+        dbHelper.addClassMention(Class.ARCHMAGE, ch);
+        dbHelper.addClassMention(Class.HEAD_SERVER, ch);
+        dbHelper.addClassMention(Class.MAGE, ch);
+        dbHelper.addClassMention(Class.PRINCE_OF_MEN, ch);
+        dbHelper.addClassMention(Class.MERCHANT, ch);
+        dbHelper.addClassMention(Class.DIPLOMAT, ch);
+        dbHelper.addClassMention(Class.TRADER, ch);
+        dbHelper.addClassMention(Class.FORGER, ch);
+        dbHelper.addClassMention(Class.COLLECTOR, ch);
+        dbHelper.addClassMention(Class.NEGOTIATOR, ch);
+        dbHelper.addClassMention(Class.HEIRESS, ch);
+        dbHelper.addSpeciesAppearance(Species.GOAT, ch);
+//        dbHelper.addCharacterAppearance(Character.FLUFFLES_IV, ch);
+        dbHelper.addSkillMention(Skill.QUICK_BOIL, ch);
+        dbHelper.addSkillMention(Skill.MESSAGE, ch);
+        dbHelper.addSkillMention(Skill.WORLD_OF_YOU_AND_ME, ch);
+        dbHelper.addSkillMention(Skill.CREATE_FOOD, ch);
+        dbHelper.addSkillMention(Skill.WORLDS_EYE_THEATRE, ch);
+        dbHelper.addSkillMention(Skill.REPAIR, ch);
+        dbHelper.addSkillMention(Skill.THE_TRANSIENT_ETC, ch);
+        dbHelper.addSkillMention(Skill.AN_APPLE_A_DAY, ch);
+        dbHelper.addSkillMention(Skill.CLEANSE, ch);
+        dbHelper.addSkillMention(Skill.BENEDICTION_OF_HOPE, ch);
+        dbHelper.addLandmassOceanMention(LandmassOcean.BALEROS, ch);
+        dbHelper.addNationMention(Nation.ITALY, ch);
+        dbHelper.addNationAppearance(Nation.LISCOR, ch);
+        dbHelper.addSettlementAppearance(Settlement.LISCOR, ch);
+        dbHelper.addSpeciesAppearance(Species.HUMAN, ch);
+        dbHelper.addCharacterMention(Character.JOSEPH, ch);
+        dbHelper.addCharacterAppearance(Character.LYONETTE, ch);
+        dbHelper.addCharacterMention(Character.IEKA, ch);
+        dbHelper.addSpeciesAppearance(Species.GNOLL, ch);
+        dbHelper.addCharacterAppearance(Character.YELROAN, ch);
+        dbHelper.addCharacterMention(Character.MAGNOLIA, ch);
+        dbHelper.addCharacterAppearance(Character.VALETERISA, ch);
+        dbHelper.addCharacterAppearance(Character.MRSHA, ch);
+        dbHelper.addCharacterAppearance(Character.NANETTE, ch);
+        dbHelper.addCharacterMention(Character.ERIN, ch);
+        dbHelper.addCharacterAppearance(Character.NORMEN, ch);
+        dbHelper.addCharacterAppearance(Character.PEGGY, ch);
+        dbHelper.addCharacterMention(Character.NUMBTONGUE, ch);
+        dbHelper.addSpeciesAppearance(Species.ANTINIUM, ch);
+        dbHelper.addCharacterMention(Character.BIRD, ch);
+        dbHelper.addCharacterMention(Character.MENOLIT, ch);
+        dbHelper.addSpeciesAppearance(Species.DRAKE, ch);
+        dbHelper.addCharacterAppearance(Character.RELC, ch);
+        dbHelper.addCharacterAppearance(Character.SELYS, ch);
+        dbHelper.addCharacterAppearance(Character.KRSHIA, ch);
+        dbHelper.addCharacterMention(Character.GRIMALKIN, ch);
+        dbHelper.addCharacterMention(Character.ILVRISS, ch);
+        dbHelper.addCharacterAppearance(Character.ROSENCRANTZ, ch);
+        dbHelper.addCharacterAppearance(Character.ISHKR, ch);
+        dbHelper.addCharacterMention(Character.RAGS, ch);
+        dbHelper.addCharacterAppearance(Character.TESSA, ch);
+        dbHelper.addCharacterAppearance(Character.ROSE, ch);
+        dbHelper.addCharacterAppearance(Character.USHAR, ch);
+//        dbHelper.addCharacterAppearance(Character.PICKER, ch); // Goblin
+        dbHelper.addCharacterMention(Character.SILVERMOP, ch);
+//        dbHelper.addCharacterAppearance(Character.SILVERBOOTS, ch); // Antinium
+//        dbHelper.addCharacterAppearance(Character.DOTS, ch); // Antinium
+//        dbHelper.addCharacterAppearance(Character.HANDYFELLOW, ch); // Antinium
+        dbHelper.addCharacterAppearance(Character.MONTRESSA, ch);
+        dbHelper.addCharacterMention(Character.ULVAMA, ch);
+        dbHelper.addCharacterMention(Character.ELDAVIN, ch);
+        dbHelper.addCharacterMention(Character.MERISH, ch);
+        dbHelper.addCharacterAppearance(Character.APISTA, ch);
+        dbHelper.addCharacterMention(Character.OCTAVIA, ch);
+        dbHelper.addCharacterMention(Character.SALISS, ch);
+        dbHelper.addCharacterAppearance(Character.PALT, ch);
+        dbHelper.addCharacterMention(Character.KASIGNA, ch);
+        dbHelper.addCharacterMention(Character.AZKERASH, ch);
+        dbHelper.addCharacterMention(Character.IMOR, ch);
+        dbHelper.addCharacterMention(Character.SOLTON, ch);
+        dbHelper.addSpeciesAppearance(Species.DRAGON, ch);
+        dbHelper.addCharacterAppearance(Character.TERIARCH, ch);
+        dbHelper.addCharacterAppearance(Character.SAMMIAL, ch);
+        dbHelper.addCharacterAppearance(Character.HETHON, ch);
+        dbHelper.addCharacterMention(Character.BETHAL, ch);
+        dbHelper.addCharacterMention(Character.PRYDE, ch);
+        dbHelper.addCharacterAppearance(Character.COLFA, ch);
+        dbHelper.addCharacterAppearance(Character.HIMILT, ch);
+        dbHelper.addCharacterMention(Character.ZEVARA, ch);
+        dbHelper.addCharacterMention(Character.BAMER, ch);
+        dbHelper.addCharacterAppearance(Character.DALIMONT, ch);
+        dbHelper.addCharacterMention(Character.WAILANT, ch);
+        dbHelper.addCharacterAppearance(Character.CHALDION, ch);
+        dbHelper.addSpeciesAppearance(Species.MINOTAUR, ch);
+        dbHelper.addCharacterAppearance(Character.BEZALE, ch);
+        dbHelper.addCharacterAppearance(Character.JEWEL, ch);
+        dbHelper.addCharacterAppearance(Character.DURENE, ch);
+        dbHelper.addCharacterAppearance(Character.VESS, ch);
+        dbHelper.addCharacterAppearance(Character.ANTHERR, ch);
+        dbHelper.addCharacterAppearance(Character.TEMILE, ch);
+        dbHelper.addCharacterAppearance(Character.TIMBOR, ch);
+        dbHelper.addCharacterAppearance(Character.RAEKEA, ch);
+        dbHelper.addCharacterAppearance(Character.ELIRR, ch);
+        dbHelper.addCharacterAppearance(Character.LISM, ch);
+        dbHelper.addCharacterAppearance(Character.ALONNA, ch);
+        dbHelper.addCharacterMention(Character.JEISS, ch);
+        dbHelper.addCharacterAppearance(Character.TISMEL, ch);
+        dbHelper.addCharacterAppearance(Character.ZALAISS, ch);
+        dbHelper.addCharacterMention(Character.TEKSHIA, ch);
+        dbHelper.addCharacterMention(Character.TALETEVIRION, ch);
+        dbHelper.addCharacterMention(Character.ALBER, ch);
+        dbHelper.addCharacterMention(Character.MILAW, ch);
+        dbHelper.addCharacterMention(Character.XHERW, ch);
+        dbHelper.addCharacterAppearance(Character.NERUL, ch);
+        dbHelper.addCharacterMention(Character.GARIA, ch);
+        dbHelper.addCharacterMention(Character.DESKIE, ch);
+        dbHelper.addCharacterMention(Character.ADETR, ch);
+        // Itelvaunhz (Name revealed?), Xalls (Name revealed?),
+        // Conec the [Fence], Rittane, her parents: Dorkel and Leiithe
+        // Rheirgest, Oswen, Reizmelt, Riverfarm, Yolta, Barehoof Kitchens, Drath, Invrisil, Ottopren (city state), Samal (Kingdom of keys)
     }
 
 }

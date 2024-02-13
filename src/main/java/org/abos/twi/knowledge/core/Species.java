@@ -23,6 +23,7 @@ public record Species(String name, boolean canLevel, String wikiLink) implements
     public static final Species FRAERLING = new Species("Fraerling", true, WikiHelper.WIKI_URL + "Fraerlings");
     public static final Species GARUDA = new Species("Garuda", true, WikiHelper.WIKI_URL + "Garuda");
     public static final Species GNOLL = new Species("Gnoll", true, WikiHelper.WIKI_URL + "Gnolls");
+    public static final Species GOAT = new Species("Goat", false, null);
     public static final Species GOBLIN = new Species("Goblin", true, WikiHelper.WIKI_URL + "Goblins");
     public static final Species HALF_ELF = new Species("Half-Elf", true, WikiHelper.WIKI_URL + "Half-Elves");
     public static final Species HALF_GIANT = new Species("Half-Giant", true, WikiHelper.WIKI_URL + "Half-Giants");

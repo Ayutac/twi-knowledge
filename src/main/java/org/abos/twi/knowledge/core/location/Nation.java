@@ -7,9 +7,10 @@ import java.util.Objects;
 
 public record Nation(String name, NationType nationType, LandmassOcean landmassOcean, String wikiLink) implements Named {
 
-    public static final Nation USA = new Nation("USA", NationType.REPUBLIC, LandmassOcean.NORTH_AMERICA, null);
-    public static final Nation UK = new Nation("UK", NationType.REPUBLIC, LandmassOcean.GREAT_BRITAIN, null);
+    public static final Nation ITALY = new Nation("Italy", NationType.REPUBLIC, LandmassOcean.EUROPE, null);
     public static final Nation MICHIGAN = new Nation("Michigan", NationType.REPUBLIC, LandmassOcean.NORTH_AMERICA, null);
+    public static final Nation UK = new Nation("UK", NationType.REPUBLIC, LandmassOcean.GREAT_BRITAIN, null);
+    public static final Nation USA = new Nation("USA", NationType.REPUBLIC, LandmassOcean.NORTH_AMERICA, null);
     public static final Nation ACTELIOS_SALASH = new Nation("A’ctelios Salash", NationType.KINGDOM, LandmassOcean.CHANDRAR, WikiHelper.WIKI_URL + "A’ctelios_Salash");
     public static final Nation BALEROS_UNCLAIMED = new Nation("Unclaimed Territory in Baleros", NationType.OLIGARCHY, LandmassOcean.BALEROS, null);
     public static final Nation BLIGHTED_KINGDOM = new Nation("Blighted Kingdom", NationType.KINGDOM, LandmassOcean.RHIR, WikiHelper.WIKI_URL + "Blighted_Kingdom");
