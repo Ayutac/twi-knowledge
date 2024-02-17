@@ -13,13 +13,16 @@ public record Skill(String name, boolean spell, String wikiLink) implements Name
     public static final Skill BASIC_CRAFTING = new Skill("Basic Crafting", false, null);
     public static final Skill BENEDICTION_OF_HOPE = new Skill("Benediction of Hope", false, null);
     public static final Skill BROADER_SHOULDERS = new Skill("Broader Shoulders", false, null);
+    public static final Skill CARAVAN_UNSLOWED_MILD_TERRAIN = new Skill("Caravan Unslowed (Mild Terrain)", false, null);
     public static final Skill COMPARTMENTS_OF_HOLDING = new Skill("Compartments of Holding", false, null);
     public static final Skill CONCEAL_REPUTATION = new Skill("Conceal Reputation", false, null);
     public static final Skill DANGERSENSE = new Skill("Dangersense", false, null);
+    public static final Skill DETECT_FLAW_EXTENDED_RANGE = new Skill("Detect Flaw: Extended Range", false, null);
     public static final Skill DETECT_GUILT = new Skill("Detect Guilt", false, null);
     public static final Skill DETECT_POISON = new Skill("Detect Poison", false, null);
     public static final Skill DISABLE_FRIENDLY_FIRE = new Skill("Disable Friendly Fire", false, null);
     public static final Skill DOOR_OF_PORTALS = new Skill("Door of Portals", false, null);
+    public static final Skill FAST_GROWTH = new Skill("Fast Growth", false, null);
     public static final Skill FAST_SCRAWL = new Skill("Fast Scrawl", false, null);
     public static final Skill FLAWLESS_ATTEMPT = new Skill("Flawless Attempt", false, null);
     public static final Skill FLURRY_OF_MOTION = new Skill("Flurry of Motion", false, null);
@@ -41,17 +44,25 @@ public record Skill(String name, boolean spell, String wikiLink) implements Name
 
     public static final Skill APPRAISAL = new Skill("Appraisal", true, null);
     public static final Skill BARRIER_OF_AIR = new Skill("Barrier of Air", true, null);
+    public static final Skill BLINDNESS = new Skill("Blindness", true, null);
     public static final Skill CLEANSE = new Skill("Cleanse", true, null);
     public static final Skill CONJURE_PREPARED_DISH = new Skill("Conjure Prepared Dish", true, null);
     public static final Skill CREATE_FOOD = new Skill("Create Food", true, null);
+    public static final Skill DETECT_LIFE = new Skill("Detect Life", true, null);
     public static final Skill DETECT_TRUTH = new Skill("Detect Truth", true, null);
+    public static final Skill EAGLE_EYES = new Skill("Eagle Eyes", true, null);
+    public static final Skill EARTH_WALL = new Skill("Earth Wall", true, null);
     public static final Skill FIREBALL = new Skill("Fireball", true, null);
     public static final Skill FLASH_STEP = new Skill("Flash Step", true, null);
     public static final Skill HEATED_AIR = new Skill("Heated Air", true, null);
+    public static final Skill MAGIC_PICTURE = new Skill("Magic Picture", true, null);
+    public static final Skill MANA_BARRIER = new Skill("Mana Barrier", true, null);
     public static final Skill MESSAGE = new Skill("Message", true, null);
     public static final Skill REPAIR = new Skill("Repair", true, null);
     public static final Skill SCRY = new Skill("Scry", true, null);
     public static final Skill SILVERGLOW_ENCHANTMENT = new Skill("Silverglow Enchantment", true, null);
+    public static final Skill STABILIZED_GROUND = new Skill("Stabilized Ground", true, null);
+    public static final Skill STONE_FLOOR = new Skill("Stone Floor", true, null);
     public static final Skill TELEPORTATION = new Skill("Teleportation", true, null);
 
     public Skill(final String name, final boolean spell, final String wikiLink) {

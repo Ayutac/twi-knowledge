@@ -33,6 +33,7 @@ public final class Volume10 {
         final Instant start = Instant.now();
         ch00l(dbHelper);
         ch01l(dbHelper);
+        ch02y(dbHelper);
         final Duration time = Duration.between(start, Instant.now());
         LOGGER.info(LogUtil.LOG_TIME_MSG, "Volume 10 data filling", time.toMinutes(), time.toSecondsPart());
     }
@@ -476,6 +477,84 @@ public final class Volume10 {
         // Itelvaunhz (Name revealed?), Xalls (Name revealed?),
         // Conec the [Fence], Rittane, her parents: Dorkel and Leiithe
         // Rheirgest, Oswen, Reizmelt, Riverfarm, Yolta, Barehoof Kitchens, Drath, Invrisil, Ottopren (city state), Samal (Kingdom of keys)
+    }
+
+    private static void ch02y(final DbHelper dbHelper) throws SQLException {
+        final Chapter ch = dbHelper.fetchChapter("Chapter 10.02 Y");
+        // events
+        // misc
+        dbHelper.addClassUpgrade(Class.MERCHANT, Class.ORE_MERCHANT, ch);
+        dbHelper.addClassUpgrade(Class.FARMER, Class.FAST_GROWER, ch);
+        dbHelper.addClassUpgrade(Class.GEOMANCER, Class.VOICE_OF_THE_EARTH, ch);
+        // appearances/mentions
+        dbHelper.addWorldAppearance(World.INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.IZRIL, ch);
+        dbHelper.addLandmassOceanMention(LandmassOcean.NORTHERN_IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.SOUTHERN_IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.NEW_LANDS_OF_IZRIL, ch);
+        dbHelper.addNationMention(Nation.FIVE_FAMILIES_TERRITORY, ch);
+        dbHelper.addNationMention(Nation.PALLASS, ch);
+        dbHelper.addSettlementMention(Settlement.PALLASS, ch);
+        // mention of House Byres lands
+        dbHelper.addNationAppearance(Nation.DRAKE_TERRITORY, ch);
+        dbHelper.addNationMention(Nation.HIVELANDS, ch);
+        dbHelper.addSettlementMention(Settlement.INVRISIL, ch);
+        dbHelper.addNationMention(Nation.MANUS, ch);
+        dbHelper.addSettlementMention(Settlement.MANUS, ch);
+        dbHelper.addNationMention(Nation.GAIIL_DROME, ch);
+        dbHelper.addNationMention(Nation.CLAIVEN_EARTH, ch);
+        dbHelper.addNationMention(Nation.NOMBERNAUGHT, ch);
+        dbHelper.addSettlementMention(Settlement.NOMBERNAUGHT, ch);
+        dbHelper.addSettlementAppearance(Settlement.GOISEDALL, ch);
+        dbHelper.addNationAppearance(Nation.INSERELADREANUM, ch);
+        dbHelper.addSettlementAppearance(Settlement.INSERELADREANUM, ch);
+        dbHelper.addClassMention(Class.GUARD, ch);
+        dbHelper.addClassMention(Class.MERCHANT, ch);
+        dbHelper.addClassMention(Class.ORE_MERCHANT, ch);
+        dbHelper.addClassMention(Class.PATROL_LEADER, ch);
+        dbHelper.addClassMention(Class.ROGUE, ch);
+        dbHelper.addClassMention(Class.CHEF, ch);
+        dbHelper.addClassMention(Class.COOK, ch);
+        dbHelper.addClassMention(Class.ADVENTURER, ch);
+        dbHelper.addClassMention(Class.TAILOR, ch);
+        dbHelper.addClassMention(Class.HUNTER, ch);
+        dbHelper.addClassMention(Class.PROSPECTOR, ch);
+        dbHelper.addClassMention(Class.AXE_CHAMPION, ch);
+        dbHelper.addClassMention(Class.COOK_HELPER, ch);
+        dbHelper.addClassMention(Class.MAGE, ch);
+        dbHelper.addClassMention(Class.GATHERER, ch);
+        dbHelper.addClassMention(Class.RANGER, ch);
+        dbHelper.addClassMention(Class.FARMER, ch);
+        dbHelper.addClassMention(Class.SCOUT, ch);
+        dbHelper.addClassMention(Class.TRACKER, ch);
+        dbHelper.addClassMention(Class.FAST_GROWER, ch);
+        dbHelper.addClassMention(Class.LADY, ch);
+        dbHelper.addClassMention(Class.HORSETHIEF, ch);
+        dbHelper.addClassMention(Class.COURT_MAGE, ch);
+        dbHelper.addClassMention(Class.WARRIOR, ch);
+        dbHelper.addClassMention(Class.LADY_OF_THE_WOODS, ch);
+        dbHelper.addClassMention(Class.VOICE_OF_THE_EARTH, ch);
+        dbHelper.addClassMention(Class.DRUID, ch);
+        dbHelper.addClassMention(Class.EARTH_MAGE, ch);
+        dbHelper.addClassMention(Class.TREETENDER, ch);
+        dbHelper.addClassMention(Class.DUELIST, ch);
+        dbHelper.addClassMention(Class.WARDEN, ch);
+        dbHelper.addClassMention(Class.GARDENER, ch);
+        dbHelper.addClassMention(Class.GEOMANCER, ch);
+
+        dbHelper.addSkillMention(Skill.BLINDNESS, ch);
+        dbHelper.addSkillMention(Skill.MANA_BARRIER, ch);
+        dbHelper.addSkillMention(Skill.STABILIZED_GROUND, ch);
+        dbHelper.addSkillMention(Skill.STONE_FLOOR, ch);
+        dbHelper.addSkillMention(Skill.MAGIC_PICTURE, ch);
+        dbHelper.addSkillMention(Skill.MESSAGE, ch);
+        dbHelper.addSkillMention(Skill.DETECT_LIFE, ch);
+        dbHelper.addSkillMention(Skill.EAGLE_EYES, ch);
+        dbHelper.addSkillMention(Skill.EARTH_WALL, ch);
+        // Caravan Unslowed (Mild Terrain), Fast Growth, Detect Flaw: Extended Range, Area: Fleet of Foot, Meet the Deadline: Rush Work, Ignite Creation, Read Between the Lines, [Exquisite Insight]. [Survey the Competition]. [Resource Locator: The Passphrase of Imlerith]
+        // Drakes, Waisrabbit, Lamprey Shufflers, Kelpie, Featherballs, landsharks, Bushpig, Sword Crabs
+        // Ylawes, Dawil, Falene’s, Yorrned, Infinitypear, Rasktooth, Insill, Dasha, Larr, Pekona, and Anith, Dulc, Halrac’s, Tivete (fem Merchant), Chef Votto, Crossbow Stan, Zedalien, Maviola El, Deilan El, Irurx, Hareithion, Warden Jespeire and one of his people, Iturtexi, Ruveden, Voice Ikeiret, King of Duels, [Lady of the Woods] herself, Ruveden
+        // Byres Family, Yorrned Caravan, Vuliel Drae, Silver Swords, Poke Duo, House El
     }
 
 }

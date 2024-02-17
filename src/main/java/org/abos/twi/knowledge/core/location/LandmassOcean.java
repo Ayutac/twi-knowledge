@@ -18,6 +18,7 @@ public record LandmassOcean(String name, LandmassOceanType type, World world, St
     public static final LandmassOcean TERANDRIA = new LandmassOcean("Terandria", LandmassOceanType.CONTINENT, World.INNWORLD, WikiHelper.WIKI_URL + "Terandria");
     public static final LandmassOcean NORTHERN_IZRIL = new LandmassOcean("Northern Izril", LandmassOceanType.HALF_CONTINENT, World.INNWORLD, WikiHelper.WIKI_URL + "Izril");
     public static final LandmassOcean SOUTHERN_IZRIL = new LandmassOcean("Southern Izril", LandmassOceanType.HALF_CONTINENT, World.INNWORLD, WikiHelper.WIKI_URL + "Izril");
+    public static final LandmassOcean NEW_LANDS_OF_IZRIL = new LandmassOcean("New Lands of Izril", LandmassOceanType.HALF_CONTINENT, World.INNWORLD, WikiHelper.WIKI_URL + "New_Lands_of_Izril");
     public static final LandmassOcean GREAT_BRITAIN = new LandmassOcean("Great Britain", LandmassOceanType.ISLE, World.EARTH, null);
     public static final LandmassOcean WISTRAM_ISLE = new LandmassOcean("Wistram Isle", LandmassOceanType.ISLE, World.INNWORLD, WikiHelper.WIKI_URL + "Wistram Academy");
 
