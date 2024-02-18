@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.time.temporal.*;
 
 public final class TwicTime implements Temporal, TemporalAdjuster, Comparable<TwicTime>, Serializable {
+
+    @java.io.Serial
+    private static final long serialVersionUID = 641443786542265201L;
+
     public static final int HOURS_PER_DAY = 24;
 
     static final int MINUTES_PER_HOUR = 60;
@@ -13,9 +17,6 @@ public final class TwicTime implements Temporal, TemporalAdjuster, Comparable<Tw
     static final int SECONDS_PER_HOUR = SECONDS_PER_MINUTE * MINUTES_PER_HOUR;
 
     static final int SECONDS_PER_DAY = SECONDS_PER_HOUR * HOURS_PER_DAY;
-
-    @java.io.Serial
-    private static final long serialVersionUID = 641443786542265201L;
 
     private final byte hour;
 
@@ -37,9 +38,16 @@ public final class TwicTime implements Temporal, TemporalAdjuster, Comparable<Tw
     }
 
     @Override
-    public int compareTo(TwicTime o) {
-        // TODO
-        throw new UnsupportedOperationException("Not implemented yet!");
+    public int compareTo(TwicTime other) {
+        final int hourCmp = this.hour - other.hour;
+        if (hourCmp != 0) {
+            return hourCmp;
+        }
+        final int minCmp = this.minute - other.minute;
+        if (minCmp != 0) {
+            return minCmp;
+        }
+        return this.second - other.second;
     }
 
     @Override
