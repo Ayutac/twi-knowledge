@@ -49,6 +49,11 @@ public enum TwicUnit implements TemporalUnit {
     }
 
     @Override
+    public boolean isSupportedBy(Temporal temporal) {
+        return temporal instanceof TwicDate;
+    }
+
+    @Override
     public long between(Temporal temporal1Inclusive, Temporal temporal2Exclusive) {
         return temporal1Inclusive.until(temporal2Exclusive, ChronoUnit.HOURS) / this.duration.toHours();
     }
