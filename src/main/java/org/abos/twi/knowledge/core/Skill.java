@@ -7,6 +7,7 @@ import java.util.Objects;
 public record Skill(String name, boolean spell, String wikiLink) implements Named, Comparable<Skill> {
 
     public static final Skill AN_APPLE_A_DAY = new Skill("An Apple A Day", false, null);
+    public static final Skill AREA_FLEET_OF_FOOT = new Skill("Area: Fleet of Foot", false, null);
     public static final Skill BAD_FRUIT_DETECTOR = new Skill("Bad Fruit Detector", false, null);
     public static final Skill BASIC_CLEANING = new Skill("Basic Cleaning", false, null);
     public static final Skill BASIC_COOKING = new Skill("Basic Cooking", false, null);
@@ -22,21 +23,27 @@ public record Skill(String name, boolean spell, String wikiLink) implements Name
     public static final Skill DETECT_POISON = new Skill("Detect Poison", false, null);
     public static final Skill DISABLE_FRIENDLY_FIRE = new Skill("Disable Friendly Fire", false, null);
     public static final Skill DOOR_OF_PORTALS = new Skill("Door of Portals", false, null);
+    public static final Skill EXQUISITE_INSIGHT = new Skill("Exquisite Insight", false, null);
     public static final Skill FAST_GROWTH = new Skill("Fast Growth", false, null);
     public static final Skill FAST_SCRAWL = new Skill("Fast Scrawl", false, null);
     public static final Skill FLAWLESS_ATTEMPT = new Skill("Flawless Attempt", false, null);
     public static final Skill FLURRY_OF_MOTION = new Skill("Flurry of Motion", false, null);
     public static final Skill GARDEN_OF_SANCTUARY = new Skill("Garden of Sanctuary", false, null);
+    public static final Skill IGNITE_CREATION = new Skill("Ignite Creation", false, null);
     public static final Skill IMMORTAL_MOMENT = new Skill("Immortal Moment", false, null);
     public static final Skill IRON_SCALES = new Skill("Iron Scales", false, null);
     public static final Skill LIKE_FIRE_MEMORY = new Skill("Like Fire, Memory", false, null);
+    public static final Skill MEET_THE_DEADLINE_RUSH_WORK = new Skill("Meet the Deadline: Rush Work", false, null);
     public static final Skill PARTIAL_RECONSTRUCTION = new Skill("Partial Reconstruction", false, null);
     public static final Skill PERFECT_STRIKE = new Skill("Perfect Strike", false, null);
     public static final Skill PERFECTION_IS_OVERRATED = new Skill("Perfection is Overrated", false, null);
     public static final Skill QUICK_BOIL = new Skill("Quick Boil", false, null);
+    public static final Skill READ_BETWEEN_THE_LINES = new Skill("Read Between the Lines", false, null);
     public static final Skill REMEMBER_MY_DEFINING_MOMENT = new Skill("Remember: My Defining Moment", false, null);
+    public static final Skill RESOURCE_LOCATOR_THE_PASSPHRASE_OF_IMLERITH = new Skill("Resource Locator: The Passphrase of Imlerith", false, null);
     public static final Skill SHARED_AUTHORITY_THE_WANDERING_INN = new Skill("Shared Authority: The Wandering Inn", false, null);
     public static final Skill STAFF_FLURRY_OF_EFFICIENCY = new Skill("Staff: Flurry of Efficiency", false, null);
+    public static final Skill SURVEY_THE_COMPETITION = new Skill("Survey the Competition", false, null);
     public static final Skill THE_TRANSIENT_ETC = new Skill("The Transient, Ephemeral, Fleeting Vault of the Mortal World. The Evanescent Safe of Passing Moments, the Faded Chest of Then and Them. The Box of Incontinuity.", false, null);
     public static final Skill THICK_SCALES = new Skill("Thick Scales", false, null);
     public static final Skill WORLD_OF_YOU_AND_ME = new Skill("World of You and Me", false, null);
