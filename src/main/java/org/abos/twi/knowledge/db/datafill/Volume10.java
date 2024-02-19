@@ -483,6 +483,14 @@ public final class Volume10 {
         final Chapter ch = dbHelper.fetchChapter("Chapter 10.02 Y");
         // events
         // misc
+        dbHelper.addCharacterSpecies(Character.YORRNED, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.TIVETE, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.DULC, Species.DRAKE, ch);
+        dbHelper.addCharacterSpecies(Character.VOTTO, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.HAREITHION, Species.HALF_ELF, ch);
+        dbHelper.addCharacterSpecies(Character.IKEIRET, Species.HALF_ELF, ch);
+        // Yorrned is an Ore Merchant
+        // Dulc is a Patrol Leader
         dbHelper.addClassUpgrade(Class.MERCHANT, Class.ORE_MERCHANT, ch);
         dbHelper.addClassUpgrade(Class.FARMER, Class.FAST_GROWER, ch);
         dbHelper.addClassUpgrade(Class.GEOMANCER, Class.VOICE_OF_THE_EARTH, ch);
@@ -541,7 +549,6 @@ public final class Volume10 {
         dbHelper.addClassMention(Class.WARDEN, ch);
         dbHelper.addClassMention(Class.GARDENER, ch);
         dbHelper.addClassMention(Class.GEOMANCER, ch);
-
         dbHelper.addSkillMention(Skill.BLINDNESS, ch);
         dbHelper.addSkillMention(Skill.MANA_BARRIER, ch);
         dbHelper.addSkillMention(Skill.STABILIZED_GROUND, ch);
@@ -551,9 +558,57 @@ public final class Volume10 {
         dbHelper.addSkillMention(Skill.DETECT_LIFE, ch);
         dbHelper.addSkillMention(Skill.EAGLE_EYES, ch);
         dbHelper.addSkillMention(Skill.EARTH_WALL, ch);
-        // Caravan Unslowed (Mild Terrain), Fast Growth, Detect Flaw: Extended Range, Area: Fleet of Foot, Meet the Deadline: Rush Work, Ignite Creation, Read Between the Lines, [Exquisite Insight]. [Survey the Competition]. [Resource Locator: The Passphrase of Imlerith]
-        // Drakes, Waisrabbit, Lamprey Shufflers, Kelpie, Featherballs, landsharks, Bushpig, Sword Crabs
-        // Ylawes, Dawil, Falene’s, Yorrned, Infinitypear, Rasktooth, Insill, Dasha, Larr, Pekona, and Anith, Dulc, Halrac’s, Tivete (fem Merchant), Chef Votto, Crossbow Stan, Zedalien, Maviola El, Deilan El, Irurx, Hareithion, Warden Jespeire and one of his people, Iturtexi, Ruveden, Voice Ikeiret, King of Duels, [Lady of the Woods] herself, Ruveden
+        dbHelper.addSkillMention(Skill.CARAVAN_UNSLOWED_MILD_TERRAIN, ch);
+        dbHelper.addSkillMention(Skill.FAST_GROWTH, ch);
+        dbHelper.addSkillMention(Skill.DETECT_FLAW_EXTENDED_RANGE, ch);
+        dbHelper.addSkillMention(Skill.AREA_FLEET_OF_FOOT, ch);
+        dbHelper.addSkillMention(Skill.MEET_THE_DEADLINE_RUSH_WORK, ch);
+        dbHelper.addSkillMention(Skill.IGNITE_CREATION, ch);
+        dbHelper.addSkillMention(Skill.READ_BETWEEN_THE_LINES, ch);
+        dbHelper.addSkillMention(Skill.EXQUISITE_INSIGHT, ch);
+        dbHelper.addSkillMention(Skill.RESOURCE_LOCATOR_THE_PASSPHRASE_OF_IMLERITH, ch);
+        dbHelper.addSpeciesAppearance(Species.WAISRABBIT, ch);
+        dbHelper.addSpeciesAppearance(Species.LAMPREY_SHUFFLER, ch);
+        dbHelper.addSpeciesAppearance(Species.KELPIE, ch);
+        dbHelper.addSpeciesAppearance(Species.FEATHERBALL, ch);
+        dbHelper.addSpeciesAppearance(Species.LANDSHARK, ch);
+        dbHelper.addSpeciesAppearance(Species.BUSHPIG, ch);
+        dbHelper.addSpeciesMention(Species.SWORD_CRAB, ch);
+        dbHelper.addSpeciesAppearance(Species.HUMAN, ch);
+        dbHelper.addCharacterAppearance(Character.YLAWES, ch);
+        dbHelper.addSpeciesAppearance(Species.DWARF, ch);
+        dbHelper.addCharacterAppearance(Character.DAWIL, ch);
+        dbHelper.addSpeciesAppearance(Species.HALF_ELF, ch);
+        dbHelper.addCharacterAppearance(Character.FALENE, ch);
+        dbHelper.addCharacterAppearance(Character.YORRNED, ch);
+        dbHelper.addSpeciesAppearance(Species.DRAKE, ch);
+        dbHelper.addCharacterAppearance(Character.DULC, ch);
+        dbHelper.addSpeciesAppearance(Species.ANTINIUM, ch);
+        dbHelper.addCharacterAppearance(Character.INFINITYPEAR, ch);
+        dbHelper.addSpeciesAppearance(Species.CAVE_GOBLIN, ch);
+        dbHelper.addCharacterAppearance(Character.RASKTOOTH, ch);
+        dbHelper.addCharacterAppearance(Character.INSILL, ch);
+        dbHelper.addSpeciesAppearance(Species.GNOLL, ch);
+        dbHelper.addCharacterAppearance(Character.LARR, ch);
+        dbHelper.addSpeciesAppearance(Species.HALF_DWARF, ch);
+        dbHelper.addCharacterAppearance(Character.DASHA, ch);
+        dbHelper.addSpeciesAppearance(Species.BEASTKIN, ch);
+        dbHelper.addCharacterAppearance(Character.ANITH, ch);
+        dbHelper.addCharacterAppearance(Character.PEKONA, ch);
+        dbHelper.addCharacterMention(Character.HALRAC, ch);
+        dbHelper.addCharacterAppearance(Character.TIVETE, ch);
+        dbHelper.addCharacterAppearance(Character.VOTTO, ch);
+        dbHelper.addCharacterMention(Character.STAN, ch);
+        dbHelper.addCharacterAppearance(Character.ZEDALIEN, ch);
+        dbHelper.addCharacterMention(Character.MAVIOLA, ch);
+        dbHelper.addCharacterMention(Character.DEILAN, ch);
+        dbHelper.addCharacterMention(Character.IRURX, ch);
+        dbHelper.addCharacterAppearance(Character.HAREITHION, ch);
+        dbHelper.addCharacterAppearance(Character.JESPEIRE, ch);
+        dbHelper.addCharacterAppearance(Character.ITURTEXI, ch);
+        dbHelper.addCharacterAppearance(Character.RUVEDEN, ch);
+        dbHelper.addCharacterAppearance(Character.IKEIRET, ch);
+        dbHelper.addCharacterMention(Character.RAELT, ch);
         // Byres Family, Yorrned Caravan, Vuliel Drae, Silver Swords, Poke Duo, House El
     }
 
