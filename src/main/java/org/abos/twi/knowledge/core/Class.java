@@ -27,6 +27,7 @@ public record Class(String name, String wikiLink) implements Named, Comparable<C
     public static final Class BODYGUARD = new Class("Bodyguard", WikiHelper.WIKI_URL + "Bodyguards");
     public static final Class BUTCHER = new Class("Butcher", WikiHelper.WIKI_URL + "Butchers");
     public static final Class CAPTAIN = new Class("Captain", WikiHelper.WIKI_URL + "Captains");
+    public static final Class CARVER = new Class("Carver", WikiHelper.WIKI_URL + "Carvers");
     public static final Class CHEF = new Class("Chef", WikiHelper.WIKI_URL + "Chefs");
     public static final Class CHIEFTAIN = new Class("Chieftain", WikiHelper.WIKI_URL + "Chieftains");
     public static final Class COLLECTOR = new Class("Collector", WikiHelper.WIKI_URL + "Collectors");
@@ -122,6 +123,7 @@ public record Class(String name, String wikiLink) implements Named, Comparable<C
     public static final Class SERGEANT = new Class("Sergeant", WikiHelper.WIKI_URL + "Sergeants");
     public static final Class SERVANT = new Class("Servant", WikiHelper.WIKI_URL + "Servants");
     public static final Class SHAMAN = new Class("Shaman", WikiHelper.WIKI_URL + "Shamans");
+    public static final Class SHOPKEEPER = new Class("Shopkeeper", WikiHelper.WIKI_URL + "Shamans");
     public static final Class SHEPHERD = new Class("Shepherd", WikiHelper.WIKI_URL + "Shepherds");
     public static final Class SNEAK_THIEF = new Class("Sneak Thief", WikiHelper.WIKI_URL + "Thieves");
     public static final Class SOLDIER = new Class("Soldier", WikiHelper.WIKI_URL + "Soldiers");
@@ -130,11 +132,13 @@ public record Class(String name, String wikiLink) implements Named, Comparable<C
     public static final Class SPICE_CHEF = new Class("Spice Chef", WikiHelper.WIKI_URL + "Spice_Chefs");
     public static final Class SPY = new Class("Spy", WikiHelper.WIKI_URL + "Spies");
     public static final Class SQUIRE = new Class("Squire", WikiHelper.WIKI_URL + "Squires");
+    public static final Class STRATEGIST = new Class("Strategist", WikiHelper.WIKI_URL + "Strategists");
     public static final Class SUAVE_LORD = new Class("Suave Lord", WikiHelper.WIKI_URL + "Suave_Lords");
     public static final Class SURVIVOR = new Class("Survivor", WikiHelper.WIKI_URL + "Survivors");
     public static final Class SWORDMASTER = new Class("Swordmaster", WikiHelper.WIKI_URL + "Swordmasters");
     public static final Class SWORDSMAN = new Class("Swordsman", WikiHelper.WIKI_URL + "Swordsmen");
     public static final Class SWORDSLAYER = new Class("Swordslayer", WikiHelper.WIKI_URL + "Swordslayers");
+    public static final Class TACTICIAN = new Class("Tactician", WikiHelper.WIKI_URL + "Tailors");
     public static final Class TAILOR = new Class("Tailor", WikiHelper.WIKI_URL + "Tailors");
     public static final Class TANTRIC_DRUID = new Class("Tantric Druid", WikiHelper.WIKI_URL + "Tantric Druids");
     public static final Class THIEF = new Class("Thief", WikiHelper.WIKI_URL + "Thieves");

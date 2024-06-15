@@ -132,6 +132,7 @@ public record Character(String wikiLink) implements Named {
     public static final Character NORMEN = new Character(WikiHelper.WIKI_URL + "Normen_Callesn");
     public static final Character NUMBTONGUE = new Character(WikiHelper.WIKI_URL + "Numbtongue");
     public static final Character OCTAVIA = new Character(WikiHelper.WIKI_URL + "Octavia_Cotton");
+    public static final Character OLESM = new Character(WikiHelper.WIKI_URL + "Olesm_Swifttail");
     public static final Character OLIYAYA = new Character(WikiHelper.WIKI_URL + "Oliyaya");
     public static final Character ORTHENON = new Character(WikiHelper.WIKI_URL + "Orthenon");
     public static final Character OTHIUS = new Character(WikiHelper.WIKI_URL + "Othius_the_Fourth");
@@ -171,6 +172,7 @@ public record Character(String wikiLink) implements Named {
     public static final Character SERAPHEL = new Character(WikiHelper.WIKI_URL + "Seraphel_du_Marquin");
     public static final Character SEST = new Character(WikiHelper.WIKI_URL + "Sest");
     public static final Character SEVE = new Character(WikiHelper.WIKI_URL + "Seve-Alrelious");
+    public static final Character SHAUNA = new Character(WikiHelper.WIKI_URL + "Shauna_Solstice");
     public static final Character SHARDELE = new Character(WikiHelper.WIKI_URL + "Shardele_du_Marquin");
     public static final Character SILVERBOOTS = new Character(WikiHelper.WIKI_URL + "Silverboots");
     public static final Character SILVERMOP = new Character(WikiHelper.WIKI_URL + "Silvermop");

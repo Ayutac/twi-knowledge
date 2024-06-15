@@ -911,6 +911,7 @@ public final class Volume1 {
     private static void ch15(final DbHelper dbHelper) throws SQLException {
         final Chapter ch = dbHelper.fetchChapter("Chapter 1.15");
         // events
+        // Klbkch beats up Relc a little
         // misc
         // appearances/mentions
         // (still day 9 since Erin got to Innworld)
@@ -951,6 +952,7 @@ public final class Volume1 {
         dbHelper.addLandmassOceanMention(LandmassOcean.RHIR, ch);
         dbHelper.addLandmarkMention(Landmark.LISCORS_ADVENTURERS_GUILD, ch);
         dbHelper.addCharacterMention(Character.QUEEN_OF_THE_FREE_ANTINIUM, ch);
+        dbHelper.addCharacterNickName(Character.QUEEN_OF_THE_FREE_ANTINIUM, ch, "Klbkch's Queen");
     }
 
     private static void ch16(final DbHelper dbHelper) throws SQLException {
@@ -966,15 +968,113 @@ public final class Volume1 {
         dbHelper.addLandmarkAppearance(Landmark.FIRST_WANDERING_INN, ch);
         dbHelper.addSpeciesAppearance(Species.HUMAN, ch);
         dbHelper.addCharacterAppearance(Character.ERIN, ch);
-
+        dbHelper.addSpeciesAppearance(Species.ANTINIUM, ch);
+        dbHelper.addCharacterAppearance(Character.KLBKCH, ch);
+        dbHelper.addSpeciesAppearance(Species.DRAKE, ch);
+        dbHelper.addCharacterAppearance(Character.RELC, ch);
+        dbHelper.addCharacterAppearance(Character.PISCES, ch);
+        dbHelper.addSkillMention(Skill.UNERRING_THROW, ch);
+        // (day 11 since Erin came to Innworld)
+        // Erin screams away a rock crab
+        dbHelper.addLandmarkAppearance(Landmark.AMENTUS_GROVE, ch);
+        dbHelper.addSpeciesAppearance(Species.GOBLIN, ch);
+        dbHelper.addCharacterAppearance(Character.RAGS, ch);
+        // Erin feeds Goblins in her inn
     }
 
     private static void ch17(final DbHelper dbHelper) throws SQLException {
-
+        final Chapter ch = dbHelper.fetchChapter("Chapter 1.17");
+        // events
+        dbHelper.maybeAddFirstMeeting(new FirstMeeting(Character.ERIN, Character.OLESM, ch));
+        // misc
+        // appearances/mentions
+        // (day 11 since Erin got to Innworld)
+        dbHelper.addWorldAppearance(World.INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.NORTHERN_IZRIL, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FLOODPLAINS, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FIRST_WANDERING_INN, ch);
+        dbHelper.addSpeciesAppearance(Species.HUMAN, ch);
+        dbHelper.addCharacterAppearance(Character.ERIN, ch);
+        dbHelper.addSpeciesMention(Species.GOBLIN, ch);
+        dbHelper.addCharacterMention(Character.KLBKCH, ch);
+        dbHelper.addSpeciesAppearance(Species.ACID_FLY, ch);
+        dbHelper.addNationAppearance(Nation.LISCOR, ch);
+        dbHelper.addSettlementAppearance(Settlement.LISCOR, ch);
+        dbHelper.addSpeciesAppearance(Species.DRAKE, ch);
+        // appearance of unnamed drake necklace shopkeeper
+        dbHelper.addCharacterAppearance(Character.LISM, ch);
+        dbHelper.addSpeciesAppearance(Species.GNOLL, ch);
+        dbHelper.addCharacterAppearance(Character.KRSHIA, ch);
+        // chess is mentioned, Erin vs Olesm
+        dbHelper.addCharacterMention(Character.NIERS, ch);
+        dbHelper.addClassMention(Class.TACTICIAN, ch);
+        dbHelper.addClassMention(Class.SHOPKEEPER, ch);
+        dbHelper.addCharacterAppearance(Character.RELC, ch);
+        dbHelper.addCharacterAppearance(Character.OLESM, ch);
+        dbHelper.addClassMention(Class.TRADER, ch);
+        // mention of Liscor's Council
+        dbHelper.addSpeciesAppearance(Species.ANTINIUM, ch);
+        // Olesm is a Tactician
+        dbHelper.addClassMention(Class.GUARD, ch);
+        dbHelper.addClassMention(Class.CARVER, ch);
+        dbHelper.addClassMention(Class.MAGE, ch);
     }
 
     private static void ch18(final DbHelper dbHelper) throws SQLException {
-
+        final Chapter ch = dbHelper.fetchChapter("Chapter 1.18");
+        // events
+        // misc
+        dbHelper.addCharacterLastName(Character.KRSHIA, ch, "Silverfang");
+        dbHelper.addCharacterNickName(Character.SHAUNA, ch, "Erin's Mom");
+        // appearances/mentions
+        // (still day 11 since Erin got to Innworld)
+        dbHelper.addWorldAppearance(World.INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.NORTHERN_IZRIL, ch);
+        dbHelper.addNationAppearance(Nation.LISCOR, ch);
+        dbHelper.addSettlementAppearance(Settlement.LISCOR, ch);
+        dbHelper.addSpeciesAppearance(Species.HUMAN, ch);
+        dbHelper.addCharacterAppearance(Character.ERIN, ch);
+        dbHelper.addSpeciesAppearance(Species.DRAKE, ch);
+        dbHelper.addCharacterAppearance(Character.LISM, ch);
+        dbHelper.addSpeciesAppearance(Species.GNOLL, ch);
+        dbHelper.addCharacterAppearance(Character.KRSHIA, ch);
+        dbHelper.addCharacterAppearance(Character.RELC, ch);
+        dbHelper.addSpeciesAppearance(Species.ANTINIUM, ch);
+        dbHelper.addCharacterAppearance(Character.KLBKCH, ch);
+        dbHelper.addWorldMention(World.EARTH, ch);
+        // Erin played chess since she was 5
+        // Olesm is a Level 22 [Tactician]
+        dbHelper.addClassMention(Class.STRATEGIST, ch);
+        dbHelper.addClassUpgrade(Class.TACTICIAN, Class.STRATEGIST, ch);
+        dbHelper.addClassMention(Class.GRANDMASTER, ch);
+        dbHelper.addClassUpgrade(Class.STRATEGIST, Class.GRANDMASTER, ch);
+        dbHelper.addLandmassOceanMention(LandmassOcean.JAPAN, ch);
+        dbHelper.addNationMention(Nation.JAPAN, ch);
+        // Shogi, Go, Gnollstones and Magic Cards are mentioned
+        // Erin plays more chess games against Olesm and Klbkch
+        dbHelper.addClassMention(Class.SHOPKEEPER, ch);
+        dbHelper.addSpeciesAppearance(Species.SHIELD_SPIDER, ch);
+        dbHelper.addNationMention(Nation.PALLASS, ch);
+        dbHelper.addSettlementMention(Settlement.PALLASS, ch);
+        dbHelper.addClassMention(Class.WARRIOR, ch);
+        // mention of the Silverfang tribe
+        dbHelper.addCharacterMention(Character.SHAUNA, ch);
+        dbHelper.addLandmarkMention(Landmark.GREAT_PLAINS, ch);
+        dbHelper.addClassMention(Class.TRADER, ch);
+        dbHelper.addClassMention(Class.ALCHEMIST, ch);
+        dbHelper.addClassMention(Class.INNKEEPER, ch);
+        // Krshia has a truth stone
+        // Runner Guild mechanics are explained
+        dbHelper.addSpeciesMention(Species.HOLLOWSTONE_DECEIVER, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FLOODPLAINS, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FIRST_WANDERING_INN, ch);
+        // the inn is named and the No Killing Goblins sign is put down
+        dbHelper.addClassMention(Class.NECROMANCER, ch);
+        dbHelper.addCharacterAppearance(Character.PISCES, ch);
+        dbHelper.addSpeciesAppearance(Species.GOBLIN, ch);
+        dbHelper.addCharacterAppearance(Character.RAGS, ch);
     }
 
     private static void ch19r(final DbHelper dbHelper) throws SQLException {

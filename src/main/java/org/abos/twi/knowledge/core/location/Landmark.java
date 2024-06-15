@@ -19,6 +19,7 @@ public record Landmark(String name, boolean natural, LandmassOcean landmassOcean
     public static final Landmark LISCORS_MAGES_GUILD = new Landmark("Liscor's Mage's Guild", false, LandmassOcean.NORTHERN_IZRIL, null);
     public static final Landmark LISCORS_MARKET_STREET = new Landmark("Liscor's Market Street", false, LandmassOcean.NORTHERN_IZRIL, null);
     public static final Landmark PISCES_HIDEOUT = new Landmark("Pisces' hideout", true, LandmassOcean.NORTHERN_IZRIL, null);
+    public static final Landmark GREAT_PLAINS = new Landmark("Great Plains of Izril", true, LandmassOcean.SOUTHERN_IZRIL, null);
     public static final Landmark TERIARCHS_NEW_HIDEOUT = new Landmark("Teriarch's new hideout", true, LandmassOcean.NORTHERN_IZRIL, null);
     public static final Landmark TERIARCHS_OLD_HIDEOUT = new Landmark("Teriarch's old hideout", true, LandmassOcean.NORTHERN_IZRIL, null);
     public static final Landmark THIRD_WANDERING_INN = new Landmark("Wandering Inn", false, LandmassOcean.NORTHERN_IZRIL, WikiHelper.WIKI_URL + "Wandering_Inn");
