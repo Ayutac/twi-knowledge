@@ -312,6 +312,7 @@ public final class Volume1 {
         // (appearance of unnamed guard)
         dbHelper.addClassMention(Class.GUARDSWOMAN, ch);
         dbHelper.addCharacterAppearance(Character.BEILMARK, ch);
+        dbHelper.addCharacterFirstName(Character.BEILMARK, ch, "Beilmark");
         // (Beilmark is a [Guardwoman])
         dbHelper.addCharacterMention(Character.RELC, ch);
         dbHelper.addCharacterMention(Character.ZEVARA, ch);
@@ -880,14 +881,91 @@ public final class Volume1 {
     }
 
     private static void ch14(final DbHelper dbHelper) throws SQLException {
-
+        final Chapter ch = dbHelper.fetchChapter("Chapter 1.14");
+        // events
+        dbHelper.addBattleChapter(CHIEFTAIN_BATTLE, ch);
+        dbHelper.addCharacterStatus(new CharacterStatus(new Status(Status.DECEASED), Character.FLOODED_WATERS_CHIEFTAIN, ch));
+        final LevelUp lvErin = new LevelUp(Character.ERIN, ch, 9, Class.INNKEEPER, false, false);
+        dbHelper.addLevelUp(lvErin);
+        dbHelper.addLevelUpSkill(lvErin, Skill.BAR_FIGHTING);
+        dbHelper.addLevelUpSkill(lvErin, Skill.UNERRING_THROW);
+        // misc
+        dbHelper.addClassSkill(Class.INNKEEPER, Skill.BAR_FIGHTING, ch);
+        dbHelper.addClassSkill(Class.INNKEEPER, Skill.UNERRING_THROW, ch);
+        // appearances/mentions
+        // (still day 9 since Erin got to Innworld)
+        dbHelper.addWorldAppearance(World.INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.NORTHERN_IZRIL, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FLOODPLAINS, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FIRST_WANDERING_INN, ch);
+        dbHelper.addSpeciesAppearance(Species.GOBLIN, ch);
+        dbHelper.addCharacterAppearance(Character.FLOODED_WATERS_CHIEFTAIN, ch);
+        dbHelper.addSpeciesAppearance(Species.HUMAN, ch);
+        dbHelper.addCharacterAppearance(Character.ERIN, ch);
+        dbHelper.addClassMention(Class.INNKEEPER, ch);
+        dbHelper.addSkillMention(Skill.BAR_FIGHTING, ch);
+        dbHelper.addSkillMention(Skill.UNERRING_THROW, ch);
     }
 
     private static void ch15(final DbHelper dbHelper) throws SQLException {
-
+        final Chapter ch = dbHelper.fetchChapter("Chapter 1.15");
+        // events
+        // misc
+        // appearances/mentions
+        // (still day 9 since Erin got to Innworld)
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.NORTHERN_IZRIL, ch);
+        dbHelper.addNationMention(Nation.LISCOR, ch);
+        dbHelper.addSettlementMention(Settlement.LISCOR, ch);
+        dbHelper.addSpeciesAppearance(Species.ANTINIUM, ch);
+        dbHelper.addCharacterAppearance(Character.KLBKCH, ch);
+        dbHelper.addSpeciesAppearance(Species.DRAKE, ch);
+        dbHelper.addCharacterAppearance(Character.RELC, ch);
+        dbHelper.addSpeciesAppearance(Species.GNOLL, ch);
+        dbHelper.addCharacterAppearance(Character.BEILMARK, ch);
+        dbHelper.addClassMention(Class.GUARDSMAN, ch);
+        dbHelper.addClassMention(Class.GUARD, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FLOODPLAINS, ch);
+        dbHelper.addSpeciesAppearance(Species.HUMAN, ch);
+        dbHelper.addCharacterAppearance(Character.ERIN, ch);
+        // mention of the Black Tide
+        dbHelper.addSkillMention(Skill.ENHANCED_MOVEMENT, ch);
+        dbHelper.addSpeciesAppearance(Species.GOBLIN, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FIRST_WANDERING_INN, ch);
+        dbHelper.addCharacterAppearance(Character.FLOODED_WATERS_CHIEFTAIN, ch);
+        // Erin admits to Klbkch she's not from innworld
+        dbHelper.addNationMention(Nation.MICHIGAN, ch);
+        dbHelper.addSpeciesMention(Species.SELPHID, ch);
+        dbHelper.addSpeciesMention(Species.DULLAHAN, ch);
+        dbHelper.addSpeciesMention(Species.BEASTKIN, ch);
+        // first time phrase "No Killing Goblins" is uttered
+        dbHelper.addSkillMention(Skill.BAR_FIGHTING, ch);
+        dbHelper.addSkillMention(Skill.UNERRING_THROW, ch);
+        dbHelper.addClassMention(Class.INNKEEPER, ch);
+        dbHelper.addClassMention(Class.BUTCHER, ch);
+        dbHelper.addClassMention(Class.MUSICIAN, ch);
+        dbHelper.addClassMention(Class.RULER, ch);
+        dbHelper.addClassMention(Class.SOLDIER, ch);
+        dbHelper.addSkillMention(Skill.DETECT_GUILT, ch);
+        dbHelper.addLandmassOceanMention(LandmassOcean.RHIR, ch);
+        dbHelper.addLandmarkMention(Landmark.LISCORS_ADVENTURERS_GUILD, ch);
+        dbHelper.addCharacterMention(Character.QUEEN_OF_THE_FREE_ANTINIUM, ch);
     }
 
     private static void ch16(final DbHelper dbHelper) throws SQLException {
+        final Chapter ch = dbHelper.fetchChapter("Chapter 1.16");
+        // events
+        // misc
+        // appearances/mentions
+        // (day 10 since Erin got to Innworld)
+        dbHelper.addWorldAppearance(World.INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.NORTHERN_IZRIL, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FLOODPLAINS, ch);
+        dbHelper.addLandmarkAppearance(Landmark.FIRST_WANDERING_INN, ch);
+        dbHelper.addSpeciesAppearance(Species.HUMAN, ch);
+        dbHelper.addCharacterAppearance(Character.ERIN, ch);
 
     }
 

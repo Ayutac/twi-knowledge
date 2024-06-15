@@ -7,6 +7,7 @@ import java.util.Objects;
 public record Status(String name) implements Named {
 
     public static final String ALIVE = "Alive";
+    public static final String DECEASED = "Deceased";
 
     public Status(final String name) {
         this.name = Objects.requireNonNull(name);

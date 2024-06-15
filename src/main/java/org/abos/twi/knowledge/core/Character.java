@@ -144,6 +144,7 @@ public record Character(String wikiLink) implements Named {
     public static final Character PRHA = new Character(WikiHelper.WIKI_URL + "Prha");
     public static final Character PRYDE = new Character(WikiHelper.WIKI_URL + "Pryde_Ulta");
     public static final Character QUARASS = new Character(WikiHelper.WIKI_URL + "Quarass");
+    public static final Character QUEEN_OF_THE_FREE_ANTINIUM = new Character(WikiHelper.WIKI_URL + "Xevccha");
     public static final Character RAEKEA = new Character(WikiHelper.WIKI_URL + "Raekea_Silversmith");
     public static final Character RAELT = new Character(WikiHelper.WIKI_URL + "Raelt_Leysars");
     public static final Character RAFAEMA = new Character(WikiHelper.WIKI_URL + "Rafaema_Manusara_Coloseuvia");
