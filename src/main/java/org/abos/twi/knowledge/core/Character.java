@@ -140,6 +140,7 @@ public record Character(String wikiLink) implements Named {
     public static final Character PEGGY = new Character(WikiHelper.WIKI_URL + "Peggy");
     public static final Character PEKONA = new Character(WikiHelper.WIKI_URL + "Pekona");
     public static final Character PELT = new Character(WikiHelper.WIKI_URL + "Pelt_Dooristone");
+    public static final Character PERSUA = new Character(WikiHelper.WIKI_URL + "Persua_Mavva");
     public static final Character PICKER = new Character(WikiHelper.WIKI_URL + "Picker");
     public static final Character PISCES = new Character(WikiHelper.WIKI_URL + "Pisces_Jealnet");
     public static final Character PRHA = new Character(WikiHelper.WIKI_URL + "Prha");
@@ -155,9 +156,11 @@ public record Character(String wikiLink) implements Named {
     public static final Character RED = new Character(WikiHelper.WIKI_URL + "Red");
     public static final Character RELC = new Character(WikiHelper.WIKI_URL + "Relc_Grasstongue");
     public static final Character RESK = new Character(WikiHelper.WIKI_URL + "Resk");
+    public static final Character RESSA = new Character(WikiHelper.WIKI_URL + "Ressa");
     public static final Character RESSGA = new Character(WikiHelper.WIKI_URL + "Ressga");
     public static final Character REVI = new Character(WikiHelper.WIKI_URL + "Revi_Cotton");
     public static final Character REYANNE = new Character(WikiHelper.WIKI_URL + "Reyanne");
+    public static final Character REYNOLD = new Character(WikiHelper.WIKI_URL + "Reynold_Ferusdam");
     public static final Character RICHARD = new Character(WikiHelper.WIKI_URL + "Richard_Davenport");
     public static final Character RON = new Character(WikiHelper.WIKI_URL + "Ron");
     public static final Character ROSE = new Character(WikiHelper.WIKI_URL + "Rose_Cinevoy");
@@ -209,6 +212,7 @@ public record Character(String wikiLink) implements Named {
     public static final Character VISMA = new Character(WikiHelper.WIKI_URL + "Visma");
     public static final Character VOTTO = new Character(WikiHelper.WIKI_URL + "Votto");
     public static final Character WAILANT = new Character(WikiHelper.WIKI_URL + "Wailant_Strongheart");
+    public static final Character WESLE = new Character(WikiHelper.WIKI_URL + "Wesle_Salkis");
     public static final Character XARKOUTH = new Character(WikiHelper.WIKI_URL + "Xarkouth");
     public static final Character XHERW = new Character(WikiHelper.WIKI_URL + "Xherw");
     public static final Character YELROAN = new Character(WikiHelper.WIKI_URL + "Yelroan");

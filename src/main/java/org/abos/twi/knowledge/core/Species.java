@@ -16,6 +16,7 @@ public record Species(String name, boolean canLevel, String wikiLink) implements
     public static final Species CENTAUR = new Species("Centaur", true, WikiHelper.WIKI_URL + "Centaur");
     public static final Species COCKROACH = new Species("Cockroach", false, null);
     public static final Species CORUSDEER = new Species("Corusdeer", false, WikiHelper.WIKI_URL + "Corusdeer");
+    public static final Species CRELER = new Species("Creler", false, WikiHelper.WIKI_URL + "Crelers");
     public static final Species DEMON = new Species("Demon", true, WikiHelper.WIKI_URL + "Demons");
     public static final Species DJINNI = new Species("Djinni", false, WikiHelper.WIKI_URL + "Djinni");
     public static final Species DRAKE = new Species("Drake", true, WikiHelper.WIKI_URL + "Drakes");

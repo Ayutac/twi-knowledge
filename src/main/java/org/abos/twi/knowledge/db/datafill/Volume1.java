@@ -987,6 +987,7 @@ public final class Volume1 {
         // events
         dbHelper.maybeAddFirstMeeting(new FirstMeeting(Character.ERIN, Character.OLESM, ch));
         // misc
+        dbHelper.addCharacterSpecies(Character.LISM, Species.DRAKE, ch);
         // appearances/mentions
         // (day 11 since Erin got to Innworld)
         dbHelper.addWorldAppearance(World.INNWORLD, ch);
@@ -1078,7 +1079,50 @@ public final class Volume1 {
     }
 
     private static void ch19r(final DbHelper dbHelper) throws SQLException {
-
+        final Chapter ch = dbHelper.fetchChapter("Chapter 1.19 R");
+        // events
+        dbHelper.maybeAddFirstMeeting(new FirstMeeting(Character.RYOKA, Character.WESLE, ch));
+        // misc
+        dbHelper.addCharacterSpecies(Character.WESLE, Species.HUMAN, ch);
+        dbHelper.addCharacterFirstName(Character.WESLE, ch, "Wesle");
+        dbHelper.addCharacterSpecies(Character.MAGNOLIA, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.REYNOLD, Species.HUMAN, ch);
+        dbHelper.addCharacterSpecies(Character.RESSA, Species.HUMAN, ch);
+        dbHelper.addClassUpgrade(Class.MAID, Class.HEAD_MAID, ch);
+        dbHelper.addCharacterFirstName(Character.RESSA, ch, "Ressa");
+        dbHelper.addCharacterFirstName(Character.PRYDE, ch, "Pryde");
+        dbHelper.addCharacterFirstName(Character.RYOKA, ch, "Ryoka");
+        dbHelper.addCharacterFirstName(Character.RYOKA, ch, "Ryoka");
+        dbHelper.addCharacterLastName(Character.RYOKA, ch, "Griffin");
+        // appearances/mentions
+        // (possibly day 12? since Erin got to Innworld)
+        dbHelper.addWorldAppearance(World.INNWORLD, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.IZRIL, ch);
+        dbHelper.addLandmassOceanAppearance(LandmassOcean.NORTHERN_IZRIL, ch);
+        dbHelper.addLandmarkMention(Landmark.HIGH_PASSES, ch);
+        dbHelper.addSpeciesAppearance(Species.HUMAN, ch);
+        dbHelper.addCharacterAppearance(Character.RYOKA, ch);
+        dbHelper.addSpeciesAppearance(Species.GOBLIN, ch);
+        dbHelper.addWorldMention(World.EARTH, ch);
+        dbHelper.addNationMention(Nation.NEW_YORK, ch);
+        dbHelper.addSettlementMention(Settlement.NEW_YORK, ch);
+        dbHelper.addCharacterAppearance(Character.PERSUA, ch);
+        dbHelper.addSpeciesMention(Species.CARN_WOLF, ch);
+        dbHelper.addSpeciesMention(Species.UNDEAD, ch);
+        dbHelper.addSpeciesMention(Species.CRELER, ch);
+        dbHelper.addSettlementAppearance(Settlement.CELUM, ch);
+        dbHelper.addNationMention(Nation.USA, ch);
+        dbHelper.addCharacterAppearance(Character.WESLE, ch);
+        dbHelper.addClassMention(Class.GUARDSMAN, ch);
+        // Wesle is a Guardsman
+        dbHelper.addCharacterAppearance(Character.MAGNOLIA, ch);
+        // Reynold is a butler
+        dbHelper.addCharacterAppearance(Character.REYNOLD, ch);
+        // Ressa is a (head) maid
+        dbHelper.addCharacterAppearance(Character.RESSA, ch);
+        // Magnolia is a lady
+        dbHelper.addClassMention(Class.LADY, ch);
+        dbHelper.addCharacterMention(Character.PRYDE, ch);
     }
 
     private static void ch20r(final DbHelper dbHelper) throws SQLException {

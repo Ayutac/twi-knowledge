@@ -68,6 +68,7 @@ public record Class(String name, String wikiLink) implements Named, Comparable<C
     public static final Class GUILDMASTER = new Class("Guildmaster", WikiHelper.WIKI_URL + "Guildmasters");
     public static final Class HANDLER = new Class("Handler", WikiHelper.WIKI_URL + "Handlers");
     public static final Class HANDY_WORKER = new Class("Handy Worker", WikiHelper.WIKI_URL + "Handy_Workers");
+    public static final Class HEAD_MAID = new Class("Head Maid", WikiHelper.WIKI_URL + "Head_Maids");
     public static final Class HEAD_SERVER = new Class("Head Server", WikiHelper.WIKI_URL + "Head_Servers");
     public static final Class HEAD_SERVER_OF_TALES_AND_FABLES = new Class("Head Server of Tales and Fables", WikiHelper.WIKI_URL + "Head_Servers_of_Tales_and_Fables");
     public static final Class HEALER = new Class("Healer", WikiHelper.WIKI_URL + "Healers");

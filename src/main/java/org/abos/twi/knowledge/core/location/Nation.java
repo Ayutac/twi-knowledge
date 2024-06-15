@@ -9,6 +9,7 @@ public record Nation(String name, NationType nationType, LandmassOcean landmassO
 
     public static final Nation ITALY = new Nation("Italy", NationType.REPUBLIC, LandmassOcean.EUROPE, null);
     public static final Nation MICHIGAN = new Nation("Michigan", NationType.REPUBLIC, LandmassOcean.NORTH_AMERICA, null);
+    public static final Nation NEW_YORK = new Nation("New York", NationType.REPUBLIC, LandmassOcean.NORTH_AMERICA, null);
     public static final Nation JAPAN = new Nation("Japan", NationType.REPUBLIC, LandmassOcean.JAPAN, null);
     public static final Nation UK = new Nation("UK", NationType.REPUBLIC, LandmassOcean.GREAT_BRITAIN, null);
     public static final Nation USA = new Nation("USA", NationType.REPUBLIC, LandmassOcean.NORTH_AMERICA, null);
